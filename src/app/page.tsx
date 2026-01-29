@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { allWords } from '@/data/vocabulary';
 import { Word } from '@/types';
@@ -117,25 +118,31 @@ export default function HomePage() {
       {/* Partner Section: Separated for better flow */}
       <section className="px-4 pb-20 max-w-5xl mx-auto">
         <a href="https://www.nextepedu.com" target="_blank" rel="noopener noreferrer" className="block group relative overflow-hidden bg-gradient-to-br from-indigo-900 to-blue-900 rounded-3xl p-8 md:p-12 shadow-2xl shadow-blue-900/20 hover:shadow-blue-900/30 transition-all transform hover:-translate-y-1">
-          {/* Background Decor */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500 opacity-20 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/3 group-hover:opacity-30 transition-opacity"></div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500 opacity-20 rounded-full blur-3xl transform -translate-x-1/3 translate-y-1/3"></div>
+          {/* Background Decor - Subtle Overlay */}
+          <div className="absolute inset-0 bg-blue-900/10"></div>
 
           <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
-            <div className="flex-1">
+            <div className="flex-1 order-2 md:order-1">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-blue-200 text-xs font-bold mb-4 border border-white/10 uppercase tracking-wider">
                 Education Partner
               </div>
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Dreaming of Germany?</h2>
-              <p className="text-blue-100 text-lg mb-0 max-w-xl leading-relaxed">
+              <p className="text-blue-100 text-lg mb-6 max-w-xl leading-relaxed">
                 While you master the language here, let <span className="font-bold text-white">NexTep Edu</span> handle your university admission and visa process.
               </p>
+              <div className="inline-block px-8 py-3 bg-white text-blue-900 rounded-xl font-bold text-lg hover:bg-blue-50 transition-colors shadow-lg flex-shrink-0">
+                Visit NexTep Edu <span className="ml-2">→</span>
+              </div>
             </div>
 
-            <div className="flex-shrink-0">
-              <div className="px-8 py-4 bg-white text-blue-900 rounded-xl font-bold text-lg hover:bg-blue-50 transition-colors shadow-lg flex items-center gap-3">
-                Visit NexTep Edu <span className="text-xl">→</span>
-              </div>
+            {/* Illustration */}
+            <div className="flex-shrink-0 order-1 md:order-2 w-48 h-48 md:w-64 md:h-64 relative transform group-hover:scale-105 transition-transform duration-500">
+              <Image
+                src="/nextep-promo.png"
+                alt="Study in Germany Illustration"
+                fill
+                className="object-contain drop-shadow-2xl"
+              />
             </div>
           </div>
         </a>
