@@ -149,11 +149,11 @@ export default function HomePage() {
       </section>
 
       {/* Footer Area / Call to Action */}
-      <section className="py-20 bg-slate-900 text-white text-center">
+      <section className="py-20 bg-slate-100 dark:bg-slate-900 text-center">
         <div className="max-w-4xl mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-6 font-poppins">Ready to start your journey?</h2>
-          <p className="text-slate-400 mb-8 max-w-xl mx-auto">Join thousands of learners mastering German with our simplified, dual-language approach.</p>
-          <Link href="/login" className="inline-block px-10 py-4 bg-blue-600 rounded-xl font-bold hover:bg-blue-500 transition-colors shadow-lg shadow-blue-900/50">
+          <h2 className="text-3xl font-bold mb-6 font-poppins text-slate-900 dark:text-white">Ready to start your journey?</h2>
+          <p className="text-slate-600 dark:text-slate-400 mb-8 max-w-xl mx-auto">Join thousands of learners mastering German with our simplified, dual-language approach.</p>
+          <Link href="/login" className="inline-block px-10 py-4 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-500 transition-colors shadow-lg shadow-blue-600/30">
             Create Free Account
           </Link>
         </div>
