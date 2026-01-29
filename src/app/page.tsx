@@ -54,7 +54,7 @@ export default function HomePage() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
 
           {/* Daily Card (Left Large) */}
-          <div className="md:col-span-5 lg:col-span-4 bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-100 dark:border-slate-800 shadow-sm">
+          <div className="md:col-span-5 lg:col-span-4 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl rounded-3xl p-8 border border-white/20 dark:border-slate-700/50 shadow-xl shadow-slate-200/50 dark:shadow-slate-900/50">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg font-bold text-slate-400 uppercase tracking-widest">Word of the Day</h3>
               <span className="text-2xl">💡</span>
@@ -80,14 +80,14 @@ export default function HomePage() {
           {/* Quick Links Grid (Right) */}
           <div className="md:col-span-7 lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
             {/* Practice */}
-            <Link href="/sentence-builder" className="group bg-blue-50 dark:bg-blue-900/10 rounded-3xl p-6 hover:bg-blue-100 dark:hover:bg-blue-900/20 transition-colors cursor-pointer">
+            <Link href="/sentence-builder" className="group bg-blue-100/50 dark:bg-blue-900/20 backdrop-blur-xl rounded-3xl p-6 border border-blue-200/50 dark:border-blue-800/30 hover:bg-blue-200/60 dark:hover:bg-blue-900/30 hover:border-blue-300/50 dark:hover:border-blue-700/50 transition-all duration-300 shadow-lg shadow-blue-100/50 dark:shadow-blue-900/20 cursor-pointer">
               <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white text-2xl mb-4 group-hover:scale-110 transition-transform">🧩</div>
               <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">Sentence Builder</h3>
               <p className="text-slate-500 dark:text-slate-400 text-sm">Practice grammar by arranging words.</p>
             </Link>
 
             {/* Quiz */}
-            <Link href="/practice" className="group bg-orange-50 dark:bg-orange-900/10 rounded-3xl p-6 hover:bg-orange-100 dark:hover:bg-orange-900/20 transition-colors cursor-pointer">
+            <Link href="/practice" className="group bg-orange-100/50 dark:bg-orange-900/20 backdrop-blur-xl rounded-3xl p-6 border border-orange-200/50 dark:border-orange-800/30 hover:bg-orange-200/60 dark:hover:bg-orange-900/30 hover:border-orange-300/50 dark:hover:border-orange-700/50 transition-all duration-300 shadow-lg shadow-orange-100/50 dark:shadow-orange-900/20 cursor-pointer">
               <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center text-white text-2xl mb-4 group-hover:scale-110 transition-transform">⚡</div>
               <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">Speed Quiz</h3>
               <p className="text-slate-500 dark:text-slate-400 text-sm">Test your vocabulary speed.</p>
@@ -96,11 +96,11 @@ export default function HomePage() {
 
 
             {/* Levels: Full Width Row across the grid col */}
-            <div className="col-span-1 sm:col-span-2 bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-100 dark:border-slate-800 shadow-sm mt-2">
+            <div className="col-span-1 sm:col-span-2 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl rounded-3xl p-8 border border-white/20 dark:border-slate-700/50 shadow-xl shadow-slate-200/50 dark:shadow-slate-900/50 mt-2">
               <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Course Levels</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {levels.map((level) => (
-                  <Link key={level.level} href={level.href} className="flex flex-col items-center justify-center p-4 rounded-2xl bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 transition-all text-center group">
+                  <Link key={level.level} href={level.href} className="flex flex-col items-center justify-center p-4 rounded-2xl bg-slate-100/60 dark:bg-slate-800/60 backdrop-blur-lg border border-slate-200/50 dark:border-slate-700/50 hover:bg-slate-200/70 dark:hover:bg-slate-700/70 hover:border-slate-300/50 dark:hover:border-slate-600/50 transition-all duration-300 text-center group">
                     <div className={`w-10 h-10 ${level.color} rounded-lg flex items-center justify-center text-white font-bold mb-3 shadow-md group-hover:scale-110 transition-transform`}>
                       {level.level}
                     </div>
