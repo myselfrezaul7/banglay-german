@@ -36,8 +36,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
 
+    const STORAGE_KEY = 'banglay-german-storage';
+
     useEffect(() => {
-        const saved = localStorage.getItem('german-shikhi-user');
+        const saved = localStorage.getItem(STORAGE_KEY);
         if (saved) setUser(JSON.parse(saved));
         setLoading(false);
     }, []);

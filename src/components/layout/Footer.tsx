@@ -47,8 +47,10 @@ export default function Footer() {
                     </div>
                 </div>
 
-                <div className="border-t border-[var(--border-color)] mt-8 pt-8 text-center text-sm text-[var(--text-muted)]">
-                    <p>© 2026 German Shikhi. Made with ❤️ for German learners.</p>
+                <div className="border-t border-slate-200 dark:border-slate-800 mt-8 pt-8">
+                    <div className="text-center text-slate-500 dark:text-slate-400 text-sm font-medium">
+                        &copy; 2026 Banglay German. All right reserved.
+                    </div>
                 </div>
             </div>
         </footer>

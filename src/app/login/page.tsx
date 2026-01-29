@@ -44,7 +44,7 @@ export default function LoginPage() {
                 <div className="text-center mb-6">
                     <Link href="/" className="inline-flex items-center gap-2 mb-4">
                         <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--accent-gold)] flex items-center justify-center text-white font-bold">DE</div>
-                        <span className="text-xl font-bold gradient-text">German Shikhi</span>
+                        <h1 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 mb-2">Banglay German</h1>
                     </Link>
                     <h1 className="text-2xl font-bold">{isSignup ? 'Create Account' : 'Welcome Back'}</h1>
                     <p className="text-[var(--text-secondary)] font-bengali">{isSignup ? 'নতুন অ্যাকাউন্ট তৈরি করুন' : 'আবার স্বাগতম'}</p>

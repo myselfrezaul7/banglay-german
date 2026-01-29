@@ -21,7 +21,11 @@ export default function Header() {
     useEffect(() => {
         const saved = localStorage.getItem('theme') || 'light';
         setTheme(saved);
-        document.documentElement.setAttribute('data-theme', saved);
+        if (saved === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
 
         const handleScroll = () => setIsScrolled(window.scrollY > 10);
         window.addEventListener('scroll', handleScroll);
@@ -32,7 +36,11 @@ export default function Header() {
         const newTheme = theme === 'dark' ? 'light' : 'dark';
         setTheme(newTheme);
         localStorage.setItem('theme', newTheme);
-        document.documentElement.setAttribute('data-theme', newTheme);
+        if (newTheme === 'dark') {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
     };
 
     return (
@@ -44,12 +52,14 @@ export default function Header() {
                         <div className="relative w-10 h-10 md:w-12 md:h-12 shadow-lg shadow-blue-500/10 rounded-xl overflow-hidden group hover:scale-105 transition-transform">
                             <Image
                                 src="/logo.png"
-                                alt="German Shikhi Logo"
+                                alt="Banglay German Logo"
                                 fill
                                 className="object-cover"
                             />
                         </div>
-                        <span className="text-lg md:text-xl font-bold text-slate-800 dark:text-white hidden sm:block font-poppins">German Shikhi</span>
+                        <span className="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 font-poppins tracking-tight">
+                            Banglay German
+                        </span>
                     </Link>
 
                     {/* Desktop Nav */}

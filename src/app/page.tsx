@@ -29,7 +29,7 @@ export default function HomePage() {
       {/* Hero Section: Simple, Centered, High Contrast */}
       <section className="px-6 py-24 md:py-32 max-w-5xl mx-auto text-center">
         <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-semibold tracking-wide">
-          🇩🇪 Learn German for Free • সহজ জার্মান শিক্ষা
+          Learn German for Free • সহজ জার্মান শিক্ষা
         </div>
         <h1 className="text-5xl md:text-7xl font-bold text-slate-900 dark:text-white mb-6 leading-tight tracking-tight font-poppins">
           Master German <span className="text-blue-600">Effortlessly.</span>
@@ -92,6 +92,8 @@ export default function HomePage() {
               <p className="text-slate-500 dark:text-slate-400 text-sm">Test your vocabulary speed.</p>
             </Link>
 
+
+
             {/* Levels: Full Width Row across the grid col */}
             <div className="col-span-1 sm:col-span-2 bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-100 dark:border-slate-800 shadow-sm mt-2">
               <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Course Levels</h3>
@@ -110,6 +112,33 @@ export default function HomePage() {
           </div>
 
         </div>
+      </section>
+
+      {/* Partner Section: Separated for better flow */}
+      <section className="px-4 pb-20 max-w-5xl mx-auto">
+        <a href="https://www.nextepedu.com" target="_blank" rel="noopener noreferrer" className="block group relative overflow-hidden bg-gradient-to-br from-indigo-900 to-blue-900 rounded-3xl p-8 md:p-12 shadow-2xl shadow-blue-900/20 hover:shadow-blue-900/30 transition-all transform hover:-translate-y-1">
+          {/* Background Decor */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500 opacity-20 rounded-full blur-3xl transform translate-x-1/3 -translate-y-1/3 group-hover:opacity-30 transition-opacity"></div>
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500 opacity-20 rounded-full blur-3xl transform -translate-x-1/3 translate-y-1/3"></div>
+
+          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
+            <div className="flex-1">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-blue-200 text-xs font-bold mb-4 border border-white/10 uppercase tracking-wider">
+                Education Partner
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Dreaming of Germany?</h2>
+              <p className="text-blue-100 text-lg mb-0 max-w-xl leading-relaxed">
+                While you master the language here, let <span className="font-bold text-white">NexTep Edu</span> handle your university admission and visa process.
+              </p>
+            </div>
+
+            <div className="flex-shrink-0">
+              <div className="px-8 py-4 bg-white text-blue-900 rounded-xl font-bold text-lg hover:bg-blue-50 transition-colors shadow-lg flex items-center gap-3">
+                Visit NexTep Edu <span className="text-xl">→</span>
+              </div>
+            </div>
+          </div>
+        </a>
       </section>
 
       {/* Footer Area / Call to Action */}
