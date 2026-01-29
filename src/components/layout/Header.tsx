@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useAuth } from '@/contexts/AuthContext';
 
 const navLinks = [
@@ -40,7 +41,14 @@ export default function Header() {
                 <div className="flex items-center justify-between h-16 md:h-20">
                     {/* Logo */}
                     <Link href="/" className="flex items-center gap-2">
-                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-gradient-to-br from-[var(--primary)] to-[var(--primary-light)] flex items-center justify-center text-white font-bold text-sm md:text-base shadow-lg shadow-blue-500/20">DE</div>
+                        <div className="relative w-10 h-10 md:w-12 md:h-12 shadow-lg shadow-blue-500/10 rounded-xl overflow-hidden group hover:scale-105 transition-transform">
+                            <Image
+                                src="/logo.png"
+                                alt="German Shikhi Logo"
+                                fill
+                                className="object-cover"
+                            />
+                        </div>
                         <span className="text-lg md:text-xl font-bold text-slate-800 dark:text-white hidden sm:block font-poppins">German Shikhi</span>
                     </Link>
 
