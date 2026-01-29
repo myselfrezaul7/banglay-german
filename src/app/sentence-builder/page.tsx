@@ -56,12 +56,12 @@ export default function SentenceBuilderPage() {
         <div className="min-h-screen pb-20 page-transition bg-slate-50 dark:bg-slate-950">
             <section className="py-12 md:py-16 text-center max-w-4xl mx-auto px-6">
                 <div className="inline-block mb-3 px-3 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 rounded-full text-xs font-bold tracking-widest uppercase">
-                    Practice Mode
+                    অনুশীলন
                 </div>
-                <h1 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white">Sentence Builder</h1>
+                <h1 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white">বাক্য তৈরি</h1>
                 <p className="text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
                     Arrange words to form correct German sentences. <br />
-                    <span className="font-bengali text-slate-500">সঠিক জার্মান বাক্য তৈরি করতে শব্দগুলো সাজান</span>
+                    <span className="font-bengali text-slate-500">শব্দগুলো সাজিয়ে সঠিক জার্মান বাক্য তৈরি করো</span>
                 </p>
             </section>
 
@@ -76,8 +76,8 @@ export default function SentenceBuilderPage() {
                             {l === 'all' ? 'All' : l.toUpperCase()}
                         </button>
                     ))}
-                    <div className="ml-auto px-4 py-2 bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 rounded-full font-bold text-sm">
-                        Score: {score}
+                    <div className="ml-auto px-4 py-2 bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-400 rounded-full font-bold text-sm font-bengali">
+                        স্কোর: {score}
                     </div>
                 </div>
             </section>
@@ -92,19 +92,19 @@ export default function SentenceBuilderPage() {
                     </div>
 
                     <div className="mb-8 pr-12">
-                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Translate this</p>
+                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 font-bengali">এটা অনুবাদ করো</p>
                         <p className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-2">{current.english}</p>
                         <p className="font-bengali text-lg text-slate-500 dark:text-slate-400">{current.bangla}</p>
                     </div>
 
                     {showHint && (
                         <div className="mb-6 p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-300 border border-blue-100 dark:border-blue-800 text-sm flex items-center gap-2">
-                            <span>💡</span> Hint: <span className="font-mono font-bold">{current.correctOrder.join(' ')}</span>
+                            <span>💡</span> <span className="font-bengali">হিন্ট:</span> <span className="font-mono font-bold">{current.correctOrder.join(' ')}</span>
                         </div>
                     )}
 
                     <div className="min-h-[100px] p-4 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border-2 border-dashed border-slate-200 dark:border-slate-700 mb-8 flex flex-wrap gap-2 items-start content-start">
-                        {selectedWords.length === 0 && <span className="text-slate-400 w-full text-center py-4">Tap words below to build sentence...</span>}
+                        {selectedWords.length === 0 && <span className="text-slate-400 w-full text-center py-4 font-bengali">নিচের শব্দগুলোতে ট্যাপ করো...</span>}
                         {selectedWords.map((word, i) => (
                             <button key={i} onClick={() => handleWordClick(word, true)}
                                 className={`px-4 py-2 rounded-xl font-bold text-lg shadow-sm transition-all transform hover:scale-105 active:scale-95 ${isCorrect === true ? 'bg-green-500 text-white hover:bg-green-600' :
@@ -130,7 +130,7 @@ export default function SentenceBuilderPage() {
                             <>
                                 <button onClick={checkAnswer} disabled={selectedWords.length === 0}
                                     className="flex-1 btn-primary py-4 text-lg disabled:opacity-50 disabled:cursor-not-allowed">
-                                    Check Answer
+                                    উত্তর চেক করো
                                 </button>
                                 <button onClick={() => setShowHint(true)} className="px-6 py-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 font-bold hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors">
                                     ?
@@ -138,14 +138,14 @@ export default function SentenceBuilderPage() {
                             </>
                         ) : (
                             <button onClick={nextChallenge} className={`flex-1 py-4 rounded-xl font-bold text-lg shadow-lg text-white transition-all transform hover:scale-[1.02] ${isCorrect ? 'bg-green-600 hover:bg-green-500 shadow-green-900/20' : 'bg-blue-600 hover:bg-blue-500 shadow-blue-900/20'}`}>
-                                {isCorrect ? '🎉 Correct! Next Challenge →' : 'Try Next Challenge →'}
+                                {isCorrect ? '🎉 ঠিক! পরেরটা →' : 'পরের চ্যালেঞ্জ →'}
                             </button>
                         )}
                     </div>
 
                     {isCorrect === false && (
                         <div className="mt-6 p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-900/30 text-center">
-                            <p className="text-red-600 dark:text-red-400 font-medium">Not quite! The correct order is:</p>
+                            <p className="text-red-600 dark:text-red-400 font-medium font-bengali">সঠিক নয়! সঠিক উত্তর হলো:</p>
                             <p className="text-lg font-bold text-red-700 dark:text-red-300 mt-1">{current.correctOrder.join(' ')}</p>
                         </div>
                     )}

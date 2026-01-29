@@ -30,21 +30,21 @@ export default function HomePage() {
       {/* Hero Section: Simple, Centered, High Contrast */}
       <section className="px-6 py-24 md:py-32 max-w-5xl mx-auto text-center">
         <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-semibold tracking-wide">
-          Learn German for Free • সহজ জার্মান শিক্ষা
+          ফ্রিতে জার্মান শিখো • Learn German for Free
         </div>
         <h1 className="text-5xl md:text-7xl font-bold text-slate-900 dark:text-white mb-6 leading-tight tracking-tight font-poppins">
           Master German <span className="text-blue-600">Effortlessly.</span>
         </h1>
         <p className="text-xl text-slate-600 dark:text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed font-inter">
-          A completely free, open-source platform to learn German with simple <span className="text-slate-900 dark:text-white font-medium">English</span> explanations and <span className="text-slate-900 dark:text-white font-medium font-bengali">বাংলা</span> translations.
+          একদম ফ্রি, ওপেন-সোর্স প্ল্যাটফর্ম - সহজ <span className="text-slate-900 dark:text-white font-medium">ইংরেজি</span> ব্যাখ্যা আর <span className="text-slate-900 dark:text-white font-medium font-bengali">বাংলা</span> অর্থ সহ জার্মান শিখো।
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Link href="/vocabulary/a1" className="min-w-[200px] px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-semibold hover:transform hover:-translate-y-1 transition-all duration-200">
-            Start A1 Course
+            A1 শুরু করো
           </Link>
           <Link href="/practice" className="min-w-[200px] px-8 py-4 bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 rounded-xl font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200">
-            Take a Quiz
+            কুইজ দাও
           </Link>
         </div>
       </section>
@@ -56,7 +56,7 @@ export default function HomePage() {
           {/* Daily Card (Left Large) */}
           <div className="md:col-span-5 lg:col-span-4 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl rounded-3xl p-8 border border-white/20 dark:border-slate-700/50 shadow-xl shadow-slate-200/50 dark:shadow-slate-900/50">
             <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-bold text-slate-400 uppercase tracking-widest">Word of the Day</h3>
+              <h3 className="text-lg font-bold text-slate-400 uppercase tracking-widest font-bengali">আজকের শব্দ</h3>
               <span className="text-2xl">💡</span>
             </div>
             {wordOfDay ? (

@@ -98,18 +98,18 @@ export default function PracticePage() {
     if (!mounted) return null;
 
     return (
-        <div className="page-transition min-h-screen">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
             {/* Header */}
-            <section className="py-16 bg-[var(--bg-secondary)]">
+            <section className="py-16 bg-slate-100/50 dark:bg-slate-900/50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                        <span className="gradient-text">Practice</span>
+                    <h1 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white">
+                        <span className="gradient-text">অনুশীলন</span>
                     </h1>
-                    <p className="text-xl text-[var(--text-secondary)] mb-2">
+                    <p className="text-xl text-slate-600 dark:text-slate-400 mb-2">
                         Test your German vocabulary knowledge
                     </p>
-                    <p className="text-lg font-bengali text-[var(--text-muted)]">
-                        আপনার জার্মান শব্দভাণ্ডার জ্ঞান পরীক্ষা করুন
+                    <p className="text-lg font-bengali text-slate-500 dark:text-slate-500">
+                        তোমার জার্মান শব্দ জ্ঞান যাচাই করো
                     </p>
                 </div>
             </section>
@@ -119,19 +119,19 @@ export default function PracticePage() {
                     {!quizStarted ? (
                         /* Quiz Setup */
                         <div className="glass-card p-8">
-                            <h2 className="text-2xl font-bold mb-6 text-center">Choose Your Quiz</h2>
+                            <h2 className="text-2xl font-bold mb-6 text-center text-slate-900 dark:text-white">তোমার কুইজ বাছো</h2>
 
                             {/* Level Selection */}
                             <div className="mb-6">
-                                <label className="block text-sm font-medium mb-3">Select Level</label>
+                                <label className="block text-sm font-medium mb-3 text-slate-700 dark:text-slate-300">লেভেল সিলেক্ট করো</label>
                                 <div className="flex flex-wrap gap-2">
                                     {['all', 'a1', 'a2', 'b1'].map((level) => (
                                         <button
                                             key={level}
                                             onClick={() => setSelectedLevel(level as Level | 'all')}
                                             className={`px-4 py-2 rounded-lg transition-all ${selectedLevel === level
-                                                    ? 'bg-[var(--primary)] text-white'
-                                                    : 'bg-[var(--bg-tertiary)] text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)]'
+                                                ? 'bg-blue-600 text-white'
+                                                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
                                                 }`}
                                         >
                                             {level === 'all' ? 'All Levels' : level.toUpperCase()}
@@ -142,7 +142,7 @@ export default function PracticePage() {
 
                             {/* Quiz Mode Selection */}
                             <div className="mb-8">
-                                <label className="block text-sm font-medium mb-3">Quiz Type</label>
+                                <label className="block text-sm font-medium mb-3 text-slate-700 dark:text-slate-300">কুইজের ধরন</label>
                                 <div className="grid grid-cols-2 gap-3">
                                     {[
                                         { mode: 'de-to-en', label: 'German → English', labelBn: 'জার্মান → ইংরেজি' },
@@ -154,8 +154,8 @@ export default function PracticePage() {
                                             key={mode}
                                             onClick={() => setQuizMode(mode as QuizMode)}
                                             className={`p-4 rounded-xl text-left transition-all ${quizMode === mode
-                                                    ? 'bg-[var(--primary)] text-white'
-                                                    : 'bg-[var(--bg-tertiary)] text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)]'
+                                                ? 'bg-blue-600 text-white'
+                                                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
                                                 }`}
                                         >
                                             <div className="font-medium">{label}</div>
@@ -170,7 +170,7 @@ export default function PracticePage() {
                                 onClick={startQuiz}
                                 className="w-full btn-primary text-lg py-4 justify-center"
                             >
-                                Start Quiz (10 Questions)
+                                কুইজ শুরু করো (১০টি প্রশ্ন)
                             </button>
                         </div>
                     ) : quizComplete ? (
@@ -179,27 +179,25 @@ export default function PracticePage() {
                             <div className="text-6xl mb-4">
                                 {score >= 8 ? '🎉' : score >= 5 ? '👍' : '📚'}
                             </div>
-                            <h2 className="text-3xl font-bold mb-2">Quiz Complete!</h2>
-                            <p className="text-[var(--text-secondary)] mb-6 font-bengali">কুইজ শেষ!</p>
+                            <h2 className="text-3xl font-bold mb-2 text-slate-900 dark:text-white">কুইজ শেষ!</h2>
+                            <p className="text-slate-500 dark:text-slate-400 mb-6 font-bengali">তোমার ফলাফল দেখো!</p>
 
-                            <div className="text-6xl font-bold mb-4" style={{
-                                color: score >= 8 ? 'var(--success)' : score >= 5 ? 'var(--warning)' : 'var(--error)'
-                            }}>
-                                {score}/10
+                            <div className={`text-6xl font-bold mb-4 ${score >= 8 ? 'text-green-500' : score >= 5 ? 'text-amber-500' : 'text-red-500'}`}>
+                                {score}/১০
                             </div>
 
-                            <p className="text-lg text-[var(--text-secondary)] mb-8">
-                                {score >= 8 ? 'Excellent! Keep up the great work!' :
-                                    score >= 5 ? 'Good job! Keep practicing!' :
-                                        'Keep learning! You\'ll get better!'}
+                            <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 font-bengali">
+                                {score >= 8 ? 'দারুণ! চালিয়ে যাও!' :
+                                    score >= 5 ? 'ভালো হয়েছে! আরও প্র্যাকটিস করো!' :
+                                        'চিন্তা নেই! আরেকবার চেষ্টা করো!'}
                             </p>
 
                             <div className="flex gap-4 justify-center">
                                 <button onClick={startQuiz} className="btn-primary">
-                                    Try Again
+                                    আবার চেষ্টা করো
                                 </button>
                                 <button onClick={resetQuiz} className="btn-secondary">
-                                    New Quiz
+                                    নতুন কুইজ
                                 </button>
                             </div>
                         </div>
@@ -208,23 +206,23 @@ export default function PracticePage() {
                         <div className="glass-card p-8">
                             {/* Progress */}
                             <div className="flex items-center justify-between mb-6">
-                                <span className="text-[var(--text-muted)]">
-                                    Question {currentQuestion + 1} of {questions.length}
+                                <span className="text-slate-500 dark:text-slate-400">
+                                    প্রশ্ন {currentQuestion + 1}/{questions.length}
                                 </span>
-                                <span className="text-[var(--primary)] font-bold">Score: {score}</span>
+                                <span className="text-blue-600 dark:text-blue-400 font-bold">স্কোর: {score}</span>
                             </div>
 
-                            <div className="h-2 bg-[var(--bg-tertiary)] rounded-full mb-8">
+                            <div className="h-2 bg-slate-200 dark:bg-slate-800 rounded-full mb-8">
                                 <div
-                                    className="h-full bg-[var(--primary)] rounded-full transition-all"
+                                    className="h-full bg-blue-600 dark:bg-blue-500 rounded-full transition-all"
                                     style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
                                 />
                             </div>
 
                             {/* Question */}
                             <div className="text-center mb-8">
-                                <p className="text-sm text-[var(--text-muted)] mb-2">What is the meaning of:</p>
-                                <h3 className={`text-4xl font-bold ${quizMode.startsWith('bn') ? 'font-bengali' : ''}`}>
+                                <p className="text-sm text-slate-500 dark:text-slate-400 mb-2">এর মানে কী:</p>
+                                <h3 className={`text-4xl font-bold text-slate-900 dark:text-white ${quizMode.startsWith('bn') ? 'font-bengali' : ''}`}>
                                     {questions[currentQuestion]?.question}
                                 </h3>
                             </div>
@@ -235,14 +233,14 @@ export default function PracticePage() {
                                     let className = 'p-4 rounded-xl border-2 transition-all text-left ';
                                     if (showResult) {
                                         if (option === questions[currentQuestion].correct) {
-                                            className += 'correct-answer border-[var(--success)] bg-[rgba(16,185,129,0.2)]';
+                                            className += 'border-green-500 bg-green-500/20 text-green-700 dark:text-green-300';
                                         } else if (option === selectedAnswer) {
-                                            className += 'incorrect-answer border-[var(--error)] bg-[rgba(239,68,68,0.2)]';
+                                            className += 'border-red-500 bg-red-500/20 text-red-700 dark:text-red-300';
                                         } else {
-                                            className += 'border-[var(--border-color)] opacity-50';
+                                            className += 'border-slate-200 dark:border-slate-700 opacity-50 text-slate-600 dark:text-slate-400';
                                         }
                                     } else {
-                                        className += 'border-[var(--border-color)] hover:border-[var(--primary)] hover:bg-[var(--bg-tertiary)] cursor-pointer';
+                                        className += 'border-slate-200 dark:border-slate-700 hover:border-blue-500 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer text-slate-700 dark:text-slate-300';
                                     }
 
                                     return (
@@ -264,7 +262,7 @@ export default function PracticePage() {
                                     onClick={handleNext}
                                     className="w-full btn-primary mt-6 py-4 justify-center"
                                 >
-                                    {currentQuestion < questions.length - 1 ? 'Next Question' : 'See Results'}
+                                    {currentQuestion < questions.length - 1 ? 'পরের প্রশ্ন' : 'ফলাফল দেখো'}
                                 </button>
                             )}
                         </div>
