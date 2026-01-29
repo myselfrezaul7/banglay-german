@@ -30,21 +30,21 @@ export default function HomePage() {
       {/* Hero Section: Simple, Centered, High Contrast */}
       <section className="px-6 py-24 md:py-32 max-w-5xl mx-auto text-center">
         <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-semibold tracking-wide">
-          ফ্রিতে জার্মান শিখো • Learn German for Free
+          ফ্রিতে জার্মান শিখুন • Learn German for Free
         </div>
         <h1 className="text-5xl md:text-7xl font-bold text-slate-900 dark:text-white mb-6 leading-tight tracking-tight font-poppins">
           Master German <span className="text-blue-600">Effortlessly.</span>
         </h1>
         <p className="text-xl text-slate-600 dark:text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed font-inter">
-          একদম ফ্রি, ওপেন-সোর্স প্ল্যাটফর্ম - সহজ <span className="text-slate-900 dark:text-white font-medium">ইংরেজি</span> ব্যাখ্যা আর <span className="text-slate-900 dark:text-white font-medium font-bengali">বাংলা</span> অর্থ সহ জার্মান শিখো।
+          একদম ফ্রি, ওপেন-সোর্স প্ল্যাটফর্ম - সহজ <span className="text-slate-900 dark:text-white font-medium">ইংরেজি</span> ব্যাখ্যা আর <span className="text-slate-900 dark:text-white font-medium font-bengali">বাংলা</span> অর্থ সহ জার্মান শিখুন।
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Link href="/vocabulary/a1" className="min-w-[200px] px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-semibold hover:transform hover:-translate-y-1 transition-all duration-200">
-            A1 শুরু করো
+            A1 শুরু করুন
           </Link>
           <Link href="/practice" className="min-w-[200px] px-8 py-4 bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 rounded-xl font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200">
-            কুইজ দাও
+            কুইজ দিন
           </Link>
         </div>
       </section>

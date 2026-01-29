@@ -137,7 +137,7 @@ export default function SentencesPage() {
                         Learn German through practical sentences
                     </p>
                     <p className="text-lg font-bengali text-slate-500 dark:text-slate-500">
-                        দৈনন্দিন কাজে লাগে এমন বাক্য শিখো
+                        দৈনন্দিন কাজে লাগে এমন বাক্য শিখুন
                     </p>
                 </div>
             </section>
@@ -200,7 +200,7 @@ export default function SentencesPage() {
                                         <button
                                             onClick={() => handleSpeak(sentence.german)}
                                             className="p-3 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-blue-600 hover:text-white transition-all text-slate-600 dark:text-slate-300"
-                                            title="শোনো"
+                                            title="শুনুন"
                                         >
                                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
@@ -212,7 +212,7 @@ export default function SentencesPage() {
                                                 ? 'bg-blue-600 text-white'
                                                 : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300'
                                                 }`}
-                                            title="শব্দ ভাঙ্গন"
+                                            title="শব্দ বিশ্লেষণ"
                                         >
                                             <svg className={`w-5 h-5 transition-transform ${expandedId === sentence.id ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />

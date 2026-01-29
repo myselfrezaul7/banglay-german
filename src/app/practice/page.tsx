@@ -109,7 +109,7 @@ export default function PracticePage() {
                         Test your German vocabulary knowledge
                     </p>
                     <p className="text-lg font-bengali text-slate-500 dark:text-slate-500">
-                        তোমার জার্মান শব্দ জ্ঞান যাচাই করো
+                        আপনার জার্মান শব্দ জ্ঞান যাচাই করুন
                     </p>
                 </div>
             </section>
@@ -119,11 +119,11 @@ export default function PracticePage() {
                     {!quizStarted ? (
                         /* Quiz Setup */
                         <div className="glass-card p-8">
-                            <h2 className="text-2xl font-bold mb-6 text-center text-slate-900 dark:text-white">তোমার কুইজ বাছো</h2>
+                            <h2 className="text-2xl font-bold mb-6 text-center text-slate-900 dark:text-white">আপনার কুইজ নির্বাচন করুন</h2>
 
                             {/* Level Selection */}
                             <div className="mb-6">
-                                <label className="block text-sm font-medium mb-3 text-slate-700 dark:text-slate-300">লেভেল সিলেক্ট করো</label>
+                                <label className="block text-sm font-medium mb-3 text-slate-700 dark:text-slate-300">লেভেল নির্বাচন করুন</label>
                                 <div className="flex flex-wrap gap-2">
                                     {['all', 'a1', 'a2', 'b1'].map((level) => (
                                         <button
@@ -170,7 +170,7 @@ export default function PracticePage() {
                                 onClick={startQuiz}
                                 className="w-full btn-primary text-lg py-4 justify-center"
                             >
-                                কুইজ শুরু করো (১০টি প্রশ্ন)
+                                কুইজ শুরু করুন (১০টি প্রশ্ন)
                             </button>
                         </div>
                     ) : quizComplete ? (
@@ -180,21 +180,21 @@ export default function PracticePage() {
                                 {score >= 8 ? '🎉' : score >= 5 ? '👍' : '📚'}
                             </div>
                             <h2 className="text-3xl font-bold mb-2 text-slate-900 dark:text-white">কুইজ শেষ!</h2>
-                            <p className="text-slate-500 dark:text-slate-400 mb-6 font-bengali">তোমার ফলাফল দেখো!</p>
+                            <p className="text-slate-500 dark:text-slate-400 mb-6 font-bengali">আপনার ফলাফল দেখুন!</p>
 
                             <div className={`text-6xl font-bold mb-4 ${score >= 8 ? 'text-green-500' : score >= 5 ? 'text-amber-500' : 'text-red-500'}`}>
                                 {score}/১০
                             </div>
 
                             <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 font-bengali">
-                                {score >= 8 ? 'দারুণ! চালিয়ে যাও!' :
-                                    score >= 5 ? 'ভালো হয়েছে! আরও প্র্যাকটিস করো!' :
-                                        'চিন্তা নেই! আরেকবার চেষ্টা করো!'}
+                                {score >= 8 ? 'দারুণ! চালিয়ে যান!' :
+                                    score >= 5 ? 'ভালো হয়েছে! আরও অনুশীলন করুন!' :
+                                        'চিন্তা নেই! আরেকবার চেষ্টা করুন!'}
                             </p>
 
                             <div className="flex gap-4 justify-center">
                                 <button onClick={startQuiz} className="btn-primary">
-                                    আবার চেষ্টা করো
+                                    আবার চেষ্টা করুন
                                 </button>
                                 <button onClick={resetQuiz} className="btn-secondary">
                                     নতুন কুইজ
@@ -262,7 +262,7 @@ export default function PracticePage() {
                                     onClick={handleNext}
                                     className="w-full btn-primary mt-6 py-4 justify-center"
                                 >
-                                    {currentQuestion < questions.length - 1 ? 'পরের প্রশ্ন' : 'ফলাফল দেখো'}
+                                    {currentQuestion < questions.length - 1 ? 'পরের প্রশ্ন' : 'ফলাফল দেখুন'}
                                 </button>
                             )}
                         </div>

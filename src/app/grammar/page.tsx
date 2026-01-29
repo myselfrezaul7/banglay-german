@@ -31,7 +31,7 @@ const grammarGuides: GrammarGuide[] = [
         tip: 'Think of the endings as a rhyme: "e-st-t-en-t-en".',
         examples: [
             { german: 'Ich lerne Deutsch.', english: 'I am learning German.', bangla: 'আমি জার্মান শিখছি।' },
-            { german: 'Du wohnst hier.', english: 'You live here.', bangla: 'তুমি এখানে থাকো।' },
+            { german: 'Du wohnst hier.', english: 'You live here.', bangla: 'আপনি এখানে থাকেন।' },
         ]
     },
     {
@@ -219,8 +219,8 @@ export default function GrammarPage() {
                             key={level}
                             onClick={() => setSelectedLevel(level)}
                             className={`px-5 py-2 rounded-full text-sm font-bold transition-all ${selectedLevel === level
-                                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
-                                    : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-blue-400'
+                                ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
+                                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-blue-400'
                                 }`}
                         >
                             {level.toUpperCase()}
