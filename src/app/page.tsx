@@ -116,32 +116,34 @@ export default function HomePage() {
       </section>
 
       {/* Partner Section: Separated for better flow */}
-      <section className="px-4 pb-20 max-w-5xl mx-auto">
-        <a href="https://www.nextepedu.com" target="_blank" rel="noopener noreferrer" className="block group relative overflow-hidden bg-gradient-to-br from-indigo-900 to-blue-900 rounded-3xl p-8 md:p-12 shadow-2xl shadow-blue-900/20 hover:shadow-blue-900/30 transition-all transform hover:-translate-y-1">
-          {/* Background Decor - Subtle Overlay */}
-          <div className="absolute inset-0 bg-blue-900/10"></div>
+      <section className="px-4 pb-20 max-w-5xl mx-auto relative">
+        {/* Background Decorative Blur for Glass Effect - Softened and color-matched */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-blue-400/10 rounded-full blur-[120px] pointer-events-none"></div>
+        <div className="absolute top-1/4 right-0 w-48 h-48 bg-amber-400/5 rounded-full blur-[100px] pointer-events-none"></div>
 
-          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
+        <a href="https://www.nextepedu.com" target="_blank" rel="noopener noreferrer" className="block group relative overflow-hidden glass-ios-premium rounded-[2.5rem] p-8 md:p-12 transition-all transform hover:-translate-y-1 border-white/20 dark:border-slate-800/30 shadow-lg shadow-blue-900/5">
+          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10 text-center md:text-left">
             <div className="flex-1 order-2 md:order-1">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-blue-200 text-xs font-bold mb-4 border border-white/10 uppercase tracking-wider">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 dark:bg-blue-400/10 text-blue-600 dark:text-blue-300 text-xs font-bold mb-4 border border-blue-500/20 uppercase tracking-wider">
                 Education Partner
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Dreaming of Germany?</h2>
-              <p className="text-blue-100 text-lg mb-6 max-w-xl leading-relaxed">
-                While you master the language here, let <span className="font-bold text-white">NexTep Edu</span> handle your university admission and visa process.
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">Dreaming of Germany?</h2>
+              <p className="text-slate-600 dark:text-slate-300 text-lg mb-8 max-w-xl leading-relaxed font-inter">
+                While you master the language here, let <span className="font-bold text-blue-600 dark:text-blue-400">NexTep Edu</span> handle your university admission and visa process.
               </p>
-              <div className="inline-block px-8 py-3 bg-white text-blue-900 rounded-xl font-bold text-lg hover:bg-blue-50 transition-colors shadow-lg flex-shrink-0">
-                Visit NexTep Edu <span className="ml-2">→</span>
+              <div className="inline-flex items-center px-8 py-3.5 bg-blue-600 text-white rounded-2xl font-bold text-lg hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20 active:scale-95">
+                Visit NexTep Edu <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
               </div>
             </div>
 
-            {/* Illustration */}
-            <div className="flex-shrink-0 order-1 md:order-2 w-48 h-48 md:w-64 md:h-64 relative transform group-hover:scale-105 transition-transform duration-500">
+            {/* Illustration - New Modern Image */}
+            <div className="flex-shrink-0 order-1 md:order-2 w-56 h-56 md:w-72 md:h-72 relative transform group-hover:scale-105 transition-transform duration-700 ease-out">
+              <div className="absolute inset-4 bg-blue-500/5 rounded-full blur-3xl group-hover:bg-blue-500/10 transition-all"></div>
               <Image
-                src="/nextep-promo.png"
+                src="/nextep_promo_modern_v1_1769733262037.png"
                 alt="Study in Germany Illustration"
                 fill
-                className="object-contain drop-shadow-2xl"
+                className="object-contain drop-shadow-2xl relative z-10 p-2"
               />
             </div>
           </div>

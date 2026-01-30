@@ -75,6 +75,27 @@ h6 {
   @apply shadow-2xl shadow-slate-300/50 dark:shadow-slate-800/50 border-blue-200/50 dark:border-blue-700/30;
 }
 
+/* High Quality iOS 17.2 Glass (Softened) */
+.glass-ios-premium {
+  @apply backdrop-blur-[16px] bg-white/30 dark:bg-slate-900/40 border border-white/30 dark:border-slate-700/30 shadow-xl;
+  box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.05), 0 2px 12px -1px rgba(0, 0, 0, 0.02);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-ios-premium::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+.dark .glass-ios-premium::before {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
 /* Clean Card (Solid) */
 .clean-card {
   @apply bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl shadow-sm transition-all duration-300;

@@ -49,7 +49,7 @@ export default function Footer() {
 
                 <div className="border-t border-slate-200 dark:border-slate-700 mt-8 pt-8">
                     <div className="text-center text-slate-500 dark:text-slate-400 text-sm font-medium">
-                        &copy; 2026 Banglay German. All right reserved.
+                        &copy; 2026 Banglay German. All rights reserved.
                     </div>
                 </div>
             </div>
