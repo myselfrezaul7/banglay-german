@@ -39,37 +39,38 @@ export default function WordCard({ word, onFavorite, onLearn }: WordCardProps) {
     };
 
     return (
-        <div className="word-card group relative">
-            {/* Level Badge */}
-            <div
-                className="absolute top-4 left-4 badge text-xs"
-                style={{ background: getLevelColor() }}
-            >
-                {word.level.toUpperCase()}
+        <div className="word-card group relative flex flex-col h-full">
+            {/* Header: Level Badge & Favorite */}
+            <div className="flex justify-between items-start mb-4">
+                <span
+                    className="badge text-xs font-bold"
+                    style={{ background: getLevelColor(), color: 'white' }}
+                >
+                    {word.level.toUpperCase()}
+                </span>
+
+                <button
+                    onClick={handleFavorite}
+                    className="p-2 rounded-lg bg-[var(--bg-tertiary)] hover:bg-[var(--primary)] hover:text-white transition-all opacity-0 group-hover:opacity-100 focus:opacity-100"
+                    aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+                >
+                    <svg
+                        className={`w-5 h-5 transition-colors ${isFavorite ? 'text-[var(--accent-gold)]' : 'text-[var(--text-muted)] group-hover:text-white'}`}
+                        fill={isFavorite ? 'currentColor' : 'none'}
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                    </svg>
+                </button>
             </div>
 
-            {/* Favorite Button */}
-            <button
-                onClick={handleFavorite}
-                className="absolute top-4 right-4 p-2 rounded-lg bg-[var(--bg-tertiary)] hover:bg-[var(--primary)] transition-all opacity-0 group-hover:opacity-100"
-                aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-            >
-                <svg
-                    className={`w-5 h-5 transition-colors ${isFavorite ? 'text-[var(--accent-gold)]' : 'text-[var(--text-muted)]'}`}
-                    fill={isFavorite ? 'currentColor' : 'none'}
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
-                </svg>
-            </button>
-
             {/* German Word */}
-            <div className="mt-8 mb-4">
+            <div className="mb-2">
                 {word.article && (
-                    <span className="text-[var(--text-muted)] text-sm mr-2">{word.article}</span>
+                    <span className="text-[var(--text-muted)] text-sm mr-2 font-medium">{word.article}</span>
                 )}
-                <h3 className="text-2xl font-bold text-[var(--text-primary)] inline">{word.german}</h3>
+                <h3 className="text-2xl font-bold text-[var(--text-primary)] inline leading-tight">{word.german}</h3>
             </div>
 
             {/* Translations */}
@@ -95,8 +96,8 @@ export default function WordCard({ word, onFavorite, onLearn }: WordCardProps) {
                     onClick={handleSpeak}
                     disabled={isPlaying}
                     className={`flex-1 flex items-center justify-center gap-2 py-2 rounded-lg transition-all ${isPlaying
-                            ? 'bg-[var(--primary)] text-white'
-                            : 'bg-[var(--bg-tertiary)] hover:bg-[var(--primary)] hover:text-white'
+                        ? 'bg-[var(--primary)] text-white'
+                        : 'bg-[var(--bg-tertiary)] hover:bg-[var(--primary)] hover:text-white'
                         }`}
                 >
                     <svg className={`w-5 h-5 ${isPlaying ? 'animate-pulse' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -212,5 +212,75 @@ export const b1Words: Word[] = [
     { id: 'b1-347', german: 'die Spritze', english: 'injection', bangla: 'ইনজেকশন', level: 'b1', category: 'health', article: 'die' },
     { id: 'b1-348', german: 'der Notarzt', english: 'emergency doctor', bangla: 'জরুরী ডাক্তার', level: 'b1', category: 'health', article: 'der' },
     { id: 'b1-349', german: 'die Operation', english: 'surgery', bangla: 'অপারেশন', level: 'b1', category: 'health', article: 'die' },
-    { id: 'b1-350', german: 'sich erkälten', english: 'to catch a cold', bangla: 'ঠান্ডা লাগা', level: 'b1', category: 'health' }
+    { id: 'b1-350', german: 'sich erkälten', english: 'to catch a cold', bangla: 'ঠান্ডা লাগা', level: 'b1', category: 'health' },
+
+    // Politics & Society (New)
+    { id: 'b1-351', german: 'die Demokratie', english: 'democracy', bangla: 'গণতন্ত্র', level: 'b1', category: 'society', article: 'die' },
+    { id: 'b1-352', german: 'die Wahl', english: 'election', bangla: 'নির্বাচন', level: 'b1', category: 'society', article: 'die' },
+    { id: 'b1-353', german: 'die Partei', english: 'political party', bangla: 'রাজনৈতিক দল', level: 'b1', category: 'society', article: 'die' },
+    { id: 'b1-354', german: 'der Präsident', english: 'president', bangla: 'রাষ্ট্রপতি', level: 'b1', category: 'society', article: 'der' },
+    { id: 'b1-355', german: 'das Gesetz', english: 'law', bangla: 'আইন', level: 'b1', category: 'society', article: 'das' },
+    { id: 'b1-356', german: 'diskutieren', english: 'to discuss', bangla: 'আলোচনা করা', level: 'b1', category: 'society' },
+    { id: 'b1-357', german: 'die Meinung', english: 'opinion', bangla: 'মতামত', level: 'b1', category: 'society', article: 'die' },
+    { id: 'b1-358', german: 'zustimmen', english: 'to agree', bangla: 'একমত হওয়া', level: 'b1', category: 'society' },
+    { id: 'b1-359', german: 'widersprechen', english: 'to disagree/contradict', bangla: ' দ্বিমত করা', level: 'b1', category: 'society' },
+
+    // Technology & Media
+    { id: 'b1-360', german: 'die App', english: 'app', bangla: 'অ্যাপ', level: 'b1', category: 'technology', article: 'die' },
+    { id: 'b1-361', german: 'das soziale Netzwerk', english: 'social network', bangla: 'সামাজিক যোগাযোগ মাধ্যম', level: 'b1', category: 'technology', article: 'das' },
+    { id: 'b1-362', german: 'hochladen', english: 'to upload', bangla: 'আপলোড করা', level: 'b1', category: 'technology' },
+    { id: 'b1-363', german: 'herunterladen', english: 'to download', bangla: 'ডাউনলোড করা', level: 'b1', category: 'technology' },
+    { id: 'b1-364', german: 'löschen', english: 'to delete', bangla: 'মুছে ফেলা', level: 'b1', category: 'technology' },
+    { id: 'b1-365', german: 'speichern', english: 'to save (digital)', bangla: 'সংরক্ষণ করা', level: 'b1', category: 'technology' },
+    { id: 'b1-366', german: 'der Bildschirm', english: 'screen', bangla: 'পর্দা', level: 'b1', category: 'technology', article: 'der' },
+    { id: 'b1-367', german: 'die Tastatur', english: 'keyboard', bangla: 'কীবোর্ড', level: 'b1', category: 'technology', article: 'die' },
+
+    // Feelings & Abstract
+    { id: 'b1-368', german: 'stolz', english: 'proud', bangla: 'গর্বিত', level: 'b1', category: 'feelings' },
+    { id: 'b1-369', german: 'enttäuscht', english: 'disappointed', bangla: 'হতাশ', level: 'b1', category: 'feelings' },
+    { id: 'b1-370', german: 'überrascht', english: 'surprised', bangla: 'অবাক', level: 'b1', category: 'feelings' },
+    { id: 'b1-371', german: 'aufgeregt', english: 'excited', bangla: 'উত্তেজিত', level: 'b1', category: 'feelings' },
+    { id: 'b1-372', german: 'nervös', english: 'nervous', bangla: 'নার্ভাস', level: 'b1', category: 'feelings' },
+    { id: 'b1-373', german: 'zufrieden', english: 'satisfied', bangla: 'সন্তুষ্ট', level: 'b1', category: 'feelings' },
+    { id: 'b1-374', german: 'die Liebe', english: 'love', bangla: 'ভালবাসা', level: 'b1', category: 'feelings', article: 'die' },
+    { id: 'b1-375', german: 'der Hass', english: 'hate', bangla: 'ঘৃণা', level: 'b1', category: 'feelings', article: 'der' },
+    { id: 'b1-376', german: 'das Glück', english: 'happiness/luck', bangla: 'সুখ/ভাগ্য', level: 'b1', category: 'feelings', article: 'das' },
+
+    // More Abstract & Social
+    { id: 'b1-377', german: 'die Beziehung', english: 'relationship', bangla: 'সম্পর্ক', level: 'b1', category: 'abstract', article: 'die' },
+    { id: 'b1-378', german: 'das Vertrauen', english: 'trust', bangla: 'বিশ্বাস', level: 'b1', category: 'abstract', article: 'das' },
+    { id: 'b1-379', german: 'der Mut', english: 'courage', bangla: 'সাহস', level: 'b1', category: 'abstract', article: 'der' },
+    { id: 'b1-380', german: 'der Respekt', english: 'respect', bangla: 'সম্মান', level: 'b1', category: 'abstract', article: 'der' },
+    { id: 'b1-381', german: 'die Geduld', english: 'patience', bangla: 'ধৈর্য', level: 'b1', category: 'abstract', article: 'die' },
+    { id: 'b1-382', german: 'die Ehrlichkeit', english: 'honesty', bangla: 'সততা', level: 'b1', category: 'abstract', article: 'die' },
+    { id: 'b1-383', german: 'der Humor', english: 'humor', bangla: 'গল্প', level: 'b1', category: 'abstract', article: 'der' },
+    { id: 'b1-384', german: 'die Sorge', english: 'worry', bangla: 'চিন্তা', level: 'b1', category: 'abstract', article: 'die' },
+
+    // More Verbs (Daily Interactions)
+    { id: 'b1-385', german: 'vorschlagen', english: 'to suggest', bangla: 'প্রস্তাব করা', level: 'b1', category: 'verbs' },
+    { id: 'b1-386', german: 'teilnehmen', english: 'to participate', bangla: 'অংশগ্রহণ করা', level: 'b1', category: 'verbs' },
+    { id: 'b1-387', german: 'stattfinden', english: 'to take place', bangla: 'অনুষ্ঠিত হওয়া', level: 'b1', category: 'verbs' },
+    { id: 'b1-388', german: 'überzeugen', english: 'to convince', bangla: 'বোঝানো', level: 'b1', category: 'verbs' },
+    { id: 'b1-389', german: 'vermuten', english: 'to suspect/assume', bangla: 'অনুমান করা', level: 'b1', category: 'verbs' },
+    { id: 'b1-390', german: 'verzichten', english: 'to do without', bangla: 'ত্যাগ করা', level: 'b1', category: 'verbs' },
+    { id: 'b1-391', german: 'sich kümmern', english: 'to take care of', bangla: 'যত্ন নেয়া', level: 'b1', category: 'verbs' },
+    { id: 'b1-392', german: 'sich beschweren', english: 'to complain', bangla: 'অভিযোগ করা', level: 'b1', category: 'verbs' },
+    { id: 'b1-393', german: 'sich verabreden', english: 'to make an appointment', bangla: 'দেখা করার সময় ঠিক করা', level: 'b1', category: 'verbs' },
+    { id: 'b1-394', german: 'sorgen', english: 'to worry', bangla: 'চিন্তা করা', level: 'b1', category: 'verbs' },
+    { id: 'b1-395', german: 'vertrauen', english: 'to trust', bangla: 'বিশ্বাস করা', level: 'b1', category: 'verbs' },
+
+    // More Adjectives
+    { id: 'b1-396', german: 'mutig', english: 'brave', bangla: 'সাহসী', level: 'b1', category: 'adjectives' },
+    { id: 'b1-397', german: 'klug', english: 'clever', bangla: 'চালাক', level: 'b1', category: 'adjectives' },
+    { id: 'b1-398', german: 'ehrlich', english: 'honest', bangla: 'সত্', level: 'b1', category: 'adjectives' },
+    { id: 'b1-399', german: 'geduldig', english: 'patient', bangla: 'ধৈর্যশীল', level: 'b1', category: 'adjectives' },
+    { id: 'b1-400', german: 'neugierig', english: 'curious', bangla: 'কৌতূহলী', level: 'b1', category: 'adjectives' },
+    { id: 'b1-401', german: 'ärgerlich', english: 'annoying', bangla: 'বিরক্তিকর', level: 'b1', category: 'adjectives' },
+    { id: 'b1-402', german: 'hilfreich', english: 'helpful', bangla: 'সহায়ক', level: 'b1', category: 'adjectives' },
+    { id: 'b1-403', german: 'gefährlich', english: 'dangerous', bangla: 'বিপজ্জনক', level: 'b1', category: 'adjectives' },
+    { id: 'b1-404', german: 'schrecklich', english: 'terrible', bangla: 'ভয়ানক', level: 'b1', category: 'adjectives' },
+    { id: 'b1-405', german: 'furchtbar', english: 'awful', bangla: 'বাজে', level: 'b1', category: 'adjectives' },
+    { id: 'b1-406', german: 'selten', english: 'rare/seldom', bangla: 'বিরল', level: 'b1', category: 'adjectives' },
+    { id: 'b1-407', german: 'regelmäßig', english: 'regular', bangla: 'নিয়মিত', level: 'b1', category: 'adjectives' },
+    { id: 'b1-408', german: 'mindestens', english: 'at least', bangla: 'কমপক্ষে', level: 'b1', category: 'adjectives' }
 ];

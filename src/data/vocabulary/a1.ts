@@ -356,5 +356,156 @@ export const a1Words: Word[] = [
     { id: 'a1-447', german: 'die Nummer', english: 'number', bangla: 'নম্বর', level: 'a1', category: 'miscellaneous' },
     { id: 'a1-448', german: 'das Telefon', english: 'telephone', bangla: 'ফোন', level: 'a1', category: 'miscellaneous' },
     { id: 'a1-449', german: 'das Wort', english: 'word', bangla: 'শব্দ', level: 'a1', category: 'miscellaneous' },
-    { id: 'a1-450', german: 'der Herr', english: 'gentleman', bangla: 'ভদ্রলোক', level: 'a1', category: 'miscellaneous' }
+    { id: 'a1-450', german: 'der Herr', english: 'gentleman', bangla: 'ভদ্রলোক', level: 'a1', category: 'miscellaneous' },
+
+    // Professions (New)
+    { id: 'a1-451', german: 'der Lehrer', english: 'teacher (male)', bangla: 'শিক্ষক', level: 'a1', category: 'work' },
+    { id: 'a1-452', german: 'die Lehrerin', english: 'teacher (female)', bangla: 'শিক্ষিকা', level: 'a1', category: 'work' },
+    { id: 'a1-453', german: 'der Schüler', english: 'student (school)', bangla: 'ছাত্র', level: 'a1', category: 'work' },
+    { id: 'a1-454', german: 'der Student', english: 'student (university)', bangla: 'ছাত্র (বিশ্ববিদ্যালয়)', level: 'a1', category: 'work' },
+    { id: 'a1-455', german: 'der Kellner', english: 'waiter', bangla: 'ওয়েটার', level: 'a1', category: 'work' },
+    { id: 'a1-456', german: 'der Arzt', english: 'doctor', bangla: 'ডাক্তার', level: 'a1', category: 'work' },
+    { id: 'a1-457', german: 'der Polizist', english: 'police officer', bangla: 'পুলিশ', level: 'a1', category: 'work' },
+
+    // Countries & Languages
+    { id: 'a1-458', german: 'Deutschland', english: 'Germany', bangla: 'জার্মানি', level: 'a1', category: 'countries' },
+    { id: 'a1-459', german: 'Deutsch', english: 'German (language)', bangla: 'জার্মান ভাষা', level: 'a1', category: 'countries' },
+    { id: 'a1-460', german: 'Bangladesch', english: 'Bangladesh', bangla: 'বাংলাদেশ', level: 'a1', category: 'countries' },
+    { id: 'a1-461', german: 'Englisch', english: 'English', bangla: 'ইংরেজি', level: 'a1', category: 'countries' },
+    { id: 'a1-462', german: 'das Land', english: 'country', bangla: 'দেশ', level: 'a1', category: 'countries' },
+    { id: 'a1-463', german: 'die Sprache', english: 'language', bangla: 'ভাষা', level: 'a1', category: 'countries' },
+
+    // More Common Objects
+    { id: 'a1-464', german: 'das Buch', english: 'book', bangla: 'বই', level: 'a1', category: 'objects' },
+    { id: 'a1-465', german: 'der Stift', english: 'pen', bangla: 'কলম', level: 'a1', category: 'objects' },
+    { id: 'a1-466', german: 'das Handy', english: 'mobile phone', bangla: 'মোবাইল', level: 'a1', category: 'objects' },
+    { id: 'a1-467', german: 'der Computer', english: 'computer', bangla: 'কম্পিউটার', level: 'a1', category: 'objects' },
+    { id: 'a1-468', german: 'die Tasche', english: 'bag', bangla: 'ব্যাগ', level: 'a1', category: 'objects' },
+    { id: 'a1-469', german: 'das Geld', english: 'money', bangla: 'টাকা', level: 'a1', category: 'objects' },
+    { id: 'a1-470', german: 'die Rechnung', english: 'bill', bangla: 'বিল', level: 'a1', category: 'objects' },
+
+    // More Verbs
+    { id: 'a1-471', german: 'lernen', english: 'to learn', bangla: 'শেখা', level: 'a1', category: 'verbs' },
+    { id: 'a1-472', german: 'fragen', english: 'to ask', bangla: 'জিজ্ঞাসা করা', level: 'a1', category: 'verbs' },
+    { id: 'a1-473', german: 'antworten', english: 'to answer', bangla: 'উত্তর দেওয়া', level: 'a1', category: 'verbs' },
+    { id: 'a1-474', german: 'öffnen', english: 'to open', bangla: 'খোলা', level: 'a1', category: 'verbs' },
+    { id: 'a1-475', german: 'schließen', english: 'to close', bangla: 'বন্ধ করা', level: 'a1', category: 'verbs' },
+    { id: 'a1-476', german: 'warten', english: 'to wait', bangla: 'অপেক্ষা করা', level: 'a1', category: 'verbs' },
+    { id: 'a1-477', german: 'brauchen', english: 'to need', bangla: 'প্রয়োজন', level: 'a1', category: 'verbs' },
+    { id: 'a1-478', german: 'mögen', english: 'to like', bangla: 'পছন্দ করা', level: 'a1', category: 'verbs' },
+
+    // Kitchen & Household (New)
+    { id: 'a1-479', german: 'der Löffel', english: 'spoon', bangla: 'চামচ', level: 'a1', category: 'home', article: 'der' },
+    { id: 'a1-480', german: 'die Gabel', english: 'fork', bangla: 'কাঁটাচামচ', level: 'a1', category: 'home', article: 'die' },
+    { id: 'a1-481', german: 'das Messer', english: 'knife', bangla: 'ছুরি', level: 'a1', category: 'home', article: 'das' },
+    { id: 'a1-482', german: 'der Teller', english: 'plate', bangla: 'প্লেট', level: 'a1', category: 'home', article: 'der' },
+    { id: 'a1-483', german: 'die Tasse', english: 'cup', bangla: 'কাপ', level: 'a1', category: 'home', article: 'die' },
+    { id: 'a1-484', german: 'das Glas', english: 'glass', bangla: 'গ্লাস', level: 'a1', category: 'home', article: 'das' },
+    { id: 'a1-485', german: 'die Flasche', english: 'bottle', bangla: 'বোতল', level: 'a1', category: 'home', article: 'die' },
+    { id: 'a1-486', german: 'der Topf', english: 'pot', bangla: 'হাঁড়ি', level: 'a1', category: 'home', article: 'der' },
+    { id: 'a1-487', german: 'die Pfanne', english: 'pan', bangla: 'কড়াই', level: 'a1', category: 'home', article: 'die' },
+    { id: 'a1-488', german: 'der Kühlschrank', english: 'fridge', bangla: 'ফ্রিজ', level: 'a1', category: 'home', article: 'der' },
+    { id: 'a1-489', german: 'der Herd', english: 'stove', bangla: 'চুলা', level: 'a1', category: 'home', article: 'der' },
+    { id: 'a1-490', german: 'der Müll', english: 'trash', bangla: 'আবর্জনা', level: 'a1', category: 'home', article: 'der' },
+
+    // Classroom & Office
+    { id: 'a1-491', german: 'der Schreibtisch', english: 'desk', bangla: 'ডেস্ক', level: 'a1', category: 'work', article: 'der' },
+    { id: 'a1-492', german: 'der Stuhl', english: 'chair', bangla: 'চেয়ার', level: 'a1', category: 'work', article: 'der' },
+    { id: 'a1-493', german: 'das Papier', english: 'paper', bangla: 'কাগজ', level: 'a1', category: 'work', article: 'das' },
+    { id: 'a1-494', german: 'das Heft', english: 'notebook', bangla: 'খাতা', level: 'a1', category: 'work', article: 'das' },
+    { id: 'a1-495', german: 'der Bleistift', english: 'pencil', bangla: 'পেন্সিল', level: 'a1', category: 'work', article: 'der' },
+    { id: 'a1-496', german: 'der Kugelschreiber', english: 'pen', bangla: 'কলম', level: 'a1', category: 'work', article: 'der' },
+    { id: 'a1-497', german: 'die Tafel', english: 'board', bangla: 'বোর্ড', level: 'a1', category: 'work', article: 'die' },
+    { id: 'a1-498', german: 'die Kreide', english: 'chalk', bangla: 'চক', level: 'a1', category: 'work', article: 'die' },
+    { id: 'a1-499', german: 'der Computer', english: 'computer', bangla: 'কম্পিউটার', level: 'a1', category: 'work', article: 'der' },
+    { id: 'a1-500', german: 'die Maus', english: 'computer mouse', bangla: 'মাউস', level: 'a1', category: 'work', article: 'die' },
+
+    // More Body Parts
+    { id: 'a1-501', german: 'der Arm', english: 'arm', bangla: 'বাহু', level: 'a1', category: 'health', article: 'der' },
+    { id: 'a1-502', german: 'das Bein', english: 'leg', bangla: 'পা', level: 'a1', category: 'health', article: 'das' },
+    { id: 'a1-503', german: 'der Finger', english: 'finger', bangla: 'আঙুল', level: 'a1', category: 'health', article: 'der' },
+    { id: 'a1-504', german: 'der Zeh', english: 'toe', bangla: 'পায়ের আঙুল', level: 'a1', category: 'health', article: 'der' },
+    { id: 'a1-505', german: 'der Hals', english: 'neck', bangla: 'ঘাড়/গলা', level: 'a1', category: 'health', article: 'der' },
+    { id: 'a1-506', german: 'die Schulter', english: 'shoulder', bangla: 'কাঁধ', level: 'a1', category: 'health', article: 'die' },
+    { id: 'a1-507', german: 'der Rücken', english: 'back', bangla: 'পিঠ', level: 'a1', category: 'health', article: 'der' },
+    { id: 'a1-508', german: 'das Knie', english: 'knee', bangla: 'হাঁটু', level: 'a1', category: 'health', article: 'das' },
+    { id: 'a1-509', german: 'der Zahn', english: 'tooth', bangla: 'দাঁত', level: 'a1', category: 'health', article: 'der' },
+    { id: 'a1-510', german: 'die Zunge', english: 'tongue', bangla: 'জিহ্বা', level: 'a1', category: 'health', article: 'die' },
+
+    // More Adjectives
+    { id: 'a1-511', german: 'voll', english: 'full', bangla: 'ভরা', level: 'a1', category: 'adjectives' },
+    { id: 'a1-512', german: 'leer', english: 'empty', bangla: 'খালি', level: 'a1', category: 'adjectives' },
+    { id: 'a1-513', german: 'hart', english: 'hard', bangla: 'কঠিন/শক্ত', level: 'a1', category: 'adjectives' },
+    { id: 'a1-514', german: 'weich', english: 'soft', bangla: 'নরম', level: 'a1', category: 'adjectives' },
+    { id: 'a1-515', german: 'frisch', english: 'fresh', bangla: 'তাজা', level: 'a1', category: 'adjectives' },
+    { id: 'a1-516', german: 'süß', english: 'sweet', bangla: 'মিষ্টি', level: 'a1', category: 'adjectives' },
+    { id: 'a1-517', german: 'sauer', english: 'sour', bangla: 'টক', level: 'a1', category: 'adjectives' },
+    { id: 'a1-518', german: 'scharf', english: 'spicy/sharp', bangla: 'ঝাল/ধারালো', level: 'a1', category: 'adjectives' },
+    { id: 'a1-519', german: 'trocken', english: 'dry', bangla: 'শুকনো', level: 'a1', category: 'adjectives' },
+    { id: 'a1-520', german: 'nass', english: 'wet', bangla: 'ভেজা', level: 'a1', category: 'adjectives' },
+    { id: 'a1-521', german: 'sauber', english: 'clean', bangla: 'পরিষ্কার', level: 'a1', category: 'adjectives' },
+    { id: 'a1-522', german: 'schmutzig', english: 'dirty', bangla: 'নোংরা', level: 'a1', category: 'adjectives' },
+    { id: 'a1-523', german: 'freundlich', english: 'friendly', bangla: 'বন্ধুত্বপূর্ণ', level: 'a1', category: 'adjectives' },
+    { id: 'a1-524', german: 'unfreundlich', english: 'unfriendly', bangla: 'অবন্ধুত্বপূর্ণ', level: 'a1', category: 'adjectives' },
+    { id: 'a1-525', german: 'intelligent', english: 'intelligent', bangla: 'বুদ্ধিমান', level: 'a1', category: 'adjectives' },
+    { id: 'a1-526', german: 'dumm', english: 'stupid', bangla: 'বোকা', level: 'a1', category: 'adjectives' },
+    { id: 'a1-527', german: 'offen', english: 'open', bangla: 'খোলা', level: 'a1', category: 'adjectives' },
+    { id: 'a1-528', german: 'geschlossen', english: 'closed', bangla: 'বন্ধ', level: 'a1', category: 'adjectives' },
+
+    // More Verbs
+    { id: 'a1-529', german: 'sitzen', english: 'to sit', bangla: 'বসা', level: 'a1', category: 'verbs' },
+    { id: 'a1-530', german: 'stehen', english: 'to stand', bangla: 'দাঁড়ানো', level: 'a1', category: 'verbs' },
+    { id: 'a1-531', german: 'liegen', english: 'to lie down', bangla: 'শুয়ে থাকা', level: 'a1', category: 'verbs' },
+    { id: 'a1-532', german: 'geben', english: 'to give', bangla: 'দেওয়া', level: 'a1', category: 'verbs' },
+    { id: 'a1-533', german: 'nehmen', english: 'to take', bangla: 'নেওয়া', level: 'a1', category: 'verbs' },
+    { id: 'a1-534', german: 'suchen', english: 'to search', bangla: 'খোঁজা', level: 'a1', category: 'verbs' },
+    { id: 'a1-535', german: 'finden', english: 'to find', bangla: 'পাওয়া', level: 'a1', category: 'verbs' },
+    { id: 'a1-536', german: 'kennen', english: 'to know (person)', bangla: 'চেনা', level: 'a1', category: 'verbs' },
+    { id: 'a1-537', german: 'wissen', english: 'to know (fact)', bangla: 'জানা', level: 'a1', category: 'verbs' },
+    { id: 'a1-538', german: 'reisen', english: 'to travel', bangla: 'ভ্রমণ করা', level: 'a1', category: 'verbs' },
+    { id: 'a1-539', german: 'duschen', english: 'to shower', bangla: 'গোসল করা', level: 'a1', category: 'verbs' },
+    { id: 'a1-540', german: 'waschen', english: 'to wash', bangla: 'ধোয়া', level: 'a1', category: 'verbs' },
+
+    // More Food (Fruits & Veg)
+    { id: 'a1-541', german: 'die Orange', english: 'orange', bangla: 'কমলা', level: 'a1', category: 'food', article: 'die' },
+    { id: 'a1-542', german: 'die Traube', english: 'grape', bangla: 'আঙ্গুর', level: 'a1', category: 'food', article: 'die' },
+    { id: 'a1-543', german: 'die Birne', english: 'pear', bangla: 'নাশপাতি', level: 'a1', category: 'food', article: 'die' },
+    { id: 'a1-544', german: 'die Gurke', english: 'cucumber', bangla: 'শসা', level: 'a1', category: 'food', article: 'die' },
+    { id: 'a1-545', german: 'die Karotte', english: 'carrot', bangla: 'গাজর', level: 'a1', category: 'food', article: 'die' },
+    { id: 'a1-546', german: 'der Salat', english: 'salad/lettuce', bangla: 'সালাদ', level: 'a1', category: 'food', article: 'der' },
+    { id: 'a1-547', german: 'das Hähnchen', english: 'chicken', bangla: 'মুরগি মাংস', level: 'a1', category: 'food', article: 'das' },
+    { id: 'a1-548', german: 'die Suppe', english: 'soup', bangla: 'স্যুপ', level: 'a1', category: 'food', article: 'die' },
+    { id: 'a1-549', german: 'das Salz', english: 'salt', bangla: 'লবণ', level: 'a1', category: 'food', article: 'das' },
+    { id: 'a1-550', german: 'der Pfeffer', english: 'pepper', bangla: 'গোলমরিচ', level: 'a1', category: 'food', article: 'der' },
+
+    // More Home Objects
+    { id: 'a1-551', german: 'der Schlüssel', english: 'key', bangla: 'চাবি', level: 'a1', category: 'home', article: 'der' },
+    { id: 'a1-552', german: 'die Seife', english: 'soap', bangla: 'সাবান', level: 'a1', category: 'home', article: 'die' },
+    { id: 'a1-553', german: 'das Handtuch', english: 'towel', bangla: 'তোয়ালে', level: 'a1', category: 'home', article: 'das' },
+    { id: 'a1-554', german: 'der Besen', english: 'broom', bangla: 'ঝাড়ু', level: 'a1', category: 'home', article: 'der' },
+    { id: 'a1-555', german: 'der Eimer', english: 'bucket', bangla: 'বালতি', level: 'a1', category: 'home', article: 'der' },
+    { id: 'a1-556', german: 'die Decke', english: 'blanket', bangla: 'কম্বল', level: 'a1', category: 'home', article: 'die' },
+    { id: 'a1-557', german: 'das Kissen', english: 'pillow', bangla: 'বালিশ', level: 'a1', category: 'home', article: 'das' },
+
+    // More Clothing
+    { id: 'a1-558', german: 'der Schal', english: 'scarf', bangla: 'স্কার্ফ', level: 'a1', category: 'clothing', article: 'der' },
+    { id: 'a1-559', german: 'die Socke', english: 'sock', bangla: 'মোজা', level: 'a1', category: 'clothing', article: 'die' },
+    { id: 'a1-560', german: 'der Handschuh', english: 'glove', bangla: 'হাতমোজা', level: 'a1', category: 'clothing', article: 'der' },
+    { id: 'a1-561', german: 'der Gürtel', english: 'belt', bangla: 'বেল্ট', level: 'a1', category: 'clothing', article: 'der' },
+
+    // Essential Verbs
+    { id: 'a1-562', german: 'benutzen', english: 'to use', bangla: 'ব্যবহার করা', level: 'a1', category: 'verbs' },
+    { id: 'a1-563', german: 'besuchen', english: 'to visit', bangla: 'পরিদর্শন করা', level: 'a1', category: 'verbs' },
+    { id: 'a1-564', german: 'bezahlen', english: 'to pay', bangla: 'মূল্য পরিশোধ করা', level: 'a1', category: 'verbs' },
+    { id: 'a1-565', german: 'bleiben', english: 'to stay', bangla: 'থাকা', level: 'a1', category: 'verbs' },
+    { id: 'a1-566', german: 'mitbringen', english: 'to bring along', bangla: 'সাথে আনা', level: 'a1', category: 'verbs' },
+    { id: 'a1-567', german: 'abholen', english: 'to pick up', bangla: 'তুলে নেওয়া', level: 'a1', category: 'verbs' },
+    { id: 'a1-568', german: 'anrufen', english: 'to call', bangla: 'কল করা', level: 'a1', category: 'verbs' },
+
+    // Miscellaneous Daily
+    { id: 'a1-569', german: 'der Markt', english: 'market', bangla: 'বাজার', level: 'a1', category: 'miscellaneous', article: 'der' },
+    { id: 'a1-570', german: 'der Preis', english: 'price', bangla: 'দাম', level: 'a1', category: 'miscellaneous', article: 'der' },
+    { id: 'a1-571', german: 'die Zeit', english: 'time', bangla: 'সময়', level: 'a1', category: 'miscellaneous', article: 'die' },
+    { id: 'a1-572', german: 'der Ort', english: 'place', bangla: 'জায়গা', level: 'a1', category: 'miscellaneous', article: 'der' },
+    { id: 'a1-573', german: 'die Sache', english: 'thing', bangla: 'জিনিস', level: 'a1', category: 'miscellaneous', article: 'die' }
 ];

@@ -269,5 +269,88 @@ export const a2Words: Word[] = [
     { id: 'a2-402', german: 'der See', english: 'lake', bangla: 'হ্রদ', level: 'a2', category: 'weather', article: 'der' },
     { id: 'a2-403', german: 'das Meer', english: 'sea', bangla: 'সমুদ্র', level: 'a2', category: 'weather', article: 'das' },
     { id: 'a2-404', german: 'der Strand', english: 'beach', bangla: 'সমুদ্রতট', level: 'a2', category: 'weather', article: 'der' },
-    { id: 'a2-405', german: 'der Fluss', english: 'river', bangla: 'নদী', level: 'a2', category: 'weather', article: 'der' }
+    { id: 'a2-405', german: 'der Fluss', english: 'river', bangla: 'নদী', level: 'a2', category: 'weather', article: 'der' },
+
+    // Education & Work (New)
+    { id: 'a2-406', german: 'der Unterricht', english: 'class/lesson', bangla: 'ক্লাস', level: 'a2', category: 'work', article: 'der' },
+    { id: 'a2-407', german: 'das Thema', english: 'topic', bangla: 'বিষয়', level: 'a2', category: 'work', article: 'das' },
+    { id: 'a2-408', german: 'die Prüfung', english: 'exam', bangla: 'পরীক্ষা', level: 'a2', category: 'work', article: 'die' },
+    { id: 'a2-409', german: 'bestehen', english: 'to pass (exam)', bangla: 'পাস করা', level: 'a2', category: 'work' },
+    { id: 'a2-410', german: 'durchfallen', english: 'to fail (exam)', bangla: 'ফেল করা', level: 'a2', category: 'work' },
+    { id: 'a2-411', german: 'der Fehler', english: 'mistake', bangla: 'ভুল', level: 'a2', category: 'work', article: 'der' },
+    { id: 'a2-412', german: 'die Lösung', english: 'solution', bangla: 'সমাধান', level: 'a2', category: 'work', article: 'die' },
+    { id: 'a2-413', german: 'planen', english: 'to plan', bangla: 'পরিকল্পনা করা', level: 'a2', category: 'work' },
+    { id: 'a2-414', german: 'organisieren', english: 'to organize', bangla: 'আয়োজন করা', level: 'a2', category: 'work' },
+    { id: 'a2-415', german: 'der Erfolg', english: 'success', bangla: 'সাফল্য', level: 'a2', category: 'work', article: 'der' },
+
+    // Leisure & Hobbies
+    { id: 'a2-416', german: 'das Hobby', english: 'hobby', bangla: 'শখ', level: 'a2', category: 'hobbies', article: 'das' },
+    { id: 'a2-417', german: 'lesen', english: 'to read', bangla: 'পড়া', level: 'a2', category: 'hobbies' },
+    { id: 'a2-418', german: 'reisen', english: 'to travel', bangla: 'ভ্রমণ করা', level: 'a2', category: 'hobbies' },
+    { id: 'a2-419', german: 'singen', english: 'to sing', bangla: 'গান গাওয়া', level: 'a2', category: 'hobbies' },
+    { id: 'a2-420', german: 'tanzen', english: 'to dance', bangla: 'নাচ', level: 'a2', category: 'hobbies' },
+    { id: 'a2-421', german: 'malen', english: 'to paint', bangla: 'আঁকা', level: 'a2', category: 'hobbies' },
+    { id: 'a2-422', german: 'fotografieren', english: 'to take photos', bangla: 'ছবি তোলা', level: 'a2', category: 'hobbies' },
+    { id: 'a2-423', german: 'schwimmen', english: 'to swim', bangla: 'সাঁতার কাটা', level: 'a2', category: 'hobbies' },
+    { id: 'a2-424', german: 'laufen', english: 'to run', bangla: 'দৌড়ানো', level: 'a2', category: 'hobbies' },
+    { id: 'a2-425', german: 'der Sport', english: 'sport', bangla: 'খেলাধুলা', level: 'a2', category: 'hobbies', article: 'der' },
+
+    // Daily Life
+    { id: 'a2-426', german: 'aufstehen', english: 'to get up', bangla: 'ঘুম থেকে ওঠা', level: 'a2', category: 'daily' },
+    { id: 'a2-427', german: 'anziehen', english: 'to get dressed', bangla: 'জামা পরা', level: 'a2', category: 'daily' },
+    { id: 'a2-428', german: 'ausziehen', english: 'to undress/move out', bangla: 'জামা খোলা/বাসা বদলানো', level: 'a2', category: 'daily' },
+    { id: 'a2-429', german: 'fernsehen', english: 'to watch TV', bangla: 'টিভি দেখা', level: 'a2', category: 'daily' },
+    { id: 'a2-430', german: 'einkaufen', english: 'to shop', bangla: 'বাজার করা', level: 'a2', category: 'daily' },
+    { id: 'a2-431', german: 'besuchen', english: 'to visit', bangla: 'বেড়াতে যাওয়া', level: 'a2', category: 'daily' },
+    { id: 'a2-432', german: 'einladen', english: 'to invite', bangla: 'দাওয়াত দেওয়া', level: 'a2', category: 'daily' },
+    { id: 'a2-433', german: 'das Geschenk', english: 'gift', bangla: 'উপহার', level: 'a2', category: 'daily', article: 'das' },
+    { id: 'a2-434', german: 'die Party', english: 'party', bangla: 'পার্টি', level: 'a2', category: 'daily', article: 'die' },
+    { id: 'a2-435', german: 'feieren', english: 'to celebrate', bangla: 'উদযাপন করা', level: 'a2', category: 'daily' },
+
+    // More Daily Life & Home
+    { id: 'a2-436', german: 'der Alltag', english: 'everyday life', bangla: 'দৈনন্দিন জীবন', level: 'a2', category: 'daily', article: 'der' },
+    { id: 'a2-437', german: 'der Haushalt', english: 'household', bangla: 'গৃহস্থালি', level: 'a2', category: 'home', article: 'der' },
+    { id: 'a2-438', german: 'wischen', english: 'to wipe/mop', bangla: 'মোছা', level: 'a2', category: 'home' },
+    { id: 'a2-439', german: 'bügeln', english: 'to iron', bangla: 'ইস্ত্রি করা', level: 'a2', category: 'home' },
+    { id: 'a2-440', german: 'der Staubsauger', english: 'vacuum cleaner', bangla: 'ভ্যাকুয়াম ক্লিনার', level: 'a2', category: 'home', article: 'der' },
+    { id: 'a2-441', german: 'reparieren', english: 'to repair', bangla: 'মেরামত করা', level: 'a2', category: 'home' },
+    { id: 'a2-442', german: 'die Einladung', english: 'invitation', bangla: 'দাওয়াতপত্র/আমন্ত্রণ', level: 'a2', category: 'daily', article: 'die' },
+    { id: 'a2-443', german: 'vorbereiten', english: 'to prepare', bangla: 'প্রস্তুত করা', level: 'a2', category: 'daily' },
+
+    // Shopping & Money
+    { id: 'a2-444', german: 'bar', english: 'cash', bangla: 'নগদ', level: 'a2', category: 'shopping' },
+    { id: 'a2-445', german: 'die Karte', english: 'card', bangla: 'কার্ড', level: 'a2', category: 'shopping', article: 'die' },
+    { id: 'a2-446', german: 'der Kassenbon', english: 'receipt', bangla: 'রশিদ', level: 'a2', category: 'shopping', article: 'der' },
+    { id: 'a2-447', german: 'umtauschen', english: 'to exchange', bangla: 'বদলানো', level: 'a2', category: 'shopping' },
+    { id: 'a2-448', german: 'die Tüte', english: 'bag (plastic/paper)', bangla: 'পলিথিন/ব্যাগ', level: 'a2', category: 'shopping', article: 'die' },
+    { id: 'a2-449', german: 'günstig', english: 'favorable/cheap', bangla: 'সাশ্রয়ী', level: 'a2', category: 'shopping' },
+    { id: 'a2-450', german: 'ausgeben', english: 'to spend (money)', bangla: 'খরচ করা', level: 'a2', category: 'shopping' },
+    { id: 'a2-451', german: 'sparen', english: 'to save (money)', bangla: 'জমানো', level: 'a2', category: 'shopping' },
+
+    // More Health
+    { id: 'a2-452', german: 'weh tun', english: 'to hurt', bangla: 'ব্যথা পাওয়া', level: 'a2', category: 'health' },
+    { id: 'a2-453', german: 'der Krankenwagen', english: 'ambulance', bangla: 'অ্যাম্বুলেন্স', level: 'a2', category: 'health', article: 'der' },
+    { id: 'a2-454', german: 'die Praxis', english: 'medical practice', bangla: 'ডাক্তারের চেম্বার', level: 'a2', category: 'health', article: 'die' },
+    { id: 'a2-455', german: 'untersuchen', english: 'to examine', bangla: 'পরীক্ষা করা', level: 'a2', category: 'health' },
+    { id: 'a2-456', german: 'die Verletzung', english: 'injury', bangla: 'আঘাত', level: 'a2', category: 'health', article: 'die' },
+
+    // Detailed Verbs
+    { id: 'a2-457', german: 'abgeben', english: 'to drop off/submit', bangla: 'জমা দেয়া', level: 'a2', category: 'verbs' },
+    { id: 'a2-458', german: 'aufpassen', english: 'to pay attention/watch out', bangla: 'খেয়াল রাখা', level: 'a2', category: 'verbs' },
+    { id: 'a2-459', german: 'auspacken', english: 'to unpack', bangla: 'খোলা (প্যাকেট)', level: 'a2', category: 'verbs' },
+    { id: 'a2-460', german: 'einpacken', english: 'to pack', bangla: 'প্যাকেট করা', level: 'a2', category: 'verbs' },
+    { id: 'a2-461', german: 'einziehen', english: 'to move in', bangla: 'নতুন বাসায় ওঠা', level: 'a2', category: 'verbs' },
+    { id: 'a2-462', german: 'ausziehen', english: 'to move out', bangla: 'বাসা ছেড়ে দেয়া', level: 'a2', category: 'verbs' },
+    { id: 'a2-463', german: 'benutzen', english: 'to use', bangla: 'ব্যবহার করা', level: 'a2', category: 'verbs' },
+    { id: 'a2-464', german: 'beschreiben', english: 'to describe', bangla: 'বর্ণনা করা', level: 'a2', category: 'verbs' },
+    { id: 'a2-465', german: 'diskutieren', english: 'to discuss', bangla: 'আলোচনা করা', level: 'a2', category: 'verbs' },
+    { id: 'a2-466', german: 'gefallen', english: 'to like/please', bangla: 'ভালো লাগা', level: 'a2', category: 'verbs' },
+    { id: 'a2-467', german: 'gehören', english: 'to belong to', bangla: 'মালিকানাধীন হওয়া', level: 'a2', category: 'verbs' },
+    { id: 'a2-468', german: 'passieren', english: 'to happen', bangla: 'ঘটা', level: 'a2', category: 'verbs' },
+    { id: 'a2-469', german: 'rennen', english: 'to run', bangla: 'দৌড়ানো', level: 'a2', category: 'verbs' },
+    { id: 'a2-470', german: 'rufen', english: 'to call (shout)', bangla: 'ডাকা', level: 'a2', category: 'verbs' },
+    { id: 'a2-471', german: 'stören', english: 'to disturb', bangla: 'বিরক্ত করা', level: 'a2', category: 'verbs' },
+    { id: 'a2-472', german: 'vergessen', english: 'to forget', bangla: 'ভুলে যাওয়া', level: 'a2', category: 'verbs' },
+    { id: 'a2-473', german: 'versprechen', english: 'to promise', bangla: 'কথা দেয়া', level: 'a2', category: 'verbs' },
+    { id: 'a2-474', german: 'versuchen', english: 'to try', bangla: 'চেষ্টা করা', level: 'a2', category: 'verbs' }
 ];

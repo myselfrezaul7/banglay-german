@@ -210,5 +210,42 @@ export const b2Words: Word[] = [
     { id: 'b2-347', german: 'schließlich', english: 'finally', bangla: 'অবশেষে', level: 'b2', category: 'connectors' },
     { id: 'b2-348', german: 'zuletzt', english: 'lastly', bangla: 'শেষে', level: 'b2', category: 'connectors' },
     { id: 'b2-349', german: 'jedenfalls', english: 'in any case', bangla: 'যাই হোক', level: 'b2', category: 'connectors' },
-    { id: 'b2-350', german: 'übrigens', english: 'by the way', bangla: 'যাইহোক (প্রসঙ্গক্রমে)', level: 'b2', category: 'connectors' }
+    { id: 'b2-350', german: 'übrigens', english: 'by the way', bangla: 'যাইহোক (প্রসঙ্গক্রমে)', level: 'b2', category: 'connectors' },
+
+    // More Business & Work
+    { id: 'b2-351', german: 'die Leitung', english: 'management/leadership', bangla: 'ব্যবস্থাপনা', level: 'b2', category: 'work', article: 'die' },
+    { id: 'b2-352', german: 'das Marketing', english: 'marketing', bangla: 'মার্কেটিং', level: 'b2', category: 'work', article: 'das' },
+    { id: 'b2-353', german: 'die Werbung', english: 'advertising', bangla: 'বিজ্ঞাপন', level: 'b2', category: 'work', article: 'die' },
+    { id: 'b2-354', german: 'der Handel', english: 'trade', bangla: 'বাণিজ্য', level: 'b2', category: 'work', article: 'der' },
+    { id: 'b2-355', german: 'die Branche', english: 'industry/sector', bangla: 'শিল্প খাত', level: 'b2', category: 'work', article: 'die' },
+    { id: 'b2-356', german: 'der Bericht', english: 'report', bangla: 'প্রতিবেদন', level: 'b2', category: 'work', article: 'der' },
+
+    // More Society & Environment
+    { id: 'b2-357', german: 'die Integration', english: 'integration', bangla: 'একত্রীকরণ', level: 'b2', category: 'society', article: 'die' },
+    { id: 'b2-358', german: 'der Klimawandel', english: 'climate change', bangla: 'জলবায়ু পরিবর্তন', level: 'b2', category: 'society', article: 'der' },
+    { id: 'b2-359', german: 'die Nachhaltigkeit', english: 'sustainability', bangla: 'টেকসইতা', level: 'b2', category: 'society', article: 'die' },
+    { id: 'b2-360', german: 'die Gewalt', english: 'violence', bangla: 'সহিংসতা', level: 'b2', category: 'society', article: 'die' },
+    { id: 'b2-361', german: 'die Armut', english: 'poverty', bangla: 'দারিদ্র্য', level: 'b2', category: 'society', article: 'die' },
+    { id: 'b2-362', german: 'der Wohlstand', english: 'prosperity', bangla: 'সমৃদ্ধি', level: 'b2', category: 'society', article: 'der' },
+
+    // More Abstract & Academic
+    { id: 'b2-363', german: 'die Konsequenz', english: 'consequence', bangla: 'ফলাফল/পরিণতি', level: 'b2', category: 'abstract', article: 'die' },
+    { id: 'b2-364', german: 'die Voraussetzung', english: 'prerequisite', bangla: 'পূর্বশর্ত', level: 'b2', category: 'abstract', article: 'die' },
+    { id: 'b2-365', german: 'der Überblick', english: 'overview', bangla: 'সারসংক্ষেপ', level: 'b2', category: 'abstract', article: 'der' },
+    { id: 'b2-366', german: 'die Vielfalt', english: 'diversity', bangla: 'বৈচিত্র্য', level: 'b2', category: 'abstract', article: 'die' },
+
+    // More Advanced Verbs
+    { id: 'b2-367', german: 'kombinieren', english: 'to combine', bangla: 'একত্র করা', level: 'b2', category: 'verbs' },
+    { id: 'b2-368', german: 'implementieren', english: 'to implement', bangla: 'বাস্তবায়ন করা', level: 'b2', category: 'verbs' },
+    { id: 'b2-369', german: 'koordinieren', english: 'to coordinate', bangla: 'সমন্বয় করা', level: 'b2', category: 'verbs' },
+    { id: 'b2-370', german: 'organisieren', english: 'to organize', bangla: 'আয়োজন করা', level: 'b2', category: 'verbs' },
+    { id: 'b2-371', german: 'strukturieren', english: 'to structure', bangla: 'কাঠামোবদ্ধ করা', level: 'b2', category: 'verbs' },
+    { id: 'b2-372', german: 'optimieren', english: 'to optimize', bangla: 'সর্বোত্তম করা', level: 'b2', category: 'verbs' },
+
+    // More Adjectives
+    { id: 'b2-373', german: 'kompliziert', english: 'complicated', bangla: 'জটিল', level: 'b2', category: 'adjectives' },
+    { id: 'b2-374', german: 'relevant', english: 'relevant', bangla: 'প্রাসঙ্গিক', level: 'b2', category: 'adjectives' },
+    { id: 'b2-375', german: 'spezifisch', english: 'specific', bangla: 'নির্দিষ্ট', level: 'b2', category: 'adjectives' },
+    { id: 'b2-376', german: 'signifikant', english: 'significant', bangla: 'তাৎপর্যপূর্ণ', level: 'b2', category: 'adjectives' },
+    { id: 'b2-377', german: 'alternativ', english: 'alternative', bangla: 'বিকল্প', level: 'b2', category: 'adjectives' }
 ];
