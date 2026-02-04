@@ -5,6 +5,7 @@ import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import BottomNav from '@/components/layout/BottomNav';
 import { AuthProvider } from '@/contexts/AuthContext';
+import JsonLd from '@/components/seo/JsonLd';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const poppins = Poppins({
@@ -57,6 +58,13 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  alternates: {
+    canonical: 'https://banglay-german.vercel.app',
+    languages: {
+      'en': 'https://banglay-german.vercel.app',
+      'bn': 'https://banglay-german.vercel.app',
+    },
+  },
 };
 
 export const viewport: Viewport = {
@@ -70,10 +78,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="manifest" href="/manifest.json" />
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </head>
       <body className={`${inter.variable} ${poppins.variable} font-sans antialiased`}>
         <AuthProvider>
+          <JsonLd type="Organization" />
+          <JsonLd type="WebSite" />
           <Header />
           <main className="min-h-screen pt-16 md:pt-20 pb-16 md:pb-0">{children}</main>
           <div className="hidden md:block">
