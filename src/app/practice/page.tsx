@@ -3,10 +3,13 @@
 import { useEffect, useState, useMemo } from 'react';
 import { allWords } from '@/data/vocabulary';
 import { Word, Level } from '@/types';
+import { useAuth } from '@/contexts/AuthContext';
+import PronunciationCoach from '@/components/shared/PronunciationCoach';
 
-type QuizMode = 'de-to-en' | 'en-to-de' | 'de-to-bn' | 'bn-to-de';
+type QuizMode = 'de-to-en' | 'en-to-de' | 'de-to-bn' | 'bn-to-de' | 'speaking';
 
 export default function PracticePage() {
+    const { addXP, incrementStreak } = useAuth();
     const [mounted, setMounted] = useState(false);
     const [selectedLevel, setSelectedLevel] = useState<Level | 'all'>('all');
     const [quizMode, setQuizMode] = useState<QuizMode>('de-to-en');
@@ -54,6 +57,15 @@ export default function PracticePage() {
                     correct = word.german;
                     options = [word.german, ...otherWords.map(w => w.german)].sort(() => Math.random() - 0.5);
                     break;
+                case 'speaking':
+                    question = word.german;
+                    correct = word.german; // For speaking, the answer is the word itself
+                    options = []; // No options for speaking
+                    break;
+                default:
+                    question = word.german;
+                    correct = word.english;
+                    options = [];
             }
 
             return { word, question, correct, options };
@@ -66,7 +78,16 @@ export default function PracticePage() {
         setShowResult(true);
         if (answer === questions[currentQuestion].correct) {
             setScore(s => s + 1);
+            addXP(10); // 10 XP per correct answer
         }
+    };
+
+    const handleSpeakingSuccess = () => {
+        if (showResult) return;
+        setShowResult(true);
+        setScore(s => s + 1);
+        addXP(20); // 20 XP for speaking!
+        // Auto advance after a delay or let user click next? Let's show success state first.
     };
 
     const handleNext = () => {
@@ -76,6 +97,8 @@ export default function PracticePage() {
             setShowResult(false);
         } else {
             setQuizComplete(true);
+            incrementStreak();
+            addXP(50); // Bonus for completion
         }
     };
 
@@ -149,6 +172,7 @@ export default function PracticePage() {
                                         { mode: 'en-to-de', label: 'English → German', labelBn: 'ইংরেজি → জার্মান' },
                                         { mode: 'de-to-bn', label: 'German → বাংলা', labelBn: 'জার্মান → বাংলা' },
                                         { mode: 'bn-to-de', label: 'বাংলা → German', labelBn: 'বাংলা → জার্মান' },
+                                        { mode: 'speaking', label: '🎙️ Speaking Practice', labelBn: 'উচ্চারণ অনুশীলন' },
                                     ].map(({ mode, label, labelBn }) => (
                                         <button
                                             key={mode}
@@ -184,6 +208,9 @@ export default function PracticePage() {
 
                             <div className={`text-6xl font-bold mb-4 ${score >= 8 ? 'text-green-500' : score >= 5 ? 'text-amber-500' : 'text-red-500'}`}>
                                 {score}/১০
+                            </div>
+                            <div className="mb-6 text-yellow-500 font-bold text-xl">
+                                +{score * (quizMode === 'speaking' ? 20 : 10) + 50} XP Earned!
                             </div>
 
                             <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 font-bengali">
@@ -221,40 +248,54 @@ export default function PracticePage() {
 
                             {/* Question */}
                             <div className="text-center mb-8">
-                                <p className="text-sm text-slate-500 dark:text-slate-400 mb-2">এর মানে কী:</p>
+                                <p className="text-sm text-slate-500 dark:text-slate-400 mb-2">
+                                    {quizMode === 'speaking' ? 'Speak the word:' : 'এর মানে কী:'}
+                                </p>
                                 <h3 className={`text-4xl font-bold text-slate-900 dark:text-white ${quizMode.startsWith('bn') ? 'font-bengali' : ''}`}>
                                     {questions[currentQuestion]?.question}
                                 </h3>
+                                {quizMode === 'speaking' && (
+                                    <p className="text-lg text-slate-500 mt-2 font-bengali">
+                                        ({questions[currentQuestion]?.word.bangla})
+                                    </p>
+                                )}
                             </div>
 
-                            {/* Options */}
-                            <div className="grid grid-cols-1 gap-3">
-                                {questions[currentQuestion]?.options.map((option, index) => {
-                                    let className = 'p-4 rounded-xl border-2 transition-all text-left ';
-                                    if (showResult) {
-                                        if (option === questions[currentQuestion].correct) {
-                                            className += 'border-green-500 bg-green-500/20 text-green-700 dark:text-green-300';
-                                        } else if (option === selectedAnswer) {
-                                            className += 'border-red-500 bg-red-500/20 text-red-700 dark:text-red-300';
+                            {/* Options or Coach */}
+                            {quizMode === 'speaking' ? (
+                                <PronunciationCoach
+                                    targetText={questions[currentQuestion]?.correct}
+                                    onSuccess={handleSpeakingSuccess}
+                                />
+                            ) : (
+                                <div className="grid grid-cols-1 gap-3">
+                                    {questions[currentQuestion]?.options.map((option, index) => {
+                                        let className = 'p-4 rounded-xl border-2 transition-all text-left ';
+                                        if (showResult) {
+                                            if (option === questions[currentQuestion].correct) {
+                                                className += 'border-green-500 bg-green-500/20 text-green-700 dark:text-green-300';
+                                            } else if (option === selectedAnswer) {
+                                                className += 'border-red-500 bg-red-500/20 text-red-700 dark:text-red-300';
+                                            } else {
+                                                className += 'border-slate-200 dark:border-slate-700 opacity-50 text-slate-600 dark:text-slate-400';
+                                            }
                                         } else {
-                                            className += 'border-slate-200 dark:border-slate-700 opacity-50 text-slate-600 dark:text-slate-400';
+                                            className += 'border-slate-200 dark:border-slate-700 hover:border-blue-500 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer text-slate-700 dark:text-slate-300';
                                         }
-                                    } else {
-                                        className += 'border-slate-200 dark:border-slate-700 hover:border-blue-500 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer text-slate-700 dark:text-slate-300';
-                                    }
 
-                                    return (
-                                        <button
-                                            key={index}
-                                            onClick={() => handleAnswer(option)}
-                                            disabled={showResult}
-                                            className={className + (quizMode.endsWith('bn') || quizMode.startsWith('bn') ? ' font-bengali' : '')}
-                                        >
-                                            {option}
-                                        </button>
-                                    );
-                                })}
-                            </div>
+                                        return (
+                                            <button
+                                                key={index}
+                                                onClick={() => handleAnswer(option)}
+                                                disabled={showResult}
+                                                className={className + (quizMode.endsWith('bn') || quizMode.startsWith('bn') ? ' font-bengali' : '')}
+                                            >
+                                                {option}
+                                            </button>
+                                        );
+                                    })}
+                                </div>
+                            )}
 
                             {/* Next Button */}
                             {showResult && (

@@ -507,5 +507,38 @@ export const a1Words: Word[] = [
     { id: 'a1-570', german: 'der Preis', english: 'price', bangla: 'দাম', level: 'a1', category: 'miscellaneous', article: 'der' },
     { id: 'a1-571', german: 'die Zeit', english: 'time', bangla: 'সময়', level: 'a1', category: 'miscellaneous', article: 'die' },
     { id: 'a1-572', german: 'der Ort', english: 'place', bangla: 'জায়গা', level: 'a1', category: 'miscellaneous', article: 'der' },
-    { id: 'a1-573', german: 'die Sache', english: 'thing', bangla: 'জিনিস', level: 'a1', category: 'miscellaneous', article: 'die' }
+    { id: 'a1-573', german: 'die Sache', english: 'thing', bangla: 'জিনিস', level: 'a1', category: 'miscellaneous', article: 'die' },
+
+    // Feelings & Emotions (New)
+    { id: 'a1-574', german: 'die Angst', english: 'fear', bangla: 'ভয়', level: 'a1', category: 'health', article: 'die' },
+    { id: 'a1-575', german: 'die Liebe', english: 'love', bangla: 'ভালোবাসা', level: 'a1', category: 'health', article: 'die' },
+    { id: 'a1-576', german: 'die Freude', english: 'joy', bangla: 'আনন্দ', level: 'a1', category: 'health', article: 'die' },
+    { id: 'a1-577', german: 'der Spaß', english: 'fun', bangla: 'মজা', level: 'a1', category: 'health', article: 'der' },
+    { id: 'a1-578', german: 'der Stress', english: 'stress', bangla: 'চাপ', level: 'a1', category: 'health', article: 'der' },
+    { id: 'a1-579', german: 'traurig', english: 'sad', bangla: 'দুঃখিত', level: 'a1', category: 'adjectives' },
+    { id: 'a1-580', german: 'wütend', english: 'angry', bangla: 'রাগান্বিত', level: 'a1', category: 'adjectives' },
+    { id: 'a1-581', german: 'nervös', english: 'nervous', bangla: 'নার্ভাস', level: 'a1', category: 'adjectives' },
+    { id: 'a1-582', german: 'ruhig', english: 'calm', bangla: 'শান্ত', level: 'a1', category: 'adjectives' },
+
+    // Technology (New)
+    { id: 'a1-583', german: 'das Internet', english: 'internet', bangla: 'ইন্টারনেট', level: 'a1', category: 'objects', article: 'das' },
+    { id: 'a1-584', german: 'die E-Mail', english: 'email', bangla: 'ইমেল', level: 'a1', category: 'objects', article: 'die' },
+    { id: 'a1-585', german: 'das Passwort', english: 'password', bangla: 'পাসওয়ার্ড', level: 'a1', category: 'objects', article: 'das' },
+    { id: 'a1-586', german: 'der Bildschirm', english: 'screen', bangla: 'পর্দা', level: 'a1', category: 'objects', article: 'der' },
+    { id: 'a1-587', german: 'die Tastatur', english: 'keyboard', bangla: 'কীবোর্ড', level: 'a1', category: 'objects', article: 'die' },
+    { id: 'a1-588', german: 'drucken', english: 'to print', bangla: 'প্রিন্ট করা', level: 'a1', category: 'verbs' },
+    { id: 'a1-589', german: 'speichern', english: 'to save (data)', bangla: 'সংরক্ষণ করা', level: 'a1', category: 'verbs' },
+    { id: 'a1-590', german: 'löschen', english: 'to delete', bangla: 'মুছে ফেলা', level: 'a1', category: 'verbs' },
+
+    // Travel & Direction (New)
+    { id: 'a1-591', german: 'links', english: 'left', bangla: 'বাম', level: 'a1', category: 'transport' },
+    { id: 'a1-592', german: 'rechts', english: 'right', bangla: 'ডান', level: 'a1', category: 'transport' },
+    { id: 'a1-593', german: 'geradeaus', english: 'straight ahead', bangla: 'সোজা', level: 'a1', category: 'transport' },
+    { id: 'a1-594', german: 'die Ampel', english: 'traffic light', bangla: 'ট্রাফিক লাইট', level: 'a1', category: 'transport', article: 'die' },
+    { id: 'a1-595', german: 'die Karte', english: 'map/ticket', bangla: 'মানচিত্র/টিকিট', level: 'a1', category: 'transport', article: 'die' },
+    { id: 'a1-596', german: 'der Koffer', english: 'suitcase', bangla: 'স্যুটকেস', level: 'a1', category: 'transport', article: 'der' },
+    { id: 'a1-597', german: 'das Gepäck', english: 'luggage', bangla: 'মালপত্র', level: 'a1', category: 'transport', article: 'das' },
+    { id: 'a1-598', german: 'abfahren', english: 'to depart', bangla: 'রওনা দেওয়া', level: 'a1', category: 'verbs' },
+    { id: 'a1-599', german: 'ankommen', english: 'to arrive', bangla: 'পৌঁছানো', level: 'a1', category: 'verbs' },
+    { id: 'a1-600', german: 'einsteigen', english: 'to get on/in', bangla: 'ওঠা', level: 'a1', category: 'verbs' }
 ];

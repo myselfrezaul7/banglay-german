@@ -77,6 +77,14 @@ export default function Header() {
 
                         {user ? (
                             <Link href="/profile" className="hidden md:flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
+                                <div className="flex items-center gap-1 mr-2 text-orange-500 font-bold" title="Day Streak">
+                                    <span>🔥</span>
+                                    <span>{user.streak}</span>
+                                </div>
+                                <div className="flex items-center gap-1 mr-2 text-yellow-500 font-bold" title="Total XP">
+                                    <span>⚡</span>
+                                    <span>{user.xp} XP</span>
+                                </div>
                                 <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--primary-light)] flex items-center justify-center text-white text-xs font-bold">
                                     {user.name.charAt(0)}
                                 </div>
