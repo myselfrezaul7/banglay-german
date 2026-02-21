@@ -6,16 +6,19 @@ import { useEffect, useState } from 'react';
 import { allWords } from '@/data/vocabulary';
 import { Word } from '@/types';
 
+import { PlayCircle, Bookmark, ArrowRight, BookOpen, Award, Zap, Puzzle, Globe, Volume2, MessageSquare } from 'lucide-react';
+
 const levels = [
-  { level: 'A1', title: 'Beginner', titleBn: 'প্রাথমিক', words: 500, color: 'bg-green-500', href: '/vocabulary/a1' },
-  { level: 'A2', title: 'Elementary', titleBn: 'প্রাথমিক+', words: 500, color: 'bg-blue-500', href: '/vocabulary/a2' },
-  { level: 'B1', title: 'Intermediate', titleBn: 'মধ্যম', words: 500, color: 'bg-orange-500', href: '/vocabulary/b1' },
-  { level: 'B2', title: 'Upper Int.', titleBn: 'উচ্চ মধ্যম', words: 500, color: 'bg-pink-500', href: '/vocabulary/b2' },
+  { level: 'A1', title: 'Beginner', titleBn: 'প্রাথমিক', words: 500, colorFrom: 'from-emerald-400', colorTo: 'to-teal-500', href: '/vocabulary/a1', progress: 0 },
+  { level: 'A2', title: 'Elementary', titleBn: 'প্রাথমিক+', words: 500, colorFrom: 'from-blue-400', colorTo: 'to-indigo-500', href: '/vocabulary/a2', progress: 0 },
+  { level: 'B1', title: 'Intermediate', titleBn: 'মধ্যম', words: 500, colorFrom: 'from-orange-400', colorTo: 'to-rose-500', href: '/vocabulary/b1', progress: 0 },
+  { level: 'B2', title: 'Upper Int.', titleBn: 'উচ্চ মধ্যম', words: 500, colorFrom: 'from-purple-400', colorTo: 'to-pink-500', href: '/vocabulary/b2', progress: 0 },
 ];
 
 export default function HomePage() {
   const [mounted, setMounted] = useState(false);
   const [wordOfDay, setWordOfDay] = useState<Word | null>(null);
+  const [isWordFlipped, setIsWordFlipped] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -25,120 +28,256 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className={`min-h-screen bg-slate-50 dark:bg-slate-950 transition-opacity duration-500 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+    <div className={`min-h-screen bg-slate-50 dark:bg-slate-950 transition-opacity duration-500 overflow-hidden ${mounted ? 'opacity-100' : 'opacity-0'}`}>
 
-      {/* Hero Section: Simple, Centered, High Contrast */}
-      <section className="px-6 py-24 md:py-32 max-w-5xl mx-auto text-center">
-        <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-sm font-semibold tracking-wide">
-          ফ্রিতে জার্মান শিখুন • Learn German for Free
+      {/* Hero Section: Split Layout with Dynamic Aesthetics */}
+      <section className="relative px-6 pt-20 pb-24 md:pt-32 md:pb-28 max-w-7xl mx-auto">
+        <div className="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-blue-500/20 rounded-full blur-[100px] pointer-events-none"></div>
+        <div className="absolute top-40 left-0 -ml-20 w-72 h-72 bg-emerald-500/20 rounded-full blur-[100px] pointer-events-none"></div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center relative z-10">
+          {/* Left Text Content */}
+          <div className="text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 text-sm font-bold tracking-wide border border-blue-200 dark:border-blue-800">
+              <Globe className="w-4 h-4" />
+              <span>ফ্রিতে জার্মান শিখুন • Free German Course</span>
+            </div>
+            <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 dark:text-white mb-6 leading-[1.1] tracking-tight font-poppins drop-shadow-sm">
+              Master German <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-teal-400">Effortlessly.</span>
+            </h1>
+            <p className="text-xl text-slate-600 dark:text-slate-300 mb-10 max-w-xl mx-auto lg:mx-0 leading-relaxed font-inter">
+              একদম ফ্রি, ওপেন-সোর্স প্ল্যাটফর্ম - সহজ <span className="text-slate-900 dark:text-white font-semibold">ইংরেজি</span> ব্যাখ্যা আর <span className="text-slate-900 dark:text-white font-semibold font-bengali">বাংলা</span> অর্থ সহ জার্মান শিখুন।
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <Link href="/vocabulary/a1" className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-bold text-lg overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_40px_-10px_rgba(59,130,246,0.5)]">
+                <span className="relative z-10">A1 শুরু করুন</span>
+                <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
+                <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-blue-600 to-teal-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0 text-white"></div>
+              </Link>
+              <Link href="/practice" className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md text-slate-900 dark:text-white border-2 border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-lg hover:bg-slate-50 dark:hover:bg-slate-800/80 hover:border-blue-500/50 transition-all hover:scale-105 active:scale-95">
+                <Zap className="w-5 h-5 text-orange-500" />
+                <span>কুইজ দিন</span>
+              </Link>
+            </div>
+          </div>
+
+          {/* Right Visual Image */}
+          <div className="relative mx-auto w-full max-w-lg lg:max-w-none aspect-[4/3] lg:aspect-square flex items-center justify-center">
+            {/* Decorative background for image */}
+            <div className="absolute inset-4 bg-gradient-to-br from-blue-100 to-teal-50 dark:from-blue-900/40 dark:to-teal-900/20 rounded-[3rem] transform rotate-3 scale-105 opacity-70"></div>
+            <div className="absolute inset-4 bg-white dark:bg-slate-800 rounded-[3rem] transform -rotate-2 shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-700/50 flex flex-col justify-between p-6">
+              {/* Mock App Interface Visual */}
+              <div className="flex justify-between items-center mb-6">
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-rose-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-amber-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-emerald-400"></div>
+                </div>
+                <div className="px-3 py-1 bg-slate-100 dark:bg-slate-700 rounded-full text-xs font-semibold text-slate-500 dark:text-slate-300">Level A1</div>
+              </div>
+
+              <div className="flex-1 flex flex-col justify-center items-center text-center space-y-4">
+                <div className="w-20 h-20 bg-blue-100 dark:bg-blue-900/50 rounded-2xl flex items-center justify-center text-4xl mb-2 shadow-inner">
+                  🇩🇪
+                </div>
+                <h3 className="text-3xl font-bold text-slate-900 dark:text-white font-poppins">Entschuldigung</h3>
+                <div className="bg-slate-50 dark:bg-slate-900 px-4 py-2 rounded-xl text-slate-600 dark:text-slate-400 font-medium">Excuse me / Sorry</div>
+                <div className="text-slate-500 dark:text-slate-500 font-bengali">মাপ করবেন / দুঃখিত</div>
+              </div>
+
+              <div className="mt-8 flex gap-3">
+                <div className="h-10 flex-1 bg-blue-600 rounded-xl opacity-90"></div>
+                <div className="h-10 w-10 bg-slate-100 dark:bg-slate-700 rounded-xl"></div>
+              </div>
+            </div>
+          </div>
         </div>
-        <h1 className="text-5xl md:text-7xl font-bold text-slate-900 dark:text-white mb-6 leading-tight tracking-tight font-poppins">
-          Master German <span className="text-blue-600">Effortlessly.</span>
-        </h1>
-        <p className="text-xl text-slate-600 dark:text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed font-inter">
-          একদম ফ্রি, ওপেন-সোর্স প্ল্যাটফর্ম - সহজ <span className="text-slate-900 dark:text-white font-medium">ইংরেজি</span> ব্যাখ্যা আর <span className="text-slate-900 dark:text-white font-medium font-bengali">বাংলা</span> অর্থ সহ জার্মান শিখুন।
-        </p>
+      </section>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-          <Link href="/vocabulary/a1" className="min-w-[200px] px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-semibold hover:transform hover:-translate-y-1 transition-all duration-200">
-            A1 শুরু করুন
-          </Link>
-          <Link href="/practice" className="min-w-[200px] px-8 py-4 bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 rounded-xl font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 transition-all duration-200">
-            কুইজ দিন
-          </Link>
+      {/* Stats Ribbon */}
+      <section className="border-y border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-lg">
+        <div className="max-w-7xl mx-auto px-6 py-8 flex flex-wrap justify-center md:justify-between gap-8 text-center md:text-left">
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400"><BookOpen className="w-6 h-6" /></div>
+            <div>
+              <div className="text-2xl font-bold text-slate-900 dark:text-white">5,000+</div>
+              <div className="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase">Words & Entries</div>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400"><Award className="w-6 h-6" /></div>
+            <div>
+              <div className="text-2xl font-bold text-slate-900 dark:text-white">A1-B2</div>
+              <div className="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase">CEFR Levels</div>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400"><Puzzle className="w-6 h-6" /></div>
+            <div>
+              <div className="text-2xl font-bold text-slate-900 dark:text-white">100%</div>
+              <div className="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase">Free & Interactive</div>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Main Grid: Features & Levels */}
-      <section className="px-4 pb-20 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+      <section className="px-6 py-24 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
-          {/* Daily Card (Left Large) */}
-          <div className="md:col-span-5 lg:col-span-4 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl rounded-3xl p-8 border border-white/20 dark:border-slate-700/50 shadow-xl shadow-slate-200/50 dark:shadow-slate-900/50">
-            <div className="flex items-center justify-between mb-6">
-              <h3 className="text-lg font-bold text-slate-400 uppercase tracking-widest font-bengali">আজকের শব্দ</h3>
-              <span className="text-2xl">💡</span>
-            </div>
-            {wordOfDay ? (
-              <div className="space-y-4">
-                <h2 className="text-4xl font-bold text-slate-900 dark:text-white border-l-4 border-blue-500 pl-4">{wordOfDay.german}</h2>
-                <div className="pl-5 space-y-1">
-                  <p className="text-xl text-slate-600 dark:text-slate-300 font-medium">{wordOfDay.english}</p>
-                  <p className="text-lg text-slate-500 dark:text-slate-400 font-bengali">{wordOfDay.bangla}</p>
+          {/* Interactive Word of the Day (Left Large) */}
+          <div className="lg:col-span-5 relative group perspective-1000">
+            <div className={`relative w-full h-[420px] transition-all duration-700 transform-style-3d ${isWordFlipped ? 'rotate-y-180' : ''}`}>
+
+              {/* Front of Card */}
+              <div className="absolute inset-0 backface-hidden bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 border border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col justify-between">
+                <div>
+                  <div className="flex items-center justify-between mb-8">
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 rounded-full text-sm font-bold uppercase tracking-widest font-bengali border border-rose-100 dark:border-rose-900/30">
+                      আজকের শব্দ
+                    </div>
+                    <button onClick={() => setIsWordFlipped(true)} className="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full transition-colors text-slate-600 dark:text-slate-400">
+                      <MessageSquare className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  {wordOfDay ? (
+                    <div className="space-y-6">
+                      <h2 className="text-5xl font-bold text-slate-900 dark:text-white leading-tight">{wordOfDay.german}</h2>
+                      <div className="space-y-2">
+                        <p className="text-2xl text-slate-600 dark:text-slate-300 font-medium">{wordOfDay.english}</p>
+                        <p className="text-xl text-slate-500 dark:text-slate-400 font-bengali font-medium">{wordOfDay.bangla}</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="animate-pulse space-y-4">
+                      <div className="h-12 w-48 bg-slate-200 dark:bg-slate-800 rounded-xl"></div>
+                      <div className="h-8 w-32 bg-slate-200 dark:bg-slate-800 rounded-lg"></div>
+                      <div className="h-6 w-40 bg-slate-200 dark:bg-slate-800 rounded-lg"></div>
+                    </div>
+                  )}
                 </div>
-                <div className="pt-4 mt-6 border-t border-slate-100 dark:border-slate-800">
-                  <Link href="/vocabulary" className="text-blue-600 hover:text-blue-700 font-medium text-sm flex items-center gap-2">
-                    See all words <span className="text-lg">→</span>
-                  </Link>
+
+                <div className="flex gap-4 pt-6 border-t border-slate-100 dark:border-slate-800">
+                  <button className="flex-1 flex items-center justify-center gap-2 py-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-xl font-semibold hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors">
+                    <Volume2 className="w-5 h-5" /> <span>Listen</span>
+                  </button>
+                  <button className="flex items-center justify-center w-12 h-12 bg-slate-50 dark:bg-slate-800 text-slate-400 hover:text-blue-500 rounded-xl transition-colors">
+                    <Bookmark className="w-5 h-5" />
+                  </button>
                 </div>
               </div>
-            ) : (
-              <div className="animate-pulse h-32 bg-slate-100 rounded-xl"></div>
-            )}
+
+              {/* Back of Card */}
+              <div className="absolute inset-0 backface-hidden rotate-y-180 bg-gradient-to-br from-blue-600 to-teal-500 rounded-[2.5rem] p-8 shadow-2xl flex flex-col items-center justify-center text-center text-white">
+                <div className="bg-white/20 p-4 rounded-full mb-6 backdrop-blur-sm">
+                  <PlayCircle className="w-12 h-12 text-white" />
+                </div>
+                <h3 className="text-3xl font-bold mb-4 font-poppins">Practice Makes Perfect</h3>
+                <p className="text-blue-50 mb-8 max-w-[250px] leading-relaxed">Hear the native pronunciation and practice speaking out loud.</p>
+                <button onClick={() => setIsWordFlipped(false)} className="px-6 py-3 bg-white text-blue-600 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow-lg active:scale-95">
+                  Back to Word
+                </button>
+              </div>
+
+            </div>
           </div>
 
-          {/* Quick Links Grid (Right) */}
-          <div className="md:col-span-7 lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* Practice */}
-            <Link href="/sentence-builder" className="group bg-blue-100/50 dark:bg-blue-900/20 backdrop-blur-xl rounded-3xl p-6 border border-blue-200/50 dark:border-blue-800/30 hover:bg-blue-200/60 dark:hover:bg-blue-900/30 hover:border-blue-300/50 dark:hover:border-blue-700/50 transition-all duration-300 shadow-lg shadow-blue-100/50 dark:shadow-blue-900/20 cursor-pointer">
-              <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white text-2xl mb-4 group-hover:scale-110 transition-transform">🧩</div>
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">Sentence Builder</h3>
-              <p className="text-slate-500 dark:text-slate-400 text-sm">Practice grammar by arranging words.</p>
-            </Link>
+          {/* Quick Links Grid & Levels (Right Large) */}
+          <div className="lg:col-span-7 flex flex-col gap-6">
 
-            {/* Quiz */}
-            <Link href="/practice" className="group bg-orange-100/50 dark:bg-orange-900/20 backdrop-blur-xl rounded-3xl p-6 border border-orange-200/50 dark:border-orange-800/30 hover:bg-orange-200/60 dark:hover:bg-orange-900/30 hover:border-orange-300/50 dark:hover:border-orange-700/50 transition-all duration-300 shadow-lg shadow-orange-100/50 dark:shadow-orange-900/20 cursor-pointer">
-              <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center text-white text-2xl mb-4 group-hover:scale-110 transition-transform">⚡</div>
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">Speed Quiz</h3>
-              <p className="text-slate-500 dark:text-slate-400 text-sm">Test your vocabulary speed.</p>
-            </Link>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              {/* Sentence Builder */}
+              <Link href="/sentence-builder" className="group relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] p-8 border border-slate-200 dark:border-slate-800 hover:border-blue-500 transition-all duration-300 shadow-xl shadow-slate-200/20 dark:shadow-none hover:-translate-y-1">
+                <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+                  <Puzzle className="w-24 h-24 text-blue-500 transform rotate-12 group-hover:rotate-0 transition-transform duration-500" />
+                </div>
+                <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/50 rounded-2xl flex items-center justify-center text-blue-600 dark:text-blue-400 mb-6 group-hover:scale-110 transition-transform relative z-10 shadow-sm"><Puzzle className="w-7 h-7" /></div>
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2 relative z-10">Sentence Builder</h3>
+                <p className="text-slate-500 dark:text-slate-400 leading-relaxed relative z-10 max-w-[200px]">Practice grammar interactively by arranging blocks.</p>
+              </Link>
 
+              {/* Speed Quiz */}
+              <Link href="/practice" className="group relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] p-8 border border-slate-200 dark:border-slate-800 hover:border-orange-500 transition-all duration-300 shadow-xl shadow-slate-200/20 dark:shadow-none hover:-translate-y-1">
+                <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+                  <Zap className="w-24 h-24 text-orange-500 transform -rotate-12 group-hover:rotate-0 transition-transform duration-500" />
+                </div>
+                <div className="w-14 h-14 bg-orange-100 dark:bg-orange-900/50 rounded-2xl flex items-center justify-center text-orange-600 dark:text-orange-400 mb-6 group-hover:scale-110 transition-transform relative z-10 shadow-sm"><Zap className="w-7 h-7" /></div>
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2 relative z-10">Speed Quiz</h3>
+                <p className="text-slate-500 dark:text-slate-400 leading-relaxed relative z-10 max-w-[200px]">Test your vocabulary recall speed and accuracy.</p>
+              </Link>
+            </div>
 
+            {/* Course Levels Upgrade */}
+            <div className="bg-white dark:bg-slate-900 rounded-[2rem] p-8 border border-slate-200 dark:border-slate-800 shadow-xl shadow-slate-200/20 dark:shadow-none flex-1">
+              <div className="flex items-center justify-between mb-8">
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-white font-poppins">Language Levels</h3>
+                <span className="text-sm font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full">CEFR Standard</span>
+              </div>
 
-            {/* Levels: Full Width Row across the grid col */}
-            <div className="col-span-1 sm:col-span-2 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl rounded-3xl p-8 border border-white/20 dark:border-slate-700/50 shadow-xl shadow-slate-200/50 dark:shadow-slate-900/50 mt-2">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-6">Course Levels</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 {levels.map((level) => (
-                  <Link key={level.level} href={level.href} className="flex flex-col items-center justify-center p-4 rounded-2xl bg-slate-100/60 dark:bg-slate-800/60 backdrop-blur-lg border border-slate-200/50 dark:border-slate-700/50 hover:bg-slate-200/70 dark:hover:bg-slate-700/70 hover:border-slate-300/50 dark:hover:border-slate-600/50 transition-all duration-300 text-center group">
-                    <div className={`w-10 h-10 ${level.color} rounded-lg flex items-center justify-center text-white font-bold mb-3 shadow-md group-hover:scale-110 transition-transform`}>
-                      {level.level}
+                  <Link key={level.level} href={level.href} className="group relative block overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 p-5 hover:border-transparent transition-all duration-300 hover:-translate-y-1">
+                    {/* Hover Gradient Background */}
+                    <div className={`absolute inset-0 bg-gradient-to-br ${level.colorFrom} ${level.colorTo} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
+
+                    <div className="relative z-10">
+                      <div className="flex justify-between items-start mb-4">
+                        <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${level.colorFrom} ${level.colorTo} flex items-center justify-center text-white text-xl font-black shadow-md transform group-hover:scale-110 transition-transform duration-300`}>
+                          {level.level}
+                        </div>
+                        <div className="text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors">
+                          <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all duration-300" />
+                        </div>
+                      </div>
+
+                      <div className="font-bold text-slate-800 dark:text-white text-lg mb-0.5">{level.title}</div>
+                      <div className="text-sm text-slate-500 dark:text-slate-400 font-bengali mb-4">{level.titleBn}</div>
+
+                      {/* Fake Progress UI */}
+                      <div>
+                        <div className="flex justify-between text-xs font-semibold mb-1.5">
+                          <span className="text-slate-400">Progress</span>
+                          <span className="text-slate-600 dark:text-slate-300">{level.progress}%</span>
+                        </div>
+                        <div className="w-full h-1.5 bg-slate-200 dark:bg-slate-700/50 rounded-full overflow-hidden">
+                          <div className={`h-full bg-gradient-to-r ${level.colorFrom} ${level.colorTo} rounded-full`} style={{ width: `${level.progress}%` }}></div>
+                        </div>
+                      </div>
                     </div>
-                    <div className="font-semibold text-slate-800 dark:text-white text-sm">{level.title}</div>
-                    <div className="text-xs text-slate-400 font-bengali">{level.titleBn}</div>
                   </Link>
                 ))}
               </div>
             </div>
+
           </div>
 
         </div>
       </section>
 
-      {/* Partner Section: Separated for better flow */}
-      <section className="px-4 pb-20 max-w-5xl mx-auto relative">
-        {/* Background Decorative Blur for Glass Effect - Softened and color-matched */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-blue-400/10 rounded-full blur-[120px] pointer-events-none"></div>
-        <div className="absolute top-1/4 right-0 w-48 h-48 bg-amber-400/5 rounded-full blur-[100px] pointer-events-none"></div>
+      {/* Partner Section */}
+      <section className="px-6 pb-24 max-w-5xl mx-auto relative">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none"></div>
 
-        <a href="https://www.nextepedu.com" target="_blank" rel="noopener noreferrer" className="block group relative overflow-hidden glass-ios-premium rounded-[2.5rem] p-8 md:p-12 transition-all transform hover:-translate-y-1 border-white/20 dark:border-slate-800/30 shadow-lg shadow-blue-900/5">
-          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10 text-center md:text-left">
+        <a href="https://www.nextepedu.com" target="_blank" rel="noopener noreferrer" className="block group relative overflow-hidden bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl rounded-[3rem] p-10 md:p-14 transition-all duration-500 hover:-translate-y-2 border border-slate-200/50 dark:border-slate-700/50 shadow-2xl shadow-blue-900/5 hover:shadow-blue-500/20">
+          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12 text-center md:text-left">
             <div className="flex-1 order-2 md:order-1">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 dark:bg-blue-400/10 text-blue-600 dark:text-blue-300 text-xs font-bold mb-4 border border-blue-500/20 uppercase tracking-wider">
-                Education Partner
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs font-bold mb-6 border border-blue-100 dark:border-blue-800/50 uppercase tracking-widest">
+                Official Education Partner
               </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">Dreaming of Germany?</h2>
-              <p className="text-slate-600 dark:text-slate-300 text-lg mb-8 max-w-xl leading-relaxed font-inter">
+              <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6 font-poppins leading-tight">Dreaming of <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-teal-400">Germany?</span></h2>
+              <p className="text-slate-600 dark:text-slate-300 text-xl mb-10 max-w-xl leading-relaxed font-inter">
                 While you master the language here, let <span className="font-bold text-blue-600 dark:text-blue-400">NexTep Edu</span> handle your university admission and visa process.
               </p>
-              <div className="inline-flex items-center px-8 py-3.5 bg-blue-600 text-white rounded-2xl font-bold text-lg hover:bg-blue-700 transition-all shadow-lg shadow-blue-600/20 active:scale-95">
-                Visit NexTep Edu <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
+              <div className="inline-flex items-center px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-bold text-lg hover:scale-105 transition-all shadow-xl shadow-slate-900/20 dark:shadow-white/20 active:scale-95">
+                Visit NexTep Edu <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </div>
             </div>
 
-            {/* Illustration - New Modern Image */}
-            <div className="flex-shrink-0 order-1 md:order-2 w-56 h-56 md:w-72 md:h-72 relative transform group-hover:scale-105 transition-transform duration-700 ease-out">
-              <div className="absolute inset-4 bg-blue-500/5 rounded-full blur-3xl group-hover:bg-blue-500/10 transition-all"></div>
+            <div className="flex-shrink-0 order-1 md:order-2 w-64 h-64 md:w-80 md:h-80 relative transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-700 ease-in-out">
+              <div className="absolute inset-8 bg-blue-500/20 rounded-full blur-3xl group-hover:bg-blue-500/30 transition-all"></div>
               <Image
                 src="/nextep_promo_modern_v1_1769733262037.png"
                 alt="Study in Germany Illustration"
@@ -150,13 +289,14 @@ export default function HomePage() {
         </a>
       </section>
 
-      {/* Footer Area / Call to Action */}
-      <section className="py-20 bg-slate-100 dark:bg-slate-900 text-center">
-        <div className="max-w-4xl mx-auto px-6">
-          <h2 className="text-3xl font-bold mb-6 font-poppins text-slate-900 dark:text-white">Ready to start your journey?</h2>
-          <p className="text-slate-600 dark:text-slate-400 mb-8 max-w-xl mx-auto">Join thousands of learners mastering German with our simplified, dual-language approach.</p>
-          <Link href="/login" className="inline-block px-10 py-4 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-500 transition-colors shadow-lg shadow-blue-600/30">
-            Create Free Account
+      {/* CTA Footer */}
+      <section className="py-24 bg-gradient-to-b from-transparent to-slate-100 dark:to-slate-900/50 text-center relative overflow-hidden">
+        <div className="max-w-4xl mx-auto px-6 relative z-10">
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-8 font-poppins text-slate-900 dark:text-white drop-shadow-sm">Ready to start your journey?</h2>
+          <p className="text-xl text-slate-600 dark:text-slate-400 mb-10 max-w-2xl mx-auto leading-relaxed">Join thousands of learners mastering German with our simplified, dual-language approach. No hidden fees, ever.</p>
+          <Link href="/login" className="group relative inline-flex items-center justify-center px-10 py-5 bg-blue-600 text-white rounded-2xl font-bold text-xl overflow-hidden shadow-2xl shadow-blue-600/30 hover:scale-105 active:scale-95 transition-all">
+            <span className="relative z-10">Create Free Account</span>
+            <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-blue-600 to-teal-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
           </Link>
         </div>
       </section>

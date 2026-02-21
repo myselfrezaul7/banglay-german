@@ -3,7 +3,9 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { Sun, Moon, Flame, Zap, User } from 'lucide-react';
 
 const navLinks = [
     { href: '/vocabulary', label: 'Vocabulary' },
@@ -15,8 +17,9 @@ const navLinks = [
 
 export default function Header() {
     const [isScrolled, setIsScrolled] = useState(false);
-    const [theme, setTheme] = useState('light'); // Default to light
+    const [theme, setTheme] = useState('light');
     const { user } = useAuth();
+    const pathname = usePathname();
 
     useEffect(() => {
         const saved = localStorage.getItem('theme') || 'light';
@@ -27,8 +30,10 @@ export default function Header() {
             document.documentElement.classList.remove('dark');
         }
 
-        const handleScroll = () => setIsScrolled(window.scrollY > 10);
+        const handleScroll = () => setIsScrolled(window.scrollY > 20);
         window.addEventListener('scroll', handleScroll);
+        // Initial check
+        handleScroll();
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -44,54 +49,85 @@ export default function Header() {
     };
 
     return (
-        <header className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${isScrolled ? 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800' : 'bg-transparent'}`}>
-            <div className="max-w-7xl mx-auto px-4">
-                <div className="flex items-center justify-between h-16 md:h-20">
-                    {/* Logo */}
-                    <Link href="/" className="flex items-center gap-2">
-                        <div className="relative w-10 h-10 md:w-12 md:h-12 shadow-lg shadow-blue-500/10 rounded-xl overflow-hidden group hover:scale-105 transition-transform">
+        <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'py-2 md:py-3' : 'py-4 md:py-6'}`}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                <div className={`flex items-center justify-between transition-all duration-500 rounded-[2rem] px-4 md:px-6 h-16 md:h-20 ${isScrolled
+                        ? 'bg-white/60 dark:bg-slate-900/60 backdrop-blur-[20px] shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)] border border-white/50 dark:border-slate-800/50'
+                        : 'bg-transparent'
+                    }`}>
+
+                    {/* Logo Area */}
+                    <Link href="/" className="flex items-center gap-3 relative group">
+                        <div className="relative w-10 h-10 md:w-12 md:h-12 rounded-xl sm:rounded-2xl overflow-hidden shadow-sm group-hover:shadow-md group-hover:scale-105 transition-all duration-300">
+                            <div className="absolute inset-0 bg-gradient-to-br from-blue-100 to-indigo-50 dark:from-blue-900/40 dark:to-indigo-900/20 z-0"></div>
                             <Image
                                 src="/logo.png"
                                 alt="Banglay German Logo"
                                 fill
-                                className="object-cover"
+                                className="object-cover relative z-10"
                             />
                         </div>
-                        <span className="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-400 dark:to-indigo-400 font-poppins tracking-tight">
-                            Banglay German
+                        <span className="text-xl md:text-2xl font-extrabold text-slate-900 dark:text-white font-poppins tracking-tight flex items-center gap-1.5">
+                            Banglay<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-teal-500">German</span>
                         </span>
                     </Link>
 
-                    {/* Desktop Nav */}
-                    <nav className="hidden md:flex items-center gap-1">
-                        {navLinks.map(link => (
-                            <Link key={link.href} href={link.href} className="px-3 py-2 rounded-lg text-sm font-medium text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-blue-400 transition-all font-poppins">{link.label}</Link>
-                        ))}
+                    {/* Central Navigation (Desktop) */}
+                    <nav className="hidden md:flex items-center gap-1.5 bg-slate-100/50 dark:bg-slate-800/50 p-1.5 rounded-2xl backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 shadow-inner">
+                        {navLinks.map(link => {
+                            const isActive = pathname?.startsWith(link.href);
+                            return (
+                                <Link
+                                    key={link.href}
+                                    href={link.href}
+                                    className={`relative px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 font-poppins overflow-hidden ${isActive
+                                            ? 'text-blue-700 dark:text-blue-300 bg-white dark:bg-slate-700 shadow-sm'
+                                            : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-700/50'
+                                        }`}
+                                >
+                                    {link.label}
+                                </Link>
+                            );
+                        })}
                     </nav>
 
-                    {/* Actions */}
-                    <div className="flex items-center gap-2">
-                        <button onClick={toggleTheme} className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 transition-all text-slate-600 dark:text-slate-300" aria-label="Toggle theme">
-                            {theme === 'dark' ? <span>☀️</span> : <span>🌙</span>}
+                    {/* Actions Area */}
+                    <div className="flex items-center gap-3">
+                        {/* Theme Toggle */}
+                        <button
+                            onClick={toggleTheme}
+                            className="w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center hover:bg-slate-200 dark:hover:bg-slate-700 hover:scale-105 active:scale-95 transition-all text-slate-600 dark:text-slate-400 border border-slate-200/50 dark:border-slate-700/50 shadow-sm"
+                            aria-label="Toggle theme"
+                        >
+                            {theme === 'dark' ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                         </button>
 
+                        {/* User / Login */}
                         {user ? (
-                            <Link href="/profile" className="hidden md:flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
-                                <div className="flex items-center gap-1 mr-2 text-orange-500 font-bold" title="Day Streak">
-                                    <span>🔥</span>
-                                    <span>{user.streak}</span>
+                            <Link href="/profile" className="hidden lg:flex items-center gap-4 pl-4 pr-2 py-1.5 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md hover:border-blue-200 dark:hover:border-blue-800 transition-all group">
+                                <div className="flex items-center gap-3 text-sm">
+                                    <div className="flex items-center gap-1 text-orange-500 font-bold bg-orange-50 dark:bg-orange-900/20 px-2 py-1 rounded-lg" title="Day Streak">
+                                        <Flame className="w-4 h-4" />
+                                        <span>{user.streak}</span>
+                                    </div>
+                                    <div className="flex items-center gap-1 text-yellow-500 font-bold bg-yellow-50 dark:bg-yellow-900/20 px-2 py-1 rounded-lg" title="Total XP">
+                                        <Zap className="w-4 h-4 text-yellow-500" />
+                                        <span>{user.xp}</span>
+                                    </div>
                                 </div>
-                                <div className="flex items-center gap-1 mr-2 text-yellow-500 font-bold" title="Total XP">
-                                    <span>⚡</span>
-                                    <span>{user.xp} XP</span>
+                                <div className="flex items-center gap-2 border-l border-slate-200 dark:border-slate-700 pl-3">
+                                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200 hidden xl:block">{user.name.split(' ')[0]}</span>
+                                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-teal-400 flex items-center justify-center text-white shadow-inner group-hover:scale-110 transition-transform">
+                                        <User className="w-5 h-5" />
+                                    </div>
                                 </div>
-                                <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[var(--primary)] to-[var(--primary-light)] flex items-center justify-center text-white text-xs font-bold">
-                                    {user.name.charAt(0)}
-                                </div>
-                                <span className="text-sm font-medium text-slate-700 dark:text-slate-200">{user.name}</span>
                             </Link>
                         ) : (
-                            <Link href="/login" className="px-5 py-2 rounded-xl bg-[var(--primary)] text-white text-sm font-semibold hover:bg-[var(--primary-dark)] transition-all shadow-lg shadow-blue-500/20 font-poppins">Login</Link>
+                            <Link href="/login" className="px-6 py-2.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-sm font-bold hover:scale-105 active:scale-95 transition-all shadow-lg shadow-slate-900/20 dark:shadow-white/20 font-poppins relative overflow-hidden group">
+                                <span className="relative z-10">Log in</span>
+                                <div className="absolute inset-0 bg-blue-600 dark:bg-slate-200 translate-y-full group-hover:translate-y-0 transition-transform duration-300 z-0"></div>
+                                <span className="relative z-10 hidden group-hover:inline ml-1">→</span>
+                            </Link>
                         )}
                     </div>
                 </div>
