@@ -5,6 +5,7 @@ import { allWords } from '@/data/vocabulary';
 import { Word, Level } from '@/types';
 import { useAuth } from '@/contexts/AuthContext';
 import PronunciationCoach from '@/components/shared/PronunciationCoach';
+import { Zap, Timer, Trophy, ArrowRight, RefreshCcw, Medal } from 'lucide-react';
 
 type QuizMode = 'de-to-en' | 'en-to-de' | 'de-to-bn' | 'bn-to-de' | 'speaking';
 
@@ -15,6 +16,7 @@ export default function PracticePage() {
     const [quizMode, setQuizMode] = useState<QuizMode>('de-to-en');
     const [currentQuestion, setCurrentQuestion] = useState(0);
     const [score, setScore] = useState(0);
+    const [streakCount, setStreakCount] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
     const [showResult, setShowResult] = useState(false);
     const [quizStarted, setQuizStarted] = useState(false);
@@ -33,7 +35,6 @@ export default function PracticePage() {
         const shuffled = [...filteredWords].sort(() => Math.random() - 0.5).slice(0, 10);
         return shuffled.map(word => {
             const otherWords = filteredWords.filter(w => w.id !== word.id).sort(() => Math.random() - 0.5).slice(0, 3);
-
             let question: string, correct: string, options: string[];
 
             switch (quizMode) {
@@ -59,15 +60,14 @@ export default function PracticePage() {
                     break;
                 case 'speaking':
                     question = word.german;
-                    correct = word.german; // For speaking, the answer is the word itself
-                    options = []; // No options for speaking
+                    correct = word.german;
+                    options = [];
                     break;
                 default:
                     question = word.german;
                     correct = word.english;
                     options = [];
             }
-
             return { word, question, correct, options };
         });
     }, [filteredWords, quizMode]);
@@ -76,9 +76,24 @@ export default function PracticePage() {
         if (showResult) return;
         setSelectedAnswer(answer);
         setShowResult(true);
-        if (answer === questions[currentQuestion].correct) {
+
+        const isCorrect = answer === questions[currentQuestion].correct;
+
+        if (isCorrect) {
             setScore(s => s + 1);
-            addXP(10); // 10 XP per correct answer
+            setStreakCount(s => s + 1);
+            addXP(10 + (streakCount > 2 ? 5 : 0)); // Bonus XP for streaks
+
+            // Success Haptic
+            if (typeof window !== 'undefined' && window.navigator && window.navigator.vibrate) {
+                window.navigator.vibrate([30, 50, 30]);
+            }
+        } else {
+            setStreakCount(0);
+            // Error Haptic
+            if (typeof window !== 'undefined' && window.navigator && window.navigator.vibrate) {
+                window.navigator.vibrate(100);
+            }
         }
     };
 
@@ -86,8 +101,8 @@ export default function PracticePage() {
         if (showResult) return;
         setShowResult(true);
         setScore(s => s + 1);
+        setStreakCount(s => s + 1);
         addXP(20); // 20 XP for speaking!
-        // Auto advance after a delay or let user click next? Let's show success state first.
     };
 
     const handleNext = () => {
@@ -106,6 +121,7 @@ export default function PracticePage() {
         setQuizStarted(true);
         setCurrentQuestion(0);
         setScore(0);
+        setStreakCount(0);
         setSelectedAnswer(null);
         setShowResult(false);
         setQuizComplete(false);
@@ -116,171 +132,221 @@ export default function PracticePage() {
         setQuizComplete(false);
         setCurrentQuestion(0);
         setScore(0);
+        setStreakCount(0);
     };
 
     if (!mounted) return null;
 
+    // Dynamic background based on result state
+    const bgClass = showResult
+        ? selectedAnswer === questions[currentQuestion]?.correct || selectedAnswer === null
+            ? 'bg-emerald-50 dark:bg-emerald-950/20'
+            : 'bg-rose-50 dark:bg-rose-950/20'
+        : 'bg-slate-50 dark:bg-slate-950';
+
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
-            {/* Header */}
-            <section className="py-16 bg-slate-100/50 dark:bg-slate-900/50">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white">
-                        <span className="gradient-text">অনুশীলন</span>
-                    </h1>
-                    <p className="text-xl text-slate-600 dark:text-slate-400 mb-2">
-                        Test your German vocabulary knowledge
-                    </p>
-                    <p className="text-lg font-bengali text-slate-500 dark:text-slate-500">
-                        আপনার জার্মান শব্দ জ্ঞান যাচাই করুন
-                    </p>
-                </div>
-            </section>
+        <div className={`min-h-screen pb-24 transition-colors duration-500 overflow-hidden relative ${bgClass}`}>
 
-            <section className="py-16">
-                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-                    {!quizStarted ? (
-                        /* Quiz Setup */
-                        <div className="glass-card p-8">
-                            <h2 className="text-2xl font-bold mb-6 text-center text-slate-900 dark:text-white">আপনার কুইজ নির্বাচন করুন</h2>
+            {/* Ambient Background Glows */}
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-orange-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+            <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
 
-                            {/* Level Selection */}
-                            <div className="mb-6">
-                                <label className="block text-sm font-medium mb-3 text-slate-700 dark:text-slate-300">লেভেল নির্বাচন করুন</label>
-                                <div className="flex flex-wrap gap-2">
-                                    {['all', 'a1', 'a2', 'b1'].map((level) => (
-                                        <button
-                                            key={level}
-                                            onClick={() => setSelectedLevel(level as Level | 'all')}
-                                            className={`px-4 py-2 rounded-lg transition-all ${selectedLevel === level
-                                                ? 'bg-blue-600 text-white'
-                                                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
-                                                }`}
-                                        >
-                                            {level === 'all' ? 'All Levels' : level.toUpperCase()}
-                                        </button>
-                                    ))}
+            {!quizStarted && !quizComplete && (
+                <section className="relative pt-24 pb-12 text-center max-w-4xl mx-auto px-6 z-10">
+                    <div className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300 rounded-full text-sm font-bold tracking-widest uppercase border border-orange-200 dark:border-orange-800/50 shadow-sm">
+                        <Zap className="w-4 h-4" /> Speed Quiz
+                    </div>
+                    <h1 className="text-4xl md:text-6xl font-extrabold mb-4 text-slate-900 dark:text-white font-poppins tracking-tight drop-shadow-sm">Practice Arena</h1>
+                    <p className="text-lg text-slate-600 dark:text-slate-400 max-w-xl mx-auto leading-relaxed">
+                        Test your speed, accuracy, and vocabulary recall under pressure. <br />
+                        <span className="font-bengali text-slate-500 font-medium mt-1 inline-block">আপনার জার্মান শব্দ জ্ঞান যাচাই করুন</span>
+                    </p>
+                </section>
+            )}
+
+            <section className="max-w-3xl mx-auto px-4 relative z-10 pt-8">
+                {!quizStarted ? (
+                    /* Quiz Setup Dashboard */
+                    <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl rounded-[2.5rem] p-6 md:p-10 border border-slate-200/50 dark:border-slate-700/50 shadow-2xl shadow-slate-200/50 dark:shadow-none animate-fadeInUp">
+
+                        {/* Level Selection */}
+                        <div className="mb-10">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold">1</div>
+                                <h3 className="text-xl font-bold text-slate-900 dark:text-white font-poppins">Select Level</h3>
+                            </div>
+                            <div className="flex flex-wrap gap-3">
+                                {['all', 'a1', 'a2', 'b1'].map((level) => (
+                                    <button
+                                        key={level}
+                                        onClick={() => setSelectedLevel(level as Level | 'all')}
+                                        className={`px-6 py-3 border rounded-2xl font-bold text-sm transition-all duration-300 hover:-translate-y-1 ${selectedLevel === level
+                                                ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/30'
+                                                : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-blue-400'
+                                            }`}
+                                    >
+                                        {level === 'all' ? 'Mixed Levels' : `Level ${level.toUpperCase()}`}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Quiz Mode Selection */}
+                        <div className="mb-10">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-900/50 flex items-center justify-center text-orange-600 dark:text-orange-400 font-bold">2</div>
+                                <h3 className="text-xl font-bold text-slate-900 dark:text-white font-poppins">Select Challenge</h3>
+                            </div>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                {[
+                                    { mode: 'de-to-en', label: 'German → English', icon: '🇩🇪' },
+                                    { mode: 'en-to-de', label: 'English → German', icon: '🇬🇧' },
+                                    { mode: 'de-to-bn', label: 'German → বাংলা', icon: '🇧🇩' },
+                                    { mode: 'bn-to-de', label: 'বাংলা → German', icon: '🔄' },
+                                    { mode: 'speaking', label: 'Speaking', icon: '🎙️' },
+                                ].map(({ mode, label, icon }) => (
+                                    <button
+                                        key={mode}
+                                        onClick={() => setQuizMode(mode as QuizMode)}
+                                        className={`p-5 rounded-[1.5rem] border-2 text-left transition-all duration-300 hover:-translate-y-1 ${quizMode === mode
+                                                ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-500 text-orange-700 dark:text-orange-300 shadow-lg shadow-orange-500/10'
+                                                : 'bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-orange-300'
+                                            }`}
+                                    >
+                                        <div className="text-2xl mb-2">{icon}</div>
+                                        <div className="font-bold">{label}</div>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Start Button */}
+                        <button
+                            onClick={startQuiz}
+                            className="w-full relative group overflow-hidden rounded-[1.5rem] bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-xl py-5 shadow-[0_6px_0_0] shadow-slate-700 dark:shadow-slate-300 active:shadow-[0_0px_0_0] active:translate-y-1.5 transition-all outline-none"
+                        >
+                            <span className="relative z-10 flex items-center justify-center gap-2 font-poppins tracking-wide">
+                                <Zap className="w-6 h-6" /> Start Quiz
+                            </span>
+                            <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-blue-600 to-teal-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
+                        </button>
+                    </div>
+                ) : quizComplete ? (
+                    /* Quiz Complete Dashboard */
+                    <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl rounded-[3rem] p-8 md:p-12 border border-slate-200/50 dark:border-slate-700/50 shadow-2xl text-center animate-fadeInUp">
+                        <div className="relative w-32 h-32 mx-auto mb-6">
+                            <div className="absolute inset-0 bg-yellow-400/20 blur-2xl rounded-full"></div>
+                            <div className="relative w-full h-full bg-gradient-to-br from-yellow-300 to-orange-500 rounded-[2rem] flex items-center justify-center shadow-lg transform rotate-3 hover:rotate-12 transition-transform duration-500">
+                                <Medal className="w-16 h-16 text-white" />
+                            </div>
+                        </div>
+
+                        <h2 className="text-4xl font-extrabold text-slate-900 dark:text-white font-poppins mb-2">Quiz Complete!</h2>
+                        <p className="text-slate-500 dark:text-slate-400 font-bengali text-lg mb-8">দারুণ অনুশীলন হয়েছে!</p>
+
+                        <div className="grid grid-cols-2 gap-4 max-w-md mx-auto mb-10">
+                            <div className="bg-slate-50 dark:bg-slate-800/50 rounded-[1.5rem] p-6 border border-slate-100 dark:border-slate-700">
+                                <div className="text-sm text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest mb-1">Score</div>
+                                <div className={`text-4xl font-black ${score >= 8 ? 'text-emerald-500' : score >= 5 ? 'text-orange-500' : 'text-rose-500'}`}>
+                                    {score}/10
                                 </div>
                             </div>
-
-                            {/* Quiz Mode Selection */}
-                            <div className="mb-8">
-                                <label className="block text-sm font-medium mb-3 text-slate-700 dark:text-slate-300">কুইজের ধরন</label>
-                                <div className="grid grid-cols-2 gap-3">
-                                    {[
-                                        { mode: 'de-to-en', label: 'German → English', labelBn: 'জার্মান → ইংরেজি' },
-                                        { mode: 'en-to-de', label: 'English → German', labelBn: 'ইংরেজি → জার্মান' },
-                                        { mode: 'de-to-bn', label: 'German → বাংলা', labelBn: 'জার্মান → বাংলা' },
-                                        { mode: 'bn-to-de', label: 'বাংলা → German', labelBn: 'বাংলা → জার্মান' },
-                                        { mode: 'speaking', label: '🎙️ Speaking Practice', labelBn: 'উচ্চারণ অনুশীলন' },
-                                    ].map(({ mode, label, labelBn }) => (
-                                        <button
-                                            key={mode}
-                                            onClick={() => setQuizMode(mode as QuizMode)}
-                                            className={`p-4 rounded-xl text-left transition-all ${quizMode === mode
-                                                ? 'bg-blue-600 text-white'
-                                                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
-                                                }`}
-                                        >
-                                            <div className="font-medium">{label}</div>
-                                            <div className="text-sm opacity-70 font-bengali">{labelBn}</div>
-                                        </button>
-                                    ))}
+                            <div className="bg-amber-50 dark:bg-amber-900/20 rounded-[1.5rem] p-6 border border-amber-100 dark:border-amber-900/50">
+                                <div className="text-sm text-amber-600 dark:text-amber-500 font-bold uppercase tracking-widest mb-1">XP Earned</div>
+                                <div className="text-4xl font-black text-amber-500">
+                                    +{score * (quizMode === 'speaking' ? 20 : 10) + 50}
                                 </div>
                             </div>
+                        </div>
 
-                            {/* Start Button */}
-                            <button
-                                onClick={startQuiz}
-                                className="w-full btn-primary text-lg py-4 justify-center"
-                            >
-                                কুইজ শুরু করুন (১০টি প্রশ্ন)
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+                            <button onClick={startQuiz} className="flex-1 flex justify-center items-center gap-2 py-4 rounded-2xl font-bold text-lg shadow-[0_4px_0_0] active:shadow-[0_0px_0_0] active:translate-y-1 transition-all bg-blue-600 text-white shadow-blue-800 hover:bg-blue-500">
+                                <RefreshCcw className="w-5 h-5" /> Play Again
+                            </button>
+                            <button onClick={resetQuiz} className="flex-1 py-4 rounded-2xl font-bold text-lg shadow-[0_4px_0_0] active:shadow-[0_0px_0_0] active:translate-y-1 transition-all bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shadow-slate-300 dark:shadow-slate-950 hover:bg-slate-300 dark:hover:bg-slate-700">
+                                Change Settings
                             </button>
                         </div>
-                    ) : quizComplete ? (
-                        /* Quiz Complete */
-                        <div className="glass-card p-8 text-center">
-                            <div className="text-6xl mb-4">
-                                {score >= 8 ? '🎉' : score >= 5 ? '👍' : '📚'}
-                            </div>
-                            <h2 className="text-3xl font-bold mb-2 text-slate-900 dark:text-white">কুইজ শেষ!</h2>
-                            <p className="text-slate-500 dark:text-slate-400 mb-6 font-bengali">আপনার ফলাফল দেখুন!</p>
+                    </div>
+                ) : (
+                    /* Active Quiz Board */
+                    <div className="animate-slideInRight">
 
-                            <div className={`text-6xl font-bold mb-4 ${score >= 8 ? 'text-green-500' : score >= 5 ? 'text-amber-500' : 'text-red-500'}`}>
-                                {score}/১০
-                            </div>
-                            <div className="mb-6 text-yellow-500 font-bold text-xl">
-                                +{score * (quizMode === 'speaking' ? 20 : 10) + 50} XP Earned!
+                        {/* Floating Status Bar */}
+                        <div className="flex justify-between items-center bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl p-4 rounded-[1.5rem] border border-slate-200/50 dark:border-slate-700/50 shadow-sm mb-6 sticky top-24 z-20">
+                            <div className="flex items-center gap-3">
+                                <div className="hidden sm:flex w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 items-center justify-center text-slate-500"><Timer className="w-5 h-5" /></div>
+                                <div>
+                                    <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">Question</div>
+                                    <div className="font-bold text-slate-900 dark:text-white">{currentQuestion + 1} of 10</div>
+                                </div>
                             </div>
 
-                            <p className="text-lg text-slate-600 dark:text-slate-400 mb-8 font-bengali">
-                                {score >= 8 ? 'দারুণ! চালিয়ে যান!' :
-                                    score >= 5 ? 'ভালো হয়েছে! আরও অনুশীলন করুন!' :
-                                        'চিন্তা নেই! আরেকবার চেষ্টা করুন!'}
-                            </p>
+                            {/* Animated Progress Bar */}
+                            <div className="flex-1 max-w-[200px] mx-4 hidden sm:block">
+                                <div className="h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
+                                    <div className="h-full bg-gradient-to-r from-blue-500 to-teal-400 rounded-full transition-all duration-500 ease-out" style={{ width: `${((currentQuestion) / 10) * 100}%` }}></div>
+                                </div>
+                            </div>
 
-                            <div className="flex gap-4 justify-center">
-                                <button onClick={startQuiz} className="btn-primary">
-                                    আবার চেষ্টা করুন
-                                </button>
-                                <button onClick={resetQuiz} className="btn-secondary">
-                                    নতুন কুইজ
-                                </button>
+                            <div className="flex items-center gap-3">
+                                <div className="text-right">
+                                    <div className="text-xs font-bold text-orange-400 uppercase tracking-widest">XP Combo</div>
+                                    <div className="font-bold text-orange-500 flex items-center justify-end gap-1">
+                                        <Zap className="w-4 h-4 fill-orange-500" /> {streakCount}x
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    ) : (
-                        /* Quiz Question */
-                        <div className="glass-card p-8">
-                            {/* Progress */}
-                            <div className="flex items-center justify-between mb-6">
-                                <span className="text-slate-500 dark:text-slate-400">
-                                    প্রশ্ন {currentQuestion + 1}/{questions.length}
-                                </span>
-                                <span className="text-blue-600 dark:text-blue-400 font-bold">স্কোর: {score}</span>
-                            </div>
 
-                            <div className="h-2 bg-slate-200 dark:bg-slate-800 rounded-full mb-8">
-                                <div
-                                    className="h-full bg-blue-600 dark:bg-blue-500 rounded-full transition-all"
-                                    style={{ width: `${((currentQuestion + 1) / questions.length) * 100}%` }}
-                                />
-                            </div>
+                        {/* Quiz Question Card */}
+                        <div className={`bg-white/90 dark:bg-slate-900/90 backdrop-blur-2xl rounded-[2.5rem] p-6 md:p-10 border shadow-2xl transition-all duration-500 ${showResult
+                                ? selectedAnswer === questions[currentQuestion]?.correct || selectedAnswer === null
+                                    ? 'border-emerald-400 shadow-emerald-500/20'
+                                    : 'border-rose-400 shadow-rose-500/20'
+                                : 'border-slate-200/50 dark:border-slate-700/50 shadow-slate-200/50 dark:shadow-none'
+                            }`}>
 
-                            {/* Question */}
-                            <div className="text-center mb-8">
-                                <p className="text-sm text-slate-500 dark:text-slate-400 mb-2">
-                                    {quizMode === 'speaking' ? 'Speak the word:' : 'এর মানে কী:'}
-                                </p>
-                                <h3 className={`text-4xl font-bold text-slate-900 dark:text-white ${quizMode.startsWith('bn') ? 'font-bengali' : ''}`}>
+                            {/* The Question prompt */}
+                            <div className="mb-10 text-center md:text-left">
+                                <div className="inline-flex items-center gap-2 text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">
+                                    <span className="w-8 h-[2px] bg-slate-200 dark:bg-slate-700 rounded-full inline-block"></span>
+                                    {quizMode === 'speaking' ? 'Speak Aloud' : 'Translate'}
+                                </div>
+                                <h3 className={`text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight font-poppins mb-2 ${quizMode.startsWith('bn') ? 'font-bengali' : ''}`}>
                                     {questions[currentQuestion]?.question}
                                 </h3>
                                 {quizMode === 'speaking' && (
-                                    <p className="text-lg text-slate-500 mt-2 font-bengali">
+                                    <p className="text-xl text-slate-500 mt-2 font-bengali font-medium">
                                         ({questions[currentQuestion]?.word.bangla})
                                     </p>
                                 )}
                             </div>
 
-                            {/* Options or Coach */}
+                            {/* Answer Options */}
                             {quizMode === 'speaking' ? (
                                 <PronunciationCoach
                                     targetText={questions[currentQuestion]?.correct}
                                     onSuccess={handleSpeakingSuccess}
                                 />
                             ) : (
-                                <div className="grid grid-cols-1 gap-3">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                                     {questions[currentQuestion]?.options.map((option, index) => {
-                                        let className = 'p-4 rounded-xl border-2 transition-all text-left ';
+                                        const isCorrectAnswer = option === questions[currentQuestion].correct;
+                                        const isSelected = option === selectedAnswer;
+
+                                        let btnClass = "w-full text-left px-6 py-5 rounded-[1.5rem] font-bold text-lg border-2 shadow-[0_4px_0_0] transition-all origin-center ";
+
                                         if (showResult) {
-                                            if (option === questions[currentQuestion].correct) {
-                                                className += 'border-green-500 bg-green-500/20 text-green-700 dark:text-green-300';
-                                            } else if (option === selectedAnswer) {
-                                                className += 'border-red-500 bg-red-500/20 text-red-700 dark:text-red-300';
+                                            if (isCorrectAnswer) {
+                                                btnClass += "bg-emerald-500 border-emerald-600 text-white shadow-emerald-700 transform scale-[1.02] z-10";
+                                            } else if (isSelected) {
+                                                btnClass += "bg-rose-500 border-rose-600 text-white shadow-none translate-y-1 opacity-80";
                                             } else {
-                                                className += 'border-slate-200 dark:border-slate-700 opacity-50 text-slate-600 dark:text-slate-400';
+                                                btnClass += "bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-600 shadow-none opacity-50";
                                             }
                                         } else {
-                                            className += 'border-slate-200 dark:border-slate-700 hover:border-blue-500 hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer text-slate-700 dark:text-slate-300';
+                                            btnClass += "bg-white dark:bg-slate-800 border-slate-200/80 dark:border-slate-700 text-slate-700 dark:text-slate-200 shadow-slate-200 dark:shadow-slate-950 active:shadow-[0_0px_0_0] active:translate-y-1 hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400";
                                         }
 
                                         return (
@@ -288,27 +354,37 @@ export default function PracticePage() {
                                                 key={index}
                                                 onClick={() => handleAnswer(option)}
                                                 disabled={showResult}
-                                                className={className + (quizMode.endsWith('bn') || quizMode.startsWith('bn') ? ' font-bengali' : '')}
+                                                className={btnClass + (quizMode.endsWith('bn') || quizMode.startsWith('bn') ? ' font-bengali' : '')}
                                             >
                                                 {option}
+                                                {showResult && isCorrectAnswer && <span className="float-right">💪</span>}
+                                                {showResult && isSelected && !isCorrectAnswer && <span className="float-right">❌</span>}
                                             </button>
                                         );
                                     })}
                                 </div>
                             )}
 
-                            {/* Next Button */}
+                            {/* Action Area (Next Button) */}
                             {showResult && (
-                                <button
-                                    onClick={handleNext}
-                                    className="w-full btn-primary mt-6 py-4 justify-center"
-                                >
-                                    {currentQuestion < questions.length - 1 ? 'পরের প্রশ্ন' : 'ফলাফল দেখুন'}
-                                </button>
+                                <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800 animate-fadeInUp">
+                                    <button
+                                        onClick={handleNext}
+                                        className={`w-full flex items-center justify-center gap-2 rounded-2xl font-bold text-xl py-5 shadow-[0_6px_0_0] active:shadow-[0_0px_0_0] active:translate-y-1.5 transition-all text-white
+                                            ${selectedAnswer === questions[currentQuestion]?.correct || selectedAnswer === null
+                                                ? 'bg-emerald-600 shadow-emerald-800 hover:bg-emerald-500'
+                                                : 'bg-rose-600 shadow-rose-800 hover:bg-rose-500'
+                                            }
+                                        `}
+                                    >
+                                        {currentQuestion < questions.length - 1 ? 'Next Question' : 'View Results'}
+                                        <ArrowRight className="w-6 h-6" />
+                                    </button>
+                                </div>
                             )}
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
             </section>
         </div>
     );
