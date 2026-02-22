@@ -37,7 +37,10 @@ const nextConfig: NextConfig = {
           }
         ]
       }
-    ]
+    ];
+  },
+  experimental: {
+    optimizePackageImports: ['lucide-react', 'firebase/app', 'firebase/auth', 'firebase/firestore', 'firebase/analytics'],
   }
 };
 
