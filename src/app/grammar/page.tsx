@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { BookOpen, Sparkles, CheckCircle, Lightbulb, ChevronDown, Check, GraduationCap } from 'lucide-react';
 
 interface GrammarGuide {
     id: string;
@@ -179,6 +180,13 @@ const grammarGuides: GrammarGuide[] = [
     }
 ];
 
+const levelColors: Record<string, { from: string, to: string, text: string, bg: string, border: string }> = {
+    a1: { from: 'from-emerald-400', to: 'to-teal-500', text: 'text-emerald-500', bg: 'bg-emerald-50 dark:bg-emerald-900/20', border: 'border-emerald-200 dark:border-emerald-800' },
+    a2: { from: 'from-blue-400', to: 'to-indigo-500', text: 'text-blue-500', bg: 'bg-blue-50 dark:bg-blue-900/20', border: 'border-blue-200 dark:border-blue-800' },
+    b1: { from: 'from-orange-400', to: 'to-rose-500', text: 'text-orange-500', bg: 'bg-orange-50 dark:bg-orange-900/20', border: 'border-orange-200 dark:border-orange-800' },
+    b2: { from: 'from-purple-400', to: 'to-pink-500', text: 'text-purple-500', bg: 'bg-purple-50 dark:bg-purple-900/20', border: 'border-purple-200 dark:border-purple-800' },
+};
+
 export default function GrammarPage() {
     const [mounted, setMounted] = useState(false);
     const [selectedLevel, setSelectedLevel] = useState<string>('all');
@@ -198,128 +206,188 @@ export default function GrammarPage() {
     if (!mounted) return null;
 
     return (
-        <div className="min-h-screen pb-20 page-transition bg-slate-50 dark:bg-slate-950">
-            {/* Header */}
-            <section className="pt-24 pb-12 px-6 text-center max-w-4xl mx-auto">
-                <div className="inline-block mb-3 px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-full text-xs font-bold tracking-widest uppercase">
-                    Study Guide
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pb-24 transition-opacity duration-500 relative overflow-x-hidden">
+
+            {/* Ambient Background Glows */}
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+            <div className="absolute top-40 left-0 w-[400px] h-[400px] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+
+            {/* Header Section */}
+            <section className="relative pt-24 pb-12 md:pt-32 md:pb-16 z-10 px-6 max-w-5xl mx-auto text-center">
+                <div className="inline-flex items-center justify-center gap-2 mb-6 px-4 py-1.5 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 rounded-full text-xs font-bold tracking-widest uppercase border border-indigo-200 dark:border-indigo-800/50 shadow-sm">
+                    <BookOpen className="w-4 h-4" />
+                    Interactive Guide
                 </div>
-                <h1 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white">German Grammar Rules</h1>
-                <p className="text-slate-600 dark:text-slate-400 max-w-xl mx-auto">
-                    Simplified guides to master the structure of the language. <br />
-                    <span className="font-bengali text-slate-500">সহজ এবং বিস্তারিত ব্যাকরণ গাইড</span>
+                <h1 className="text-4xl md:text-6xl font-extrabold text-slate-900 dark:text-white font-poppins mb-6">
+                    Master German <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-500">Grammar</span>
+                </h1>
+                <p className="text-lg md:text-xl text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-2">
+                    Visual guides to simplify the structure of the language.
+                </p>
+                <p className="font-bengali text-slate-500 text-lg">
+                    সহজ এবং বিস্তারিত ব্যাকরণ গাইড
                 </p>
             </section>
 
-            {/* Filter */}
-            <section className="sticky top-20 z-30 bg-slate-50/90 dark:bg-slate-950/90 backdrop-blur-sm py-4 border-b border-slate-200 dark:border-slate-800 mb-8">
-                <div className="flex justify-center gap-2 px-4 flex-wrap">
-                    {['all', 'a1', 'a2', 'b1', 'b2'].map(level => (
-                        <button
-                            key={level}
-                            onClick={() => setSelectedLevel(level)}
-                            className={`px-5 py-2 rounded-full text-sm font-bold transition-all ${selectedLevel === level
-                                ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
-                                : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:border-blue-400'
-                                }`}
-                        >
-                            {level.toUpperCase()}
-                        </button>
-                    ))}
+            {/* Sticky Filter Bar */}
+            <section className="sticky top-20 z-40 px-6 py-4 animate-fadeInUp">
+                <div className="max-w-3xl mx-auto bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50 shadow-2xl shadow-slate-200/20 dark:shadow-none rounded-[1.5rem] p-2 flex flex-wrap justify-center gap-2 transition-all duration-300">
+                    <button
+                        onClick={() => setSelectedLevel('all')}
+                        className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 shadow-sm
+                            ${selectedLevel === 'all'
+                                ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
+                                : 'bg-transparent text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                            }`
+                        }
+                    >
+                        All Levels
+                    </button>
+                    {['a1', 'a2', 'b1', 'b2'].map(level => {
+                        const colors = levelColors[level];
+                        const isActive = selectedLevel === level;
+                        return (
+                            <button
+                                key={level}
+                                onClick={() => setSelectedLevel(level)}
+                                className={`px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-300 shadow-sm flex items-center gap-2
+                                    ${isActive
+                                        ? `bg-gradient-to-r ${colors.from} ${colors.to} text-white shadow-lg`
+                                        : 'bg-transparent text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent'
+                                    }`
+                                }
+                            >
+                                {isActive && <Check className="w-4 h-4" />}
+                                {level}
+                            </button>
+                        );
+                    })}
                 </div>
             </section>
 
             {/* Content Grid */}
-            <div className="max-w-3xl mx-auto px-4 space-y-6">
-                {filtered.map(guide => {
+            <div className="max-w-4xl mx-auto px-6 py-12 space-y-6 relative z-10">
+                {filtered.map((guide, i) => {
                     const isExpanded = expandedIds.has(guide.id);
-                    return (
-                        <div key={guide.id} className="clean-card overflow-hidden group border-l-4"
-                            style={{ borderLeftColor: `var(--level-${guide.level})` }}>
+                    const colors = levelColors[guide.level];
 
-                            {/* Summary / Header (Always Visible) */}
+                    return (
+                        <div
+                            key={guide.id}
+                            style={{ animationDelay: `${Math.min(i * 0.05, 0.5)}s` }}
+                            className={`animate-fadeInUp overflow-hidden transition-all duration-500 rounded-[2rem] border bg-white/60 dark:bg-slate-900/60 backdrop-blur-md shadow-xl
+                                ${isExpanded
+                                    ? `border-${guide.level === 'a1' ? 'emerald' : guide.level === 'a2' ? 'blue' : guide.level === 'b1' ? 'orange' : 'purple'}-400/50 dark:border-${guide.level === 'a1' ? 'emerald' : guide.level === 'a2' ? 'blue' : guide.level === 'b1' ? 'orange' : 'purple'}-500/50 shadow-${guide.level === 'a1' ? 'emerald' : guide.level === 'a2' ? 'blue' : guide.level === 'b1' ? 'orange' : 'purple'}-900/10`
+                                    : 'border-slate-200/50 dark:border-slate-800/50 shadow-slate-200/20 dark:shadow-none hover:border-slate-300 dark:hover:border-slate-700 hover:bg-white dark:hover:bg-slate-900'
+                                }`}
+                        >
+                            {/* Summary / Header */}
                             <button
                                 onClick={() => toggleExpand(guide.id)}
-                                className="w-full text-left p-6 flex items-start gap-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                                className="w-full text-left p-6 md:p-8 flex items-center justify-between gap-6 group"
                             >
                                 <div className="flex-1">
-                                    <div className="flex items-center gap-2 mb-2">
-                                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 uppercase tracking-widest border border-slate-200 dark:border-slate-700`}>
-                                            Level {guide.level.toUpperCase()}
+                                    <div className="flex items-center gap-3 mb-3">
+                                        <span className={`px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-widest ${colors.bg} ${colors.text} border ${colors.border}`}>
+                                            {guide.level}
                                         </span>
-                                        {isExpanded && <span className="text-xs text-blue-500 font-bold">Read Guide</span>}
                                     </div>
-                                    <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-1 group-hover:text-blue-600 transition-colors">{guide.title}</h3>
-                                    <p className="font-bengali text-slate-500 dark:text-slate-400 text-sm">{guide.titleBn}</p>
+                                    <h3 className={`text-2xl font-bold font-poppins mb-1 transition-colors ${isExpanded ? colors.text : 'text-slate-900 dark:text-white group-hover:text-blue-500'}`}>
+                                        {guide.title}
+                                    </h3>
+                                    <p className="font-bengali text-slate-500 dark:text-slate-400 font-medium">
+                                        {guide.titleBn}
+                                    </p>
                                 </div>
-                                <div className={`w-10 h-10 rounded-full flex items-center justify-center bg-slate-100 dark:bg-slate-800 transition-transform duration-300 ${isExpanded ? 'rotate-180 bg-blue-50 dark:bg-blue-900/20 text-blue-600' : ''}`}>
-                                    ▼
+                                <div className={`w-12 h-12 flex-shrink-0 rounded-2xl flex items-center justify-center transition-all duration-500
+                                    ${isExpanded
+                                        ? `bg-gradient-to-br ${colors.from} ${colors.to} text-white shadow-lg rotate-180`
+                                        : 'bg-slate-100 dark:bg-slate-800 text-slate-500 group-hover:bg-slate-200 dark:group-hover:bg-slate-700'
+                                    }`}
+                                >
+                                    <ChevronDown className="w-6 h-6" />
                                 </div>
                             </button>
 
-                            {/* Expanded Content (The Guide) */}
-                            {isExpanded && (
-                                <div className="px-6 pb-8 animate-slideUp">
-                                    <hr className="border-slate-100 dark:border-slate-800 mb-6" />
+                            {/* Expanded Content */}
+                            <div className={`transition-all duration-500 ease-in-out ${isExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
+                                <div className="px-6 pb-8 md:px-8 md:pb-10 pt-2 border-t border-slate-100 dark:border-slate-800/50">
 
-                                    {/* Description */}
-                                    <p className="text-lg text-slate-700 dark:text-slate-300 mb-6 leading-relaxed">
+                                    <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed mb-8">
                                         {guide.description}
                                     </p>
 
                                     {/* Structure / Formula */}
                                     {guide.structure && (
-                                        <div className="mb-6 bg-blue-50 dark:bg-blue-900/10 p-4 rounded-xl border border-blue-100 dark:border-blue-800">
-                                            <div className="text-xs uppercase font-bold text-blue-500 mb-2 tracking-widest">📐 Formula</div>
-                                            <code className="text-lg font-mono font-bold text-blue-700 dark:text-blue-300">{guide.structure}</code>
+                                        <div className="mb-8 relative overflow-hidden rounded-2xl p-6 border border-indigo-100 dark:border-indigo-800/50 bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-900/20 dark:to-blue-900/10">
+                                            <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
+                                                <Sparkles className="w-16 h-16 text-indigo-500" />
+                                            </div>
+                                            <div className="flex items-center gap-2 text-xs uppercase font-bold text-indigo-600 dark:text-indigo-400 tracking-widest mb-3">
+                                                <GraduationCap className="w-4 h-4" />
+                                                Formula
+                                            </div>
+                                            <code className="text-xl md:text-2xl font-mono font-bold text-indigo-900 dark:text-indigo-200">
+                                                {guide.structure}
+                                            </code>
                                         </div>
                                     )}
 
-                                    {/* Key Points */}
-                                    <div className="mb-6 space-y-3">
-                                        <div className="text-xs uppercase font-bold text-slate-400 tracking-widest mb-1">How it works</div>
-                                        {guide.points.map((point, idx) => (
-                                            <div key={idx} className="flex gap-3">
-                                                <span className="text-green-500 font-bold">✓</span>
-                                                <span className="text-slate-600 dark:text-slate-300">{point}</span>
+                                    <div className="grid md:grid-cols-2 gap-8 mb-8">
+                                        {/* Key Points */}
+                                        <div className="space-y-4">
+                                            <div className="text-xs uppercase font-bold text-slate-400 tracking-widest flex items-center gap-2">
+                                                How it works
                                             </div>
-                                        ))}
+                                            <ul className="space-y-3">
+                                                {guide.points.map((point, idx) => (
+                                                    <li key={idx} className="flex gap-3 text-slate-700 dark:text-slate-300">
+                                                        <CheckCircle className={`w-5 h-5 flex-shrink-0 mt-0.5 ${colors.text}`} />
+                                                        <span className="leading-relaxed">{point}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+
+                                        {/* Pro Tip */}
+                                        {guide.tip && (
+                                            <div className="h-full rounded-2xl p-6 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/10 border border-amber-200/50 dark:border-amber-800/50">
+                                                <div className="flex items-center gap-2 text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-widest mb-3">
+                                                    <Lightbulb className="w-4 h-4" />
+                                                    Pro Tip
+                                                </div>
+                                                <p className="text-slate-700 dark:text-slate-300 italic leading-relaxed">
+                                                    "{guide.tip}"
+                                                </p>
+                                            </div>
+                                        )}
                                     </div>
-
-                                    {/* Pro Tip */}
-                                    {guide.tip && (
-                                        <div className="mb-8 flex gap-3 p-4 bg-yellow-50 dark:bg-yellow-900/10 rounded-xl border border-yellow-100 dark:border-yellow-800">
-                                            <span className="text-2xl">💡</span>
-                                            <div>
-                                                <span className="block text-xs font-bold text-yellow-600 dark:text-yellow-400 uppercase tracking-widest mb-1">Pro Tip</span>
-                                                <p className="text-sm text-slate-700 dark:text-slate-300 italic">{guide.tip}</p>
-                                            </div>
-                                        </div>
-                                    )}
 
                                     {/* Examples */}
                                     <div>
-                                        <div className="text-xs uppercase font-bold text-slate-400 tracking-widest mb-3">Examples</div>
-                                        <div className="grid gap-3">
+                                        <div className="text-xs uppercase font-bold text-slate-400 tracking-widest mb-4">Examples in context</div>
+                                        <div className="grid sm:grid-cols-2 gap-4">
                                             {guide.examples.map((ex, i) => (
-                                                <div key={i} className="p-4 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-100 dark:border-slate-800 hover:border-blue-200 transition-colors">
-                                                    <div className="font-bold text-lg text-slate-800 dark:text-slate-200 mb-1">{ex.german}</div>
-                                                    <div className="text-slate-500 dark:text-slate-400 mb-1">{ex.english}</div>
-                                                    <div className="font-bengali text-sm text-slate-400">{ex.bangla}</div>
+                                                <div key={i} className="group p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 transition-colors shadow-sm">
+                                                    <div className="font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                                        "{ex.german}"
+                                                    </div>
+                                                    <div className="text-slate-600 dark:text-slate-400 text-sm mb-2">{ex.english}</div>
+                                                    <div className="font-bengali text-sm text-slate-500 dark:text-slate-500 leading-relaxed shadow-sm font-medium">{ex.bangla}</div>
                                                 </div>
                                             ))}
                                         </div>
                                     </div>
 
                                 </div>
-                            )}
+                            </div>
                         </div>
                     );
                 })}
             </div>
 
-            <div className="text-center mt-12 mb-8">
-                <p className="text-slate-400 text-sm">More guides are added weekly!</p>
+            <div className="text-center pb-12 opacity-50 font-bold uppercase tracking-widest text-xs text-slate-500">
+                More guides added continuously
             </div>
         </div>
     );

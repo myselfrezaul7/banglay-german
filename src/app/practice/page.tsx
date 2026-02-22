@@ -176,13 +176,13 @@ export default function PracticePage() {
                                 <h3 className="text-xl font-bold text-slate-900 dark:text-white font-poppins">Select Level</h3>
                             </div>
                             <div className="flex flex-wrap gap-3">
-                                {['all', 'a1', 'a2', 'b1'].map((level) => (
+                                {['all', 'a1', 'a2', 'b1', 'b2'].map((level) => (
                                     <button
                                         key={level}
                                         onClick={() => setSelectedLevel(level as Level | 'all')}
                                         className={`px-6 py-3 border rounded-2xl font-bold text-sm transition-all duration-300 hover:-translate-y-1 ${selectedLevel === level
-                                                ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/30'
-                                                : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-blue-400'
+                                            ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/30'
+                                            : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-blue-400'
                                             }`}
                                     >
                                         {level === 'all' ? 'Mixed Levels' : `Level ${level.toUpperCase()}`}
@@ -209,8 +209,8 @@ export default function PracticePage() {
                                         key={mode}
                                         onClick={() => setQuizMode(mode as QuizMode)}
                                         className={`p-5 rounded-[1.5rem] border-2 text-left transition-all duration-300 hover:-translate-y-1 ${quizMode === mode
-                                                ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-500 text-orange-700 dark:text-orange-300 shadow-lg shadow-orange-500/10'
-                                                : 'bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-orange-300'
+                                            ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-500 text-orange-700 dark:text-orange-300 shadow-lg shadow-orange-500/10'
+                                            : 'bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-orange-300'
                                             }`}
                                     >
                                         <div className="text-2xl mb-2">{icon}</div>
@@ -301,10 +301,10 @@ export default function PracticePage() {
 
                         {/* Quiz Question Card */}
                         <div className={`bg-white/90 dark:bg-slate-900/90 backdrop-blur-2xl rounded-[2.5rem] p-6 md:p-10 border shadow-2xl transition-all duration-500 ${showResult
-                                ? selectedAnswer === questions[currentQuestion]?.correct || selectedAnswer === null
-                                    ? 'border-emerald-400 shadow-emerald-500/20'
-                                    : 'border-rose-400 shadow-rose-500/20'
-                                : 'border-slate-200/50 dark:border-slate-700/50 shadow-slate-200/50 dark:shadow-none'
+                            ? selectedAnswer === questions[currentQuestion]?.correct || selectedAnswer === null
+                                ? 'border-emerald-400 shadow-emerald-500/20'
+                                : 'border-rose-400 shadow-rose-500/20'
+                            : 'border-slate-200/50 dark:border-slate-700/50 shadow-slate-200/50 dark:shadow-none'
                             }`}>
 
                             {/* The Question prompt */}

@@ -7,7 +7,7 @@ import { HelpCircle, RefreshCcw, CheckCircle2, XCircle, ArrowRight, Trophy } fro
 
 export default function SentenceBuilderPage() {
     const [mounted, setMounted] = useState(false);
-    const [level, setLevel] = useState<'a1' | 'a2' | 'b1' | 'all'>('all');
+    const [level, setLevel] = useState<'a1' | 'a2' | 'b1' | 'b2' | 'all'>('all');
     const [currentIndex, setCurrentIndex] = useState(0);
     const [selectedWords, setSelectedWords] = useState<string[]>([]);
     const [availableWords, setAvailableWords] = useState<string[]>([]);
@@ -106,7 +106,7 @@ export default function SentenceBuilderPage() {
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
                     {/* Level Selector Pills */}
                     <div className="flex bg-white/60 dark:bg-slate-900/60 backdrop-blur-md p-1.5 rounded-2xl border border-slate-200/50 dark:border-slate-800/50 shadow-sm">
-                        {['all', 'a1', 'a2', 'b1'].map(l => (
+                        {['all', 'a1', 'a2', 'b1', 'b2'].map(l => (
                             <button key={l} onClick={() => { setLevel(l as typeof level); setCurrentIndex(0); }}
                                 className={`px-4 py-2 rounded-xl text-sm font-bold transition-all duration-300 ${level === l
                                     ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20 scale-100'
@@ -128,14 +128,14 @@ export default function SentenceBuilderPage() {
 
                 {/* The Board */}
                 <div className={`relative bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl rounded-[2.5rem] p-6 md:p-10 border shadow-2xl transition-all duration-500 ${isCorrect === true ? 'border-emerald-400 shadow-emerald-500/20' :
-                        isCorrect === false ? 'border-rose-400 shadow-rose-500/20' :
-                            'border-slate-200/50 dark:border-slate-700/50 shadow-slate-200/50 dark:shadow-none'
+                    isCorrect === false ? 'border-rose-400 shadow-rose-500/20' :
+                        'border-slate-200/50 dark:border-slate-700/50 shadow-slate-200/50 dark:shadow-none'
                     }`}>
 
                     {/* Current Level Tag */}
                     <div className={`absolute -top-4 -right-2 md:top-6 md:right-6 md:absolute px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg transform rotate-[-5deg] ${current.level === 'a1' ? 'bg-emerald-500 text-white shadow-emerald-500/30' :
-                            current.level === 'a2' ? 'bg-blue-500 text-white shadow-blue-500/30' :
-                                'bg-orange-500 text-white shadow-orange-500/30'
+                        current.level === 'a2' ? 'bg-blue-500 text-white shadow-blue-500/30' :
+                            'bg-orange-500 text-white shadow-orange-500/30'
                         }`}>
                         {current.level.toUpperCase()}
                     </div>
@@ -175,8 +175,8 @@ export default function SentenceBuilderPage() {
 
                     {/* The Drop Zone (Selected Words) */}
                     <div className={`min-h-[140px] p-5 rounded-[2rem] border-2 border-dashed transition-all duration-300 flex flex-wrap gap-3 items-start content-start mb-10 ${isCorrect === true ? 'bg-emerald-50/50 dark:bg-emerald-900/10 border-emerald-400/50' :
-                            isCorrect === false ? 'bg-rose-50/50 dark:bg-rose-900/10 border-rose-400/50' :
-                                'bg-slate-50/50 dark:bg-slate-900/30 border-slate-200 dark:border-slate-700'
+                        isCorrect === false ? 'bg-rose-50/50 dark:bg-rose-900/10 border-rose-400/50' :
+                            'bg-slate-50/50 dark:bg-slate-900/30 border-slate-200 dark:border-slate-700'
                         }`}>
                         {selectedWords.length === 0 && (
                             <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-50">
@@ -187,8 +187,8 @@ export default function SentenceBuilderPage() {
                         {selectedWords.map((word, i) => (
                             <button key={i} onClick={() => handleWordClick(word, true)}
                                 className={`px-5 py-3 rounded-2xl font-bold text-lg shadow-[0_4px_0_0] active:shadow-[0_0px_0_0] active:translate-y-1 transition-all origin-center animate-fadeIn ${isCorrect === true ? 'bg-emerald-500 text-white shadow-emerald-700 hover:bg-emerald-400' :
-                                        isCorrect === false ? 'bg-rose-500 text-white shadow-rose-700 hover:bg-rose-400' :
-                                            'bg-white dark:bg-slate-800 text-slate-800 dark:text-white border border-slate-200/50 dark:border-slate-700 shadow-slate-200 dark:shadow-slate-950 hover:border-blue-400 dark:hover:border-blue-500'
+                                    isCorrect === false ? 'bg-rose-500 text-white shadow-rose-700 hover:bg-rose-400' :
+                                        'bg-white dark:bg-slate-800 text-slate-800 dark:text-white border border-slate-200/50 dark:border-slate-700 shadow-slate-200 dark:shadow-slate-950 hover:border-blue-400 dark:hover:border-blue-500'
                                     }`}>
                                 {word}
                             </button>
