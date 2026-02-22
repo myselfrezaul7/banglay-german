@@ -1,6 +1,9 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { auth, db } from '@/lib/firebase';
+import { signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut as firebaseSignOut } from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 
 interface User {
     id: string;
@@ -47,59 +50,52 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const saveUser = (u: User) => {
         setUser(u);
         localStorage.setItem('german-shikhi-user', JSON.stringify(u));
+        if (auth.currentUser) {
+            setDoc(doc(db, 'users', u.id), u).catch(console.error);
+        }
+    };
+
+    const syncUserFromFirestore = async (uid: string, email: string, name: string) => {
+        const userRef = doc(db, 'users', uid);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+            saveUser(userSnap.data() as User);
+        } else {
+            const newUser: User = {
+                id: uid,
+                name,
+                email,
+                xp: 0,
+                streak: 0,
+                level: 1,
+                achievements: ['first-login'],
+                learnedWords: [],
+                favorites: [],
+                joinedAt: new Date().toISOString(),
+            };
+            await setDoc(userRef, newUser);
+            saveUser(newUser);
+        }
     };
 
     const login = async (email: string, password: string) => {
-        // Firebase integration placeholder
-        const mockUser: User = {
-            id: 'user-' + Date.now(),
-            name: email.split('@')[0],
-            email,
-            xp: 0,
-            streak: 0,
-            level: 1,
-            achievements: ['first-login'],
-            learnedWords: [],
-            favorites: [],
-            joinedAt: new Date().toISOString(),
-        };
-        saveUser(mockUser);
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        await syncUserFromFirestore(userCredential.user.uid, userCredential.user.email || email, userCredential.user.displayName || email.split('@')[0]);
     };
 
     const loginWithGoogle = async () => {
-        // Firebase Google Auth placeholder
-        const mockUser: User = {
-            id: 'google-' + Date.now(),
-            name: 'Google User',
-            email: 'user@gmail.com',
-            xp: 0,
-            streak: 0,
-            level: 1,
-            achievements: ['first-login'],
-            learnedWords: [],
-            favorites: [],
-            joinedAt: new Date().toISOString(),
-        };
-        saveUser(mockUser);
+        const provider = new GoogleAuthProvider();
+        const userCredential = await signInWithPopup(auth, provider);
+        await syncUserFromFirestore(userCredential.user.uid, userCredential.user.email || '', userCredential.user.displayName || 'Google User');
     };
 
     const signup = async (email: string, password: string, name: string) => {
-        const newUser: User = {
-            id: 'user-' + Date.now(),
-            name,
-            email,
-            xp: 0,
-            streak: 0,
-            level: 1,
-            achievements: ['first-login'],
-            learnedWords: [],
-            favorites: [],
-            joinedAt: new Date().toISOString(),
-        };
-        saveUser(newUser);
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await syncUserFromFirestore(userCredential.user.uid, email, name);
     };
 
-    const logout = () => {
+    const logout = async () => {
+        await firebaseSignOut(auth);
         setUser(null);
         localStorage.removeItem('german-shikhi-user');
     };

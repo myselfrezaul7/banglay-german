@@ -34,7 +34,7 @@ export default function LoginPage() {
             await loginWithGoogle();
             router.push('/profile');
         } catch {
-            setError('Google login failed.');
+            setError('Google login failed. Please use manual email/password instead.');
         }
     };
 
