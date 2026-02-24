@@ -54,8 +54,8 @@ export default function SentencesPage() {
                             <button
                                 key={level}
                                 onClick={() => setSelectedLevel(level)}
-                                className={`px-4 py-2 rounded-lg transition-all ${selectedLevel === level
-                                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20'
+                                className={`px-4 py-2 rounded-lg transition-all duration-300 active:scale-95 ${selectedLevel === level
+                                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20 hover:bg-blue-700'
                                     : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
                                     }`}
                             >
@@ -127,23 +127,25 @@ export default function SentencesPage() {
                             </div>
 
                             {/* Word Breakdown (Expandable) */}
-                            {expandedId === sentence.id && sentence.wordBreakdown && (
-                                <div className="border-t border-slate-200 dark:border-slate-700 bg-slate-100/50 dark:bg-slate-900/50 p-6">
-                                    <h4 className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-4">শব্দে শব্দে অর্থ</h4>
-                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                        {sentence.wordBreakdown.map((word, index) => (
-                                            <div
-                                                key={index}
-                                                className="p-3 rounded-lg bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50"
-                                            >
-                                                <div className="font-semibold text-blue-600 dark:text-blue-400">{word.german}</div>
-                                                <div className="text-sm text-slate-600 dark:text-slate-400">{word.english}</div>
-                                                <div className="text-sm text-slate-500 dark:text-slate-500 font-bengali">{word.bangla}</div>
-                                            </div>
-                                        ))}
+                            <div className={`grid transition-all duration-400 ease-in-out ${expandedId === sentence.id && sentence.wordBreakdown ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+                                <div className="overflow-hidden">
+                                    <div className="border-t border-slate-200 dark:border-slate-700 bg-slate-100/50 dark:bg-slate-900/50 p-6">
+                                        <h4 className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-4">শব্দে শব্দে অর্থ</h4>
+                                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                            {sentence.wordBreakdown?.map((word, index) => (
+                                                <div
+                                                    key={index}
+                                                    className="p-3 rounded-lg bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 hover:-translate-y-1 transition-transform"
+                                                >
+                                                    <div className="font-semibold text-blue-600 dark:text-blue-400">{word.german}</div>
+                                                    <div className="text-sm text-slate-600 dark:text-slate-400">{word.english}</div>
+                                                    <div className="text-sm text-slate-500 dark:text-slate-500 font-bengali">{word.bangla}</div>
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
                                 </div>
-                            )}
+                            </div>
                         </div>
                     ))}
                 </div>

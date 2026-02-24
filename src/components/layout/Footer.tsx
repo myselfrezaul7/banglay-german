@@ -2,54 +2,59 @@ import Link from 'next/link';
 
 export default function Footer() {
     return (
-        <footer className="bg-slate-100 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 py-12">
-            <div className="max-w-7xl mx-auto px-4">
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                    <div className="col-span-2 md:col-span-1">
-                        <Link href="/" className="flex items-center gap-2 mb-4">
-                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold">বG</div>
+        <footer className="bg-slate-50 dark:bg-slate-950 border-t border-slate-200/50 dark:border-slate-800/50 pt-20 pb-12 overflow-hidden relative">
+            {/* Ambient Background Glow */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-2xl h-[1px] bg-gradient-to-r from-transparent via-blue-500/20 to-transparent"></div>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-blue-500/5 dark:bg-blue-500/5 rounded-full blur-[100px] pointer-events-none"></div>
+
+            <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10 lg:gap-8 mb-16">
+                    <div className="col-span-2 lg:col-span-2">
+                        <Link href="/" className="flex items-center gap-3 mb-6 group inline-flex">
+                            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/20 group-hover:scale-105 transition-transform duration-300">বG</div>
                             <div>
-                                <div className="font-bold text-slate-900 dark:text-white">Banglay German</div>
-                                <div className="text-xs font-bengali text-slate-500 dark:text-slate-400">বাংলায় জার্মান</div>
+                                <div className="font-extrabold text-xl font-poppins text-slate-900 dark:text-white tracking-tight">Banglay German</div>
+                                <div className="text-sm font-bengali text-slate-500 dark:text-slate-400">বাংলায় জার্মান</div>
                             </div>
                         </Link>
-                        <p className="text-sm text-slate-600 dark:text-slate-400">Learn German with English explanations and Bangla translations.</p>
+                        <p className="text-base text-slate-600 dark:text-slate-400 leading-relaxed max-w-xs">
+                            Master the German language through intuitive lessons, practical vocabulary, and native Bengali translations.
+                        </p>
                     </div>
 
                     <div>
-                        <h3 className="font-semibold mb-4 text-slate-900 dark:text-white">Learn</h3>
-                        <ul className="space-y-2 text-sm">
-                            <li><Link href="/vocabulary" className="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Vocabulary</Link></li>
-                            <li><Link href="/grammar" className="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Grammar</Link></li>
-                            <li><Link href="/sentences" className="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Sentences</Link></li>
-                            <li><Link href="/sentence-builder" className="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Sentence Builder</Link></li>
+                        <h3 className="font-bold mb-6 text-slate-900 dark:text-white uppercase tracking-wider text-sm font-poppins">Learn</h3>
+                        <ul className="space-y-4 text-sm font-medium">
+                            <li><Link href="/vocabulary" className="group text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors inline-block"><span className="inline-block transition-transform duration-300 group-hover:translate-x-1">Vocabulary</span></Link></li>
+                            <li><Link href="/grammar" className="group text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors inline-block"><span className="inline-block transition-transform duration-300 group-hover:translate-x-1">Grammar</span></Link></li>
+                            <li><Link href="/sentences" className="group text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors inline-block"><span className="inline-block transition-transform duration-300 group-hover:translate-x-1">Sentences</span></Link></li>
+                            <li><Link href="/sentence-builder" className="group text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors inline-block"><span className="inline-block transition-transform duration-300 group-hover:translate-x-1">Sentence Builder</span></Link></li>
                         </ul>
                     </div>
 
                     <div>
-                        <h3 className="font-semibold mb-4 text-slate-900 dark:text-white">Practice</h3>
-                        <ul className="space-y-2 text-sm">
-                            <li><Link href="/practice" className="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Quiz</Link></li>
-                            <li><Link href="/progress" className="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Progress</Link></li>
-                            <li><Link href="/profile" className="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Profile</Link></li>
+                        <h3 className="font-bold mb-6 text-slate-900 dark:text-white uppercase tracking-wider text-sm font-poppins">Practice</h3>
+                        <ul className="space-y-4 text-sm font-medium">
+                            <li><Link href="/practice" className="group text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors inline-block"><span className="inline-block transition-transform duration-300 group-hover:translate-x-1">Speed Quiz</span></Link></li>
+                            <li><Link href="/progress" className="group text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors inline-block"><span className="inline-block transition-transform duration-300 group-hover:translate-x-1">Progress</span></Link></li>
+                            <li><Link href="/profile" className="group text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors inline-block"><span className="inline-block transition-transform duration-300 group-hover:translate-x-1">Profile</span></Link></li>
                         </ul>
                     </div>
 
                     <div>
-                        <h3 className="font-semibold mb-4 text-slate-900 dark:text-white">Levels</h3>
-                        <ul className="space-y-2 text-sm">
-                            <li><Link href="/vocabulary/a1" className="text-slate-600 dark:text-slate-400 hover:text-green-600 dark:hover:text-green-400 transition-colors">A1 - Beginner</Link></li>
-                            <li><Link href="/vocabulary/a2" className="text-slate-600 dark:text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">A2 - Elementary</Link></li>
-                            <li><Link href="/vocabulary/b1" className="text-slate-600 dark:text-slate-400 hover:text-orange-600 dark:hover:text-orange-400 transition-colors">B1 - Intermediate</Link></li>
-                            <li><Link href="/vocabulary/b2" className="text-slate-600 dark:text-slate-400 hover:text-pink-600 dark:hover:text-pink-400 transition-colors">B2 - Upper Int.</Link></li>
-                            <li className="text-slate-400 dark:text-slate-500">C1 & C2 - Coming Soon</li>
+                        <h3 className="font-bold mb-6 text-slate-900 dark:text-white uppercase tracking-wider text-sm font-poppins">Levels</h3>
+                        <ul className="space-y-4 text-sm font-medium">
+                            <li><Link href="/vocabulary/a1" className="group text-emerald-600/80 dark:text-emerald-500/80 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors inline-block"><span className="inline-block transition-transform duration-300 group-hover:translate-x-1">A1 - Beginner</span></Link></li>
+                            <li><Link href="/vocabulary/a2" className="group text-blue-600/80 dark:text-blue-500/80 hover:text-blue-600 dark:hover:text-blue-400 transition-colors inline-block"><span className="inline-block transition-transform duration-300 group-hover:translate-x-1">A2 - Elementary</span></Link></li>
+                            <li><Link href="/vocabulary/b1" className="group text-orange-600/80 dark:text-orange-500/80 hover:text-orange-600 dark:hover:text-orange-400 transition-colors inline-block"><span className="inline-block transition-transform duration-300 group-hover:translate-x-1">B1 - Intermediate</span></Link></li>
+                            <li><Link href="/vocabulary/b2" className="group text-pink-600/80 dark:text-pink-500/80 hover:text-pink-600 dark:hover:text-pink-400 transition-colors inline-block"><span className="inline-block transition-transform duration-300 group-hover:translate-x-1">B2 - Upper Int.</span></Link></li>
                         </ul>
                     </div>
                 </div>
 
-                <div className="border-t border-slate-200 dark:border-slate-700 mt-8 pt-8">
-                    <div className="text-center text-slate-500 dark:text-slate-400 text-sm font-medium">
-                        &copy; 2026 Banglay German. All rights reserved.
+                <div className="border-t border-slate-200/50 dark:border-slate-800/50 flex flex-col md:flex-row items-center justify-between pt-8 gap-4">
+                    <div className="text-slate-500 dark:text-slate-400 text-sm font-medium">
+                        &copy; {new Date().getFullYear()} <span className="text-slate-900 dark:text-white">Banglay German</span>. All rights reserved.
                     </div>
                 </div>
             </div>
