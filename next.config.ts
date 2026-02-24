@@ -33,7 +33,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://apis.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://*.firebase.com https://*.firebaseio.com https://*.googleapis.com; frame-src 'self' https://*.firebase.com https://*.firebaseapp.com;"
+            value: "default-src 'self' https://firebase.googleapis.com https://firebaseinstallations.googleapis.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://apis.google.com https://www.gstatic.com https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https: blob:; connect-src 'self' https://*.firebase.com https://*.firebaseio.com https://*.googleapis.com wss://*.firebaseio.com; frame-src 'self' https://*.firebase.com https://*.firebaseapp.com;"
           }
         ]
       }
