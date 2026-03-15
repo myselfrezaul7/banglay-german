@@ -53,7 +53,7 @@ export default function Header() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
                 <div className={`flex items-center justify-between transition-all duration-500 rounded-[2rem] px-4 md:px-6 h-16 md:h-20 ${isScrolled
                     ? 'bg-white/60 dark:bg-slate-900/60 backdrop-blur-[20px] shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)] border border-white/50 dark:border-slate-800/50'
-                    : 'bg-transparent'
+                    : 'bg-white/80 dark:bg-slate-900/80 backdrop-blur-md md:bg-transparent md:dark:bg-transparent md:backdrop-blur-none border border-slate-200/50 dark:border-slate-800/50 md:border-transparent md:dark:border-transparent'
                     }`}>
 
                     {/* Logo Area */}

@@ -25,6 +25,15 @@ export default function HomePage() {
   const [wordOfDay, setWordOfDay] = useState<Word | null>(null);
   const [isWordFlipped, setIsWordFlipped] = useState(false);
 
+  const speakWord = (text: string) => {
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'de-DE';
+      utterance.rate = 0.85;
+      window.speechSynthesis.speak(utterance);
+    }
+  };
+
   useEffect(() => {
     setMounted(true);
     const dayOfYear = Math.floor((new Date().getTime() - new Date(new Date().getFullYear(), 0, 0).getTime()) / 1000 / 60 / 60 / 24);
@@ -36,13 +45,13 @@ export default function HomePage() {
     <div className={`min-h-screen bg-slate-50 dark:bg-slate-950 transition-opacity duration-500 overflow-hidden ${mounted ? 'opacity-100' : 'opacity-0'}`}>
 
       {/* Hero Section: Split Layout with Dynamic Aesthetics */}
-      <section className="relative px-6 pt-20 pb-24 md:pt-32 md:pb-28 max-w-7xl mx-auto">
+      <section className="relative px-6 pt-28 pb-24 md:pt-32 md:pb-28 max-w-7xl mx-auto">
         <div className="absolute top-0 right-0 -mt-20 -mr-20 w-96 h-96 bg-blue-500/20 rounded-full blur-[100px] pointer-events-none"></div>
         <div className="absolute top-40 left-0 -ml-20 w-72 h-72 bg-emerald-500/20 rounded-full blur-[100px] pointer-events-none"></div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center relative z-10">
-          {/* Left Text Content */}
-          <div className="text-center lg:text-left">
+        <div className="max-w-4xl mx-auto relative z-10 text-center">
+          {/* Central Text Content */}
+          <div>
             <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 text-sm font-bold tracking-wide border border-blue-200 dark:border-blue-800">
               <Globe className="w-4 h-4" />
               <span>ফ্রিতে জার্মান শিখুন • Free German Course</span>
@@ -54,11 +63,11 @@ export default function HomePage() {
               </span>
             </h1>
             <ScrollReveal delay={0.2} direction="up">
-              <p className="text-xl text-slate-600 dark:text-slate-300 mb-10 max-w-xl mx-auto lg:mx-0 leading-relaxed font-inter">
+              <p className="text-xl text-slate-600 dark:text-slate-300 mb-10 max-w-xl mx-auto leading-relaxed font-inter">
                 একদম ফ্রি, ওপেন-সোর্স প্ল্যাটফর্ম - সহজ <span className="text-slate-900 dark:text-white font-semibold">ইংরেজি</span> ব্যাখ্যা আর <span className="text-slate-900 dark:text-white font-semibold font-bengali">বাংলা</span> অর্থ সহ জার্মান শিখুন।
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/vocabulary/a1" className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-bold text-lg overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_40px_-10px_rgba(59,130,246,0.5)]">
                   <span className="relative z-10">A1 শুরু করুন</span>
                   <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
@@ -70,37 +79,6 @@ export default function HomePage() {
                 </Link>
               </div>
             </ScrollReveal>
-          </div>
-
-          {/* Right Visual Image (Hidden on Mobile) */}
-          <div className="hidden lg:flex relative mx-auto w-full max-w-none aspect-square items-center justify-center">
-            {/* Decorative background for image */}
-            <div className="absolute inset-4 bg-gradient-to-br from-blue-100 to-teal-50 dark:from-blue-900/40 dark:to-teal-900/20 rounded-[3rem] transform rotate-3 scale-105 opacity-70"></div>
-            <div className="absolute inset-4 bg-white dark:bg-slate-800 rounded-[3rem] transform -rotate-2 shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-700/50 flex flex-col justify-between p-6">
-              {/* Mock App Interface Visual */}
-              <div className="flex justify-between items-center mb-6">
-                <div className="flex gap-2">
-                  <div className="w-3 h-3 rounded-full bg-rose-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-amber-400"></div>
-                  <div className="w-3 h-3 rounded-full bg-emerald-400"></div>
-                </div>
-                <div className="px-3 py-1 bg-slate-100 dark:bg-slate-700 rounded-full text-xs font-semibold text-slate-500 dark:text-slate-300">Level A1</div>
-              </div>
-
-              <div className="flex-1 flex flex-col justify-center items-center text-center space-y-4">
-                <div className="w-20 h-20 bg-blue-100 dark:bg-blue-900/50 rounded-2xl flex items-center justify-center text-4xl mb-2 shadow-inner">
-                  🇩🇪
-                </div>
-                <h3 className="text-3xl font-bold text-slate-900 dark:text-white font-poppins">Entschuldigung</h3>
-                <div className="bg-slate-50 dark:bg-slate-900 px-4 py-2 rounded-xl text-slate-600 dark:text-slate-400 font-medium">Excuse me / Sorry</div>
-                <div className="text-slate-500 dark:text-slate-500 font-bengali">মাপ করবেন / দুঃখিত</div>
-              </div>
-
-              <div className="mt-8 flex gap-3">
-                <div className="h-10 flex-1 bg-blue-600 rounded-xl opacity-90"></div>
-                <div className="h-10 w-10 bg-slate-100 dark:bg-slate-700 rounded-xl"></div>
-              </div>
-            </div>
           </div>
         </div>
       </section>
@@ -208,7 +186,13 @@ export default function HomePage() {
                     </div>
 
                     <div className="flex gap-4 pt-6 border-t border-slate-100 dark:border-slate-800">
-                      <button className="flex-1 flex items-center justify-center gap-2 py-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-xl font-semibold hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors active:scale-[0.98]">
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (wordOfDay) speakWord(wordOfDay.german);
+                        }}
+                        className="flex-1 flex items-center justify-center gap-2 py-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-xl font-semibold hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors active:scale-[0.98]"
+                      >
                         <Volume2 className="w-5 h-5" /> <span>Listen</span>
                       </button>
                       <button className="flex items-center justify-center w-12 h-12 bg-slate-50 dark:bg-slate-800 text-slate-400 hover:text-blue-500 rounded-xl transition-colors active:scale-95">
@@ -231,7 +215,13 @@ export default function HomePage() {
                     </div>
                     <h3 className="text-3xl font-bold mb-4 font-poppins">Practice Makes Perfect</h3>
                     <p className="text-blue-50 mb-8 max-w-[250px] leading-relaxed">Hear the native pronunciation and practice speaking out loud.</p>
-                    <button onClick={() => setIsWordFlipped(false)} className="px-6 py-3 bg-white text-blue-600 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow-lg active:scale-95">
+                    <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsWordFlipped(false);
+                        }} 
+                        className="px-6 py-3 bg-white text-blue-600 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow-lg active:scale-95"
+                    >
                       Back to Word
                     </button>
                   </motion.div>
