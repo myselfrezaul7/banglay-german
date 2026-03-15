@@ -51,7 +51,7 @@ export default function WordCard({ word, onFavorite, onLearn }: WordCardProps) {
 
                 <button
                     onClick={handleFavorite}
-                    className="p-2 rounded-lg bg-[var(--bg-tertiary)] hover:bg-[var(--primary)] hover:text-white transition-all opacity-0 group-hover:opacity-100 focus:opacity-100"
+                    className="p-2 rounded-lg bg-[var(--bg-tertiary)] hover:bg-[var(--primary)] hover:text-white transition-all opacity-100 md:opacity-0 group-hover:opacity-100 focus:opacity-100 active:scale-90"
                     aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
                 >
                     <svg

@@ -1,7 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { BookOpen, Sparkles, CheckCircle, Lightbulb, ChevronDown, Check, GraduationCap } from 'lucide-react';
+import ScrollReveal from '@/components/animations/ScrollReveal';
 
 interface GrammarGuide {
     id: string;
@@ -230,40 +232,42 @@ export default function GrammarPage() {
             </section>
 
             {/* Sticky Filter Bar */}
-            <section className="sticky top-20 z-40 px-6 py-4 animate-fadeInUp">
-                <div className="max-w-3xl mx-auto bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50 shadow-2xl shadow-slate-200/20 dark:shadow-none rounded-[1.5rem] p-2 flex flex-wrap justify-center gap-2 transition-all duration-300">
-                    <button
-                        onClick={() => setSelectedLevel('all')}
-                        className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 shadow-sm
+            <ScrollReveal direction="down" delay={0.2}>
+                <section className="sticky top-20 z-40 px-6 py-4">
+                    <div className="max-w-3xl mx-auto bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50 shadow-2xl shadow-slate-200/20 dark:shadow-none rounded-[1.5rem] p-2 flex flex-wrap justify-center gap-2 transition-all duration-300">
+                        <button
+                            onClick={() => setSelectedLevel('all')}
+                            className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 shadow-sm
                             ${selectedLevel === 'all'
-                                ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
-                                : 'bg-transparent text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
-                            }`
-                        }
-                    >
-                        All Levels
-                    </button>
-                    {['a1', 'a2', 'b1', 'b2'].map(level => {
-                        const colors = levelColors[level];
-                        const isActive = selectedLevel === level;
-                        return (
-                            <button
-                                key={level}
-                                onClick={() => setSelectedLevel(level)}
-                                className={`px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-300 shadow-sm flex items-center gap-2
+                                    ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
+                                    : 'bg-transparent text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                                }`
+                            }
+                        >
+                            All Levels
+                        </button>
+                        {['a1', 'a2', 'b1', 'b2'].map(level => {
+                            const colors = levelColors[level];
+                            const isActive = selectedLevel === level;
+                            return (
+                                <button
+                                    key={level}
+                                    onClick={() => setSelectedLevel(level)}
+                                    className={`px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-300 shadow-sm flex items-center gap-2
                                     ${isActive
-                                        ? `bg-gradient-to-r ${colors.from} ${colors.to} text-white shadow-lg`
-                                        : 'bg-transparent text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent'
-                                    }`
-                                }
-                            >
-                                {isActive && <Check className="w-4 h-4" />}
-                                {level}
-                            </button>
-                        );
-                    })}
-                </div>
-            </section>
+                                            ? `bg-gradient-to-r ${colors.from} ${colors.to} text-white shadow-lg`
+                                            : 'bg-transparent text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent'
+                                        }`
+                                    }
+                                >
+                                    {isActive && <Check className="w-4 h-4" />}
+                                    {level}
+                                </button>
+                            );
+                        })}
+                    </div>
+                </section>
+            </ScrollReveal>
 
             {/* Content Grid */}
             <div className="max-w-4xl mx-auto px-6 py-12 space-y-6 relative z-10">
@@ -272,116 +276,126 @@ export default function GrammarPage() {
                     const colors = levelColors[guide.level];
 
                     return (
-                        <div
-                            key={guide.id}
-                            style={{ animationDelay: `${Math.min(i * 0.05, 0.5)}s` }}
-                            className={`animate-fadeInUp overflow-hidden transition-all duration-500 rounded-[2rem] border bg-white/60 dark:bg-slate-900/60 backdrop-blur-md shadow-xl
+                        <ScrollReveal key={guide.id} direction="up" delay={Math.min(i * 0.05, 0.5)}>
+                            <div
+                                className={`overflow-hidden transition-all duration-500 rounded-[2rem] border bg-white/60 dark:bg-slate-900/60 backdrop-blur-md shadow-xl
                                 ${isExpanded
-                                    ? `border-${guide.level === 'a1' ? 'emerald' : guide.level === 'a2' ? 'blue' : guide.level === 'b1' ? 'orange' : 'purple'}-400/50 dark:border-${guide.level === 'a1' ? 'emerald' : guide.level === 'a2' ? 'blue' : guide.level === 'b1' ? 'orange' : 'purple'}-500/50 shadow-${guide.level === 'a1' ? 'emerald' : guide.level === 'a2' ? 'blue' : guide.level === 'b1' ? 'orange' : 'purple'}-900/10`
-                                    : 'border-slate-200/50 dark:border-slate-800/50 shadow-slate-200/20 dark:shadow-none hover:border-slate-300 dark:hover:border-slate-700 hover:bg-white dark:hover:bg-slate-900'
-                                }`}
-                        >
-                            {/* Summary / Header */}
-                            <button
-                                onClick={() => toggleExpand(guide.id)}
-                                className="w-full text-left p-6 md:p-8 flex items-center justify-between gap-6 group"
-                            >
-                                <div className="flex-1">
-                                    <div className="flex items-center gap-3 mb-3">
-                                        <span className={`px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-widest ${colors.bg} ${colors.text} border ${colors.border}`}>
-                                            {guide.level}
-                                        </span>
-                                    </div>
-                                    <h3 className={`text-2xl font-bold font-poppins mb-1 transition-colors ${isExpanded ? colors.text : 'text-slate-900 dark:text-white group-hover:text-blue-500'}`}>
-                                        {guide.title}
-                                    </h3>
-                                    <p className="font-bengali text-slate-500 dark:text-slate-400 font-medium">
-                                        {guide.titleBn}
-                                    </p>
-                                </div>
-                                <div className={`w-12 h-12 flex-shrink-0 rounded-2xl flex items-center justify-center transition-all duration-500
-                                    ${isExpanded
-                                        ? `bg-gradient-to-br ${colors.from} ${colors.to} text-white shadow-lg rotate-180`
-                                        : 'bg-slate-100 dark:bg-slate-800 text-slate-500 group-hover:bg-slate-200 dark:group-hover:bg-slate-700'
+                                        ? `border-${guide.level === 'a1' ? 'emerald' : guide.level === 'a2' ? 'blue' : guide.level === 'b1' ? 'orange' : 'purple'}-400/50 dark:border-${guide.level === 'a1' ? 'emerald' : guide.level === 'a2' ? 'blue' : guide.level === 'b1' ? 'orange' : 'purple'}-500/50 shadow-${guide.level === 'a1' ? 'emerald' : guide.level === 'a2' ? 'blue' : guide.level === 'b1' ? 'orange' : 'purple'}-900/10`
+                                        : 'border-slate-200/50 dark:border-slate-800/50 shadow-slate-200/20 dark:shadow-none hover:border-slate-300 dark:hover:border-slate-700 hover:bg-white dark:hover:bg-slate-900'
                                     }`}
+                            >
+                                {/* Summary / Header */}
+                                <button
+                                    onClick={() => toggleExpand(guide.id)}
+                                    className="w-full text-left p-6 md:p-8 flex items-center justify-between gap-6 group"
                                 >
-                                    <ChevronDown className="w-6 h-6" />
-                                </div>
-                            </button>
-
-                            {/* Expanded Content */}
-                            <div className={`transition-all duration-500 ease-in-out ${isExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0 overflow-hidden'}`}>
-                                <div className="px-6 pb-8 md:px-8 md:pb-10 pt-2 border-t border-slate-100 dark:border-slate-800/50">
-
-                                    <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed mb-8">
-                                        {guide.description}
-                                    </p>
-
-                                    {/* Structure / Formula */}
-                                    {guide.structure && (
-                                        <div className="mb-8 relative overflow-hidden rounded-2xl p-6 border border-indigo-100 dark:border-indigo-800/50 bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-900/20 dark:to-blue-900/10">
-                                            <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
-                                                <Sparkles className="w-16 h-16 text-indigo-500" />
-                                            </div>
-                                            <div className="flex items-center gap-2 text-xs uppercase font-bold text-indigo-600 dark:text-indigo-400 tracking-widest mb-3">
-                                                <GraduationCap className="w-4 h-4" />
-                                                Formula
-                                            </div>
-                                            <code className="text-xl md:text-2xl font-mono font-bold text-indigo-900 dark:text-indigo-200">
-                                                {guide.structure}
-                                            </code>
+                                    <div className="flex-1">
+                                        <div className="flex items-center gap-3 mb-3">
+                                            <span className={`px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-widest ${colors.bg} ${colors.text} border ${colors.border}`}>
+                                                {guide.level}
+                                            </span>
                                         </div>
-                                    )}
+                                        <h3 className={`text-2xl font-bold font-poppins mb-1 transition-colors ${isExpanded ? colors.text : 'text-slate-900 dark:text-white group-hover:text-blue-500'}`}>
+                                            {guide.title}
+                                        </h3>
+                                        <p className="font-bengali text-slate-500 dark:text-slate-400 font-medium">
+                                            {guide.titleBn}
+                                        </p>
+                                    </div>
+                                    <div className={`w-12 h-12 flex-shrink-0 rounded-2xl flex items-center justify-center transition-all duration-500
+                                    ${isExpanded
+                                            ? `bg-gradient-to-br ${colors.from} ${colors.to} text-white shadow-lg rotate-180`
+                                            : 'bg-slate-100 dark:bg-slate-800 text-slate-500 group-hover:bg-slate-200 dark:group-hover:bg-slate-700'
+                                        }`}
+                                    >
+                                        <ChevronDown className="w-6 h-6" />
+                                    </div>
+                                </button>
 
-                                    <div className="grid md:grid-cols-2 gap-8 mb-8">
-                                        {/* Key Points */}
-                                        <div className="space-y-4">
-                                            <div className="text-xs uppercase font-bold text-slate-400 tracking-widest flex items-center gap-2">
-                                                How it works
-                                            </div>
-                                            <ul className="space-y-3">
-                                                {guide.points.map((point, idx) => (
-                                                    <li key={idx} className="flex gap-3 text-slate-700 dark:text-slate-300">
-                                                        <CheckCircle className={`w-5 h-5 flex-shrink-0 mt-0.5 ${colors.text}`} />
-                                                        <span className="leading-relaxed">{point}</span>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </div>
+                                {/* Expanded Content */}
+                                <AnimatePresence initial={false}>
+                                    {isExpanded && (
+                                        <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: 'auto', opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            transition={{ duration: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
+                                            className="overflow-hidden"
+                                        >
+                                            <div className="px-6 pb-8 md:px-8 md:pb-10 pt-2 border-t border-slate-100 dark:border-slate-800/50">
 
-                                        {/* Pro Tip */}
-                                        {guide.tip && (
-                                            <div className="h-full rounded-2xl p-6 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/10 border border-amber-200/50 dark:border-amber-800/50">
-                                                <div className="flex items-center gap-2 text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-widest mb-3">
-                                                    <Lightbulb className="w-4 h-4" />
-                                                    Pro Tip
-                                                </div>
-                                                <p className="text-slate-700 dark:text-slate-300 italic leading-relaxed">
-                                                    "{guide.tip}"
+                                                <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed mb-8">
+                                                    {guide.description}
                                                 </p>
-                                            </div>
-                                        )}
-                                    </div>
 
-                                    {/* Examples */}
-                                    <div>
-                                        <div className="text-xs uppercase font-bold text-slate-400 tracking-widest mb-4">Examples in context</div>
-                                        <div className="grid sm:grid-cols-2 gap-4">
-                                            {guide.examples.map((ex, i) => (
-                                                <div key={i} className="group p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 transition-colors shadow-sm">
-                                                    <div className="font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                                                        "{ex.german}"
+                                                {/* Structure / Formula */}
+                                                {guide.structure && (
+                                                    <div className="mb-8 relative overflow-hidden rounded-2xl p-6 border border-indigo-100 dark:border-indigo-800/50 bg-gradient-to-br from-indigo-50 to-blue-50 dark:from-indigo-900/20 dark:to-blue-900/10">
+                                                        <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
+                                                            <Sparkles className="w-16 h-16 text-indigo-500" />
+                                                        </div>
+                                                        <div className="flex items-center gap-2 text-xs uppercase font-bold text-indigo-600 dark:text-indigo-400 tracking-widest mb-3">
+                                                            <GraduationCap className="w-4 h-4" />
+                                                            Formula
+                                                        </div>
+                                                        <code className="text-xl md:text-2xl font-mono font-bold text-indigo-900 dark:text-indigo-200">
+                                                            {guide.structure}
+                                                        </code>
                                                     </div>
-                                                    <div className="text-slate-600 dark:text-slate-400 text-sm mb-2">{ex.english}</div>
-                                                    <div className="font-bengali text-sm text-slate-500 dark:text-slate-500 leading-relaxed shadow-sm font-medium">{ex.bangla}</div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    </div>
+                                                )}
 
-                                </div>
+                                                <div className="grid md:grid-cols-2 gap-8 mb-8">
+                                                    {/* Key Points */}
+                                                    <div className="space-y-4">
+                                                        <div className="text-xs uppercase font-bold text-slate-400 tracking-widest flex items-center gap-2">
+                                                            How it works
+                                                        </div>
+                                                        <ul className="space-y-3">
+                                                            {guide.points.map((point, idx) => (
+                                                                <li key={idx} className="flex gap-3 text-slate-700 dark:text-slate-300">
+                                                                    <CheckCircle className={`w-5 h-5 flex-shrink-0 mt-0.5 ${colors.text}`} />
+                                                                    <span className="leading-relaxed">{point}</span>
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </div>
+
+                                                    {/* Pro Tip */}
+                                                    {guide.tip && (
+                                                        <div className="h-full rounded-2xl p-6 bg-gradient-to-br from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/10 border border-amber-200/50 dark:border-amber-800/50">
+                                                            <div className="flex items-center gap-2 text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-widest mb-3">
+                                                                <Lightbulb className="w-4 h-4" />
+                                                                Pro Tip
+                                                            </div>
+                                                            <p className="text-slate-700 dark:text-slate-300 italic leading-relaxed">
+                                                                "{guide.tip}"
+                                                            </p>
+                                                        </div>
+                                                    )}
+                                                </div>
+
+                                                {/* Examples */}
+                                                <div>
+                                                    <div className="text-xs uppercase font-bold text-slate-400 tracking-widest mb-4">Examples in context</div>
+                                                    <div className="grid sm:grid-cols-2 gap-4">
+                                                        {guide.examples.map((ex, i) => (
+                                                            <div key={i} className="group p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 transition-colors shadow-sm">
+                                                                <div className="font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                                                    "{ex.german}"
+                                                                </div>
+                                                                <div className="text-slate-600 dark:text-slate-400 text-sm mb-2">{ex.english}</div>
+                                                                <div className="font-bengali text-sm text-slate-500 dark:text-slate-500 leading-relaxed shadow-sm font-medium">{ex.bangla}</div>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
                             </div>
-                        </div>
+                        </ScrollReveal>
                     );
                 })}
             </div>
@@ -389,6 +403,6 @@ export default function GrammarPage() {
             <div className="text-center pb-12 opacity-50 font-bold uppercase tracking-widest text-xs text-slate-500">
                 More guides added continuously
             </div>
-        </div>
+        </div >
     );
 }

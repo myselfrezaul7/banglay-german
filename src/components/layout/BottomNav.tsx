@@ -16,7 +16,7 @@ export default function BottomNav() {
     ];
 
     return (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-3rem)] max-w-sm z-50 md:hidden pointer-events-none">
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-md z-50 md:hidden pointer-events-none">
             <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50 rounded-[2rem] shadow-2xl shadow-blue-900/10 pointer-events-auto p-2">
                 <div className="flex justify-around items-center h-14">
                     {navItems.map((item) => {
@@ -27,7 +27,12 @@ export default function BottomNav() {
                             <Link
                                 key={item.href}
                                 href={item.href}
-                                className={`relative flex flex-col items-center justify-center w-full h-full rounded-2xl transition-all duration-300 ${active
+                                onClick={() => {
+                                    if (typeof window !== 'undefined' && window.navigator && window.navigator.vibrate) {
+                                        window.navigator.vibrate(30);
+                                    }
+                                }}
+                                className={`relative flex flex-col items-center justify-center w-full h-full rounded-2xl transition-all duration-300 active:scale-90 active:bg-blue-50/50 dark:active:bg-blue-900/10 ${active
                                     ? 'text-blue-600 dark:text-blue-400'
                                     : 'text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300'
                                     }`}

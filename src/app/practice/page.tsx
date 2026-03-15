@@ -1,10 +1,12 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { allWords } from '@/data/vocabulary';
 import { Word, Level } from '@/types';
 import { useAuth } from '@/contexts/AuthContext';
 import PronunciationCoach from '@/components/shared/PronunciationCoach';
+import ScrollReveal from '@/components/animations/ScrollReveal';
 import { Zap, Timer, Trophy, ArrowRight, RefreshCcw, Medal } from 'lucide-react';
 
 type QuizMode = 'de-to-en' | 'en-to-de' | 'de-to-bn' | 'bn-to-de' | 'speaking';
@@ -167,107 +169,111 @@ export default function PracticePage() {
             <section className="max-w-3xl mx-auto px-4 relative z-10 pt-8">
                 {!quizStarted ? (
                     /* Quiz Setup Dashboard */
-                    <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl rounded-[2.5rem] p-6 md:p-10 border border-slate-200/50 dark:border-slate-700/50 shadow-2xl shadow-slate-200/50 dark:shadow-none animate-fadeInUp">
+                    <ScrollReveal direction="up" delay={0.1}>
+                        <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl rounded-[2.5rem] p-6 md:p-10 border border-slate-200/50 dark:border-slate-700/50 shadow-2xl shadow-slate-200/50 dark:shadow-none">
 
-                        {/* Level Selection */}
-                        <div className="mb-10">
-                            <div className="flex items-center gap-3 mb-4">
-                                <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold">1</div>
-                                <h3 className="text-xl font-bold text-slate-900 dark:text-white font-poppins">Select Level</h3>
+                            {/* Level Selection */}
+                            <div className="mb-10">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold">1</div>
+                                    <h3 className="text-xl font-bold text-slate-900 dark:text-white font-poppins">Select Level</h3>
+                                </div>
+                                <div className="flex flex-wrap gap-3">
+                                    {['all', 'a1', 'a2', 'b1', 'b2'].map((level) => (
+                                        <button
+                                            key={level}
+                                            onClick={() => setSelectedLevel(level as Level | 'all')}
+                                            className={`px-6 py-3 border rounded-2xl font-bold text-sm transition-all duration-300 hover:-translate-y-1 ${selectedLevel === level
+                                                ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/30'
+                                                : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-blue-400'
+                                                }`}
+                                        >
+                                            {level === 'all' ? 'Mixed Levels' : `Level ${level.toUpperCase()}`}
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
-                            <div className="flex flex-wrap gap-3">
-                                {['all', 'a1', 'a2', 'b1', 'b2'].map((level) => (
-                                    <button
-                                        key={level}
-                                        onClick={() => setSelectedLevel(level as Level | 'all')}
-                                        className={`px-6 py-3 border rounded-2xl font-bold text-sm transition-all duration-300 hover:-translate-y-1 ${selectedLevel === level
-                                            ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/30'
-                                            : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-blue-400'
-                                            }`}
-                                    >
-                                        {level === 'all' ? 'Mixed Levels' : `Level ${level.toUpperCase()}`}
-                                    </button>
-                                ))}
+
+                            {/* Quiz Mode Selection */}
+                            <div className="mb-10">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-900/50 flex items-center justify-center text-orange-600 dark:text-orange-400 font-bold">2</div>
+                                    <h3 className="text-xl font-bold text-slate-900 dark:text-white font-poppins">Select Challenge</h3>
+                                </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    {[
+                                        { mode: 'de-to-en', label: 'German → English', icon: '🇩🇪' },
+                                        { mode: 'en-to-de', label: 'English → German', icon: '🇬🇧' },
+                                        { mode: 'de-to-bn', label: 'German → বাংলা', icon: '🇧🇩' },
+                                        { mode: 'bn-to-de', label: 'বাংলা → German', icon: '🔄' },
+                                        { mode: 'speaking', label: 'Speaking', icon: '🎙️' },
+                                    ].map(({ mode, label, icon }) => (
+                                        <button
+                                            key={mode}
+                                            onClick={() => setQuizMode(mode as QuizMode)}
+                                            className={`p-5 rounded-[1.5rem] border-2 text-left transition-all duration-300 hover:-translate-y-1 ${quizMode === mode
+                                                ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-500 text-orange-700 dark:text-orange-300 shadow-lg shadow-orange-500/10'
+                                                : 'bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-orange-300'
+                                                }`}
+                                        >
+                                            <div className="text-2xl mb-2">{icon}</div>
+                                            <div className="font-bold">{label}</div>
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
+
+                            {/* Start Button */}
+                            <button
+                                onClick={startQuiz}
+                                className="w-full relative group overflow-hidden rounded-[1.5rem] bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-xl py-5 shadow-[0_6px_0_0] shadow-slate-700 dark:shadow-slate-300 active:shadow-[0_0px_0_0] active:translate-y-1.5 transition-all outline-none"
+                            >
+                                <span className="relative z-10 flex items-center justify-center gap-2 font-poppins tracking-wide">
+                                    <Zap className="w-6 h-6" /> Start Quiz
+                                </span>
+                                <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-blue-600 to-teal-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
+                            </button>
                         </div>
-
-                        {/* Quiz Mode Selection */}
-                        <div className="mb-10">
-                            <div className="flex items-center gap-3 mb-4">
-                                <div className="w-8 h-8 rounded-full bg-orange-100 dark:bg-orange-900/50 flex items-center justify-center text-orange-600 dark:text-orange-400 font-bold">2</div>
-                                <h3 className="text-xl font-bold text-slate-900 dark:text-white font-poppins">Select Challenge</h3>
-                            </div>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                                {[
-                                    { mode: 'de-to-en', label: 'German → English', icon: '🇩🇪' },
-                                    { mode: 'en-to-de', label: 'English → German', icon: '🇬🇧' },
-                                    { mode: 'de-to-bn', label: 'German → বাংলা', icon: '🇧🇩' },
-                                    { mode: 'bn-to-de', label: 'বাংলা → German', icon: '🔄' },
-                                    { mode: 'speaking', label: 'Speaking', icon: '🎙️' },
-                                ].map(({ mode, label, icon }) => (
-                                    <button
-                                        key={mode}
-                                        onClick={() => setQuizMode(mode as QuizMode)}
-                                        className={`p-5 rounded-[1.5rem] border-2 text-left transition-all duration-300 hover:-translate-y-1 ${quizMode === mode
-                                            ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-500 text-orange-700 dark:text-orange-300 shadow-lg shadow-orange-500/10'
-                                            : 'bg-white dark:bg-slate-800 border-slate-100 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-orange-300'
-                                            }`}
-                                    >
-                                        <div className="text-2xl mb-2">{icon}</div>
-                                        <div className="font-bold">{label}</div>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-
-                        {/* Start Button */}
-                        <button
-                            onClick={startQuiz}
-                            className="w-full relative group overflow-hidden rounded-[1.5rem] bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-xl py-5 shadow-[0_6px_0_0] shadow-slate-700 dark:shadow-slate-300 active:shadow-[0_0px_0_0] active:translate-y-1.5 transition-all outline-none"
-                        >
-                            <span className="relative z-10 flex items-center justify-center gap-2 font-poppins tracking-wide">
-                                <Zap className="w-6 h-6" /> Start Quiz
-                            </span>
-                            <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-blue-600 to-teal-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0"></div>
-                        </button>
-                    </div>
+                    </ScrollReveal>
                 ) : quizComplete ? (
                     /* Quiz Complete Dashboard */
-                    <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl rounded-[3rem] p-8 md:p-12 border border-slate-200/50 dark:border-slate-700/50 shadow-2xl text-center animate-fadeInUp">
-                        <div className="relative w-32 h-32 mx-auto mb-6">
-                            <div className="absolute inset-0 bg-yellow-400/20 blur-2xl rounded-full"></div>
-                            <div className="relative w-full h-full bg-gradient-to-br from-yellow-300 to-orange-500 rounded-[2rem] flex items-center justify-center shadow-lg transform rotate-3 hover:rotate-12 transition-transform duration-500">
-                                <Medal className="w-16 h-16 text-white" />
-                            </div>
-                        </div>
-
-                        <h2 className="text-4xl font-extrabold text-slate-900 dark:text-white font-poppins mb-2">Quiz Complete!</h2>
-                        <p className="text-slate-500 dark:text-slate-400 font-bengali text-lg mb-8">দারুণ অনুশীলন হয়েছে!</p>
-
-                        <div className="grid grid-cols-2 gap-4 max-w-md mx-auto mb-10">
-                            <div className="bg-slate-50 dark:bg-slate-800/50 rounded-[1.5rem] p-6 border border-slate-100 dark:border-slate-700">
-                                <div className="text-sm text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest mb-1">Score</div>
-                                <div className={`text-4xl font-black ${score >= 8 ? 'text-emerald-500' : score >= 5 ? 'text-orange-500' : 'text-rose-500'}`}>
-                                    {score}/10
+                    <ScrollReveal direction="up" delay={0.1}>
+                        <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl rounded-[3rem] p-8 md:p-12 border border-slate-200/50 dark:border-slate-700/50 shadow-2xl text-center">
+                            <div className="relative w-32 h-32 mx-auto mb-6">
+                                <div className="absolute inset-0 bg-yellow-400/20 blur-2xl rounded-full"></div>
+                                <div className="relative w-full h-full bg-gradient-to-br from-yellow-300 to-orange-500 rounded-[2rem] flex items-center justify-center shadow-lg transform rotate-3 hover:rotate-12 transition-transform duration-500">
+                                    <Medal className="w-16 h-16 text-white" />
                                 </div>
                             </div>
-                            <div className="bg-amber-50 dark:bg-amber-900/20 rounded-[1.5rem] p-6 border border-amber-100 dark:border-amber-900/50">
-                                <div className="text-sm text-amber-600 dark:text-amber-500 font-bold uppercase tracking-widest mb-1">XP Earned</div>
-                                <div className="text-4xl font-black text-amber-500">
-                                    +{score * (quizMode === 'speaking' ? 20 : 10) + 50}
+
+                            <h2 className="text-4xl font-extrabold text-slate-900 dark:text-white font-poppins mb-2">Quiz Complete!</h2>
+                            <p className="text-slate-500 dark:text-slate-400 font-bengali text-lg mb-8">দারুণ অনুশীলন হয়েছে!</p>
+
+                            <div className="grid grid-cols-2 gap-4 max-w-md mx-auto mb-10">
+                                <div className="bg-slate-50 dark:bg-slate-800/50 rounded-[1.5rem] p-6 border border-slate-100 dark:border-slate-700">
+                                    <div className="text-sm text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest mb-1">Score</div>
+                                    <div className={`text-4xl font-black ${score >= 8 ? 'text-emerald-500' : score >= 5 ? 'text-orange-500' : 'text-rose-500'}`}>
+                                        {score}/10
+                                    </div>
+                                </div>
+                                <div className="bg-amber-50 dark:bg-amber-900/20 rounded-[1.5rem] p-6 border border-amber-100 dark:border-amber-900/50">
+                                    <div className="text-sm text-amber-600 dark:text-amber-500 font-bold uppercase tracking-widest mb-1">XP Earned</div>
+                                    <div className="text-4xl font-black text-amber-500">
+                                        +{score * (quizMode === 'speaking' ? 20 : 10) + 50}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-                            <button onClick={startQuiz} className="flex-1 flex justify-center items-center gap-2 py-4 rounded-2xl font-bold text-lg shadow-[0_4px_0_0] active:shadow-[0_0px_0_0] active:translate-y-1 transition-all bg-blue-600 text-white shadow-blue-800 hover:bg-blue-500">
-                                <RefreshCcw className="w-5 h-5" /> Play Again
-                            </button>
-                            <button onClick={resetQuiz} className="flex-1 py-4 rounded-2xl font-bold text-lg shadow-[0_4px_0_0] active:shadow-[0_0px_0_0] active:translate-y-1 transition-all bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shadow-slate-300 dark:shadow-slate-950 hover:bg-slate-300 dark:hover:bg-slate-700">
-                                Change Settings
-                            </button>
+                            <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
+                                <button onClick={startQuiz} className="flex-1 flex justify-center items-center gap-2 py-4 rounded-2xl font-bold text-lg shadow-[0_4px_0_0] active:shadow-[0_0px_0_0] active:translate-y-1 transition-all bg-blue-600 text-white shadow-blue-800 hover:bg-blue-500">
+                                    <RefreshCcw className="w-5 h-5" /> Play Again
+                                </button>
+                                <button onClick={resetQuiz} className="flex-1 py-4 rounded-2xl font-bold text-lg shadow-[0_4px_0_0] active:shadow-[0_0px_0_0] active:translate-y-1 transition-all bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shadow-slate-300 dark:shadow-slate-950 hover:bg-slate-300 dark:hover:bg-slate-700">
+                                    Change Settings
+                                </button>
+                            </div>
                         </div>
-                    </div>
+                    </ScrollReveal>
                 ) : (
                     /* Active Quiz Board */
                     <div className="animate-slideInRight">
@@ -300,89 +306,100 @@ export default function PracticePage() {
                         </div>
 
                         {/* Quiz Question Card */}
-                        <div className={`bg-white/90 dark:bg-slate-900/90 backdrop-blur-2xl rounded-[2.5rem] p-6 md:p-10 border shadow-2xl transition-all duration-500 ${showResult
-                            ? selectedAnswer === questions[currentQuestion]?.correct || selectedAnswer === null
-                                ? 'border-emerald-400 shadow-emerald-500/20'
-                                : 'border-rose-400 shadow-rose-500/20'
-                            : 'border-slate-200/50 dark:border-slate-700/50 shadow-slate-200/50 dark:shadow-none'
-                            }`}>
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={currentQuestion}
+                                initial={{ opacity: 0, x: 50 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -50 }}
+                                transition={{ duration: 0.3, ease: "easeInOut" }}
+                                className={`bg-white/90 dark:bg-slate-900/90 backdrop-blur-2xl rounded-[2.5rem] p-6 md:p-10 border shadow-2xl transition-colors duration-500 ${showResult
+                                    ? selectedAnswer === questions[currentQuestion]?.correct || selectedAnswer === null
+                                        ? 'border-emerald-400 shadow-emerald-500/20'
+                                        : 'border-rose-400 shadow-rose-500/20'
+                                    : 'border-slate-200/50 dark:border-slate-700/50 shadow-slate-200/50 dark:shadow-none'
+                                    }`}
+                            >
 
-                            {/* The Question prompt */}
-                            <div className="mb-10 text-center md:text-left">
-                                <div className="inline-flex items-center gap-2 text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">
-                                    <span className="w-8 h-[2px] bg-slate-200 dark:bg-slate-700 rounded-full inline-block"></span>
-                                    {quizMode === 'speaking' ? 'Speak Aloud' : 'Translate'}
+                                {/* The Question prompt */}
+                                <div className="mb-10 text-center md:text-left">
+                                    <div className="inline-flex items-center gap-2 text-sm font-bold text-slate-400 uppercase tracking-widest mb-3">
+                                        <span className="w-8 h-[2px] bg-slate-200 dark:bg-slate-700 rounded-full inline-block"></span>
+                                        {quizMode === 'speaking' ? 'Speak Aloud' : 'Translate'}
+                                    </div>
+                                    <h3 className={`text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight font-poppins mb-2 ${quizMode.startsWith('bn') ? 'font-bengali' : ''}`}>
+                                        {questions[currentQuestion]?.question}
+                                    </h3>
+                                    {quizMode === 'speaking' && (
+                                        <p className="text-xl text-slate-500 mt-2 font-bengali font-medium">
+                                            ({questions[currentQuestion]?.word.bangla})
+                                        </p>
+                                    )}
                                 </div>
-                                <h3 className={`text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white leading-tight font-poppins mb-2 ${quizMode.startsWith('bn') ? 'font-bengali' : ''}`}>
-                                    {questions[currentQuestion]?.question}
-                                </h3>
-                                {quizMode === 'speaking' && (
-                                    <p className="text-xl text-slate-500 mt-2 font-bengali font-medium">
-                                        ({questions[currentQuestion]?.word.bangla})
-                                    </p>
-                                )}
-                            </div>
 
-                            {/* Answer Options */}
-                            {quizMode === 'speaking' ? (
-                                <PronunciationCoach
-                                    targetText={questions[currentQuestion]?.correct}
-                                    onSuccess={handleSpeakingSuccess}
-                                />
-                            ) : (
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                                    {questions[currentQuestion]?.options.map((option, index) => {
-                                        const isCorrectAnswer = option === questions[currentQuestion].correct;
-                                        const isSelected = option === selectedAnswer;
+                                {/* Answer Options */}
+                                {quizMode === 'speaking' ? (
+                                    <PronunciationCoach
+                                        targetText={questions[currentQuestion]?.correct}
+                                        onSuccess={handleSpeakingSuccess}
+                                    />
+                                ) : (
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                                        {questions[currentQuestion]?.options.map((option, index) => {
+                                            const isCorrectAnswer = option === questions[currentQuestion].correct;
+                                            const isSelected = option === selectedAnswer;
 
-                                        let btnClass = "w-full text-left px-6 py-5 rounded-[1.5rem] font-bold text-lg border-2 shadow-[0_4px_0_0] transition-all origin-center ";
+                                            let btnClass = "w-full text-left px-6 py-5 rounded-[1.5rem] font-bold text-lg border-2 shadow-[0_4px_0_0] transition-all origin-center ";
 
-                                        if (showResult) {
-                                            if (isCorrectAnswer) {
-                                                btnClass += "bg-emerald-500 border-emerald-600 text-white shadow-emerald-700 transform scale-[1.02] z-10";
-                                            } else if (isSelected) {
-                                                btnClass += "bg-rose-500 border-rose-600 text-white shadow-none translate-y-1 opacity-80";
+                                            if (showResult) {
+                                                if (isCorrectAnswer) {
+                                                    btnClass += "bg-emerald-500 border-emerald-600 text-white shadow-emerald-700 transform scale-[1.02] z-10";
+                                                } else if (isSelected) {
+                                                    btnClass += "bg-rose-500 border-rose-600 text-white shadow-none translate-y-1 opacity-80";
+                                                } else {
+                                                    btnClass += "bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-600 shadow-none opacity-50";
+                                                }
                                             } else {
-                                                btnClass += "bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-400 dark:text-slate-600 shadow-none opacity-50";
+                                                btnClass += "bg-white dark:bg-slate-800 border-slate-200/80 dark:border-slate-700 text-slate-700 dark:text-slate-200 shadow-slate-200 dark:shadow-slate-950 active:shadow-[0_0px_0_0] active:translate-y-1 hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400";
                                             }
-                                        } else {
-                                            btnClass += "bg-white dark:bg-slate-800 border-slate-200/80 dark:border-slate-700 text-slate-700 dark:text-slate-200 shadow-slate-200 dark:shadow-slate-950 active:shadow-[0_0px_0_0] active:translate-y-1 hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400";
-                                        }
 
-                                        return (
+                                            return (
+                                                <button
+                                                    key={index}
+                                                    onClick={() => handleAnswer(option)}
+                                                    disabled={showResult}
+                                                    className={btnClass + (quizMode.endsWith('bn') || quizMode.startsWith('bn') ? ' font-bengali' : '')}
+                                                >
+                                                    {option}
+                                                    {showResult && isCorrectAnswer && <span className="float-right">💪</span>}
+                                                    {showResult && isSelected && !isCorrectAnswer && <span className="float-right">❌</span>}
+                                                </button>
+                                            );
+                                        })}
+                                    </div>
+                                )}
+
+                                {/* Action Area (Next Button) */}
+                                {showResult && (
+                                    <ScrollReveal direction="up" delay={0}>
+                                        <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800">
                                             <button
-                                                key={index}
-                                                onClick={() => handleAnswer(option)}
-                                                disabled={showResult}
-                                                className={btnClass + (quizMode.endsWith('bn') || quizMode.startsWith('bn') ? ' font-bengali' : '')}
-                                            >
-                                                {option}
-                                                {showResult && isCorrectAnswer && <span className="float-right">💪</span>}
-                                                {showResult && isSelected && !isCorrectAnswer && <span className="float-right">❌</span>}
-                                            </button>
-                                        );
-                                    })}
-                                </div>
-                            )}
-
-                            {/* Action Area (Next Button) */}
-                            {showResult && (
-                                <div className="mt-8 pt-6 border-t border-slate-100 dark:border-slate-800 animate-fadeInUp">
-                                    <button
-                                        onClick={handleNext}
-                                        className={`w-full flex items-center justify-center gap-2 rounded-2xl font-bold text-xl py-5 shadow-[0_6px_0_0] active:shadow-[0_0px_0_0] active:translate-y-1.5 transition-all text-white
+                                                onClick={handleNext}
+                                                className={`w-full flex items-center justify-center gap-2 rounded-2xl font-bold text-xl py-5 shadow-[0_6px_0_0] active:shadow-[0_0px_0_0] active:translate-y-1.5 transition-all text-white
                                             ${selectedAnswer === questions[currentQuestion]?.correct || selectedAnswer === null
-                                                ? 'bg-emerald-600 shadow-emerald-800 hover:bg-emerald-500'
-                                                : 'bg-rose-600 shadow-rose-800 hover:bg-rose-500'
-                                            }
+                                                        ? 'bg-emerald-600 shadow-emerald-800 hover:bg-emerald-500'
+                                                        : 'bg-rose-600 shadow-rose-800 hover:bg-rose-500'
+                                                    }
                                         `}
-                                    >
-                                        {currentQuestion < questions.length - 1 ? 'Next Question' : 'View Results'}
-                                        <ArrowRight className="w-6 h-6" />
-                                    </button>
-                                </div>
-                            )}
-                        </div>
+                                            >
+                                                {currentQuestion < questions.length - 1 ? 'Next Question' : 'View Results'}
+                                                <ArrowRight className="w-6 h-6" />
+                                            </button>
+                                        </div>
+                                    </ScrollReveal>
+                                )}
+                            </motion.div>
+                        </AnimatePresence>
                     </div>
                 )}
             </section>

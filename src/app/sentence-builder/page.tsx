@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { challenges, SentenceChallenge } from '@/data/sentence-challenges';
-import { HelpCircle, RefreshCcw, CheckCircle2, XCircle, ArrowRight, Trophy } from 'lucide-react';
+import { CheckCircle2, XCircle, ArrowRight, RefreshCcw, Sparkles, Wand2, Crown, Trophy, HelpCircle } from 'lucide-react';
+import ScrollReveal from '@/components/animations/ScrollReveal';
 
 export default function SentenceBuilderPage() {
     const [mounted, setMounted] = useState(false);
@@ -214,33 +215,35 @@ export default function SentenceBuilderPage() {
                                 <div className="absolute inset-0 h-full w-full bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-0"></div>
                             </button>
                         ) : (
-                            <div className="animate-fadeInUp">
-                                {isCorrect ? (
-                                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800/50 mb-4">
-                                        <div className="flex items-center gap-3 text-emerald-700 dark:text-emerald-400 font-bold text-lg">
-                                            <CheckCircle2 className="w-8 h-8" />
-                                            Excellent! +10 XP
+                            <ScrollReveal direction="up" delay={0.1}>
+                                <div>
+                                    {isCorrect ? (
+                                        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800/50 mb-4">
+                                            <div className="flex items-center gap-3 text-emerald-700 dark:text-emerald-400 font-bold text-lg">
+                                                <CheckCircle2 className="w-8 h-8" />
+                                                Excellent! +10 XP
+                                            </div>
                                         </div>
-                                    </div>
-                                ) : (
-                                    <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800/50 mb-4">
-                                        <div className="flex flex-col text-rose-700 dark:text-rose-400">
-                                            <div className="flex items-center gap-2 font-bold text-lg mb-1"><XCircle className="w-6 h-6" /> Incorrect</div>
-                                            <span className="text-sm font-medium opacity-80 pl-8">Tap arrow to try again or see hint.</span>
+                                    ) : (
+                                        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800/50 mb-4">
+                                            <div className="flex flex-col text-rose-700 dark:text-rose-400">
+                                                <div className="flex items-center gap-2 font-bold text-lg mb-1"><XCircle className="w-6 h-6" /> Incorrect</div>
+                                                <span className="text-sm font-medium opacity-80 pl-8">Tap arrow to try again or see hint.</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                )}
+                                    )}
 
-                                <button onClick={isCorrect ? nextChallenge : resetCurrent}
-                                    className={`w-full flex items-center justify-center gap-2 rounded-2xl font-bold text-xl py-5 shadow-[0_6px_0_0] active:shadow-[0_0px_0_0] active:translate-y-1.5 transition-all
+                                    <button onClick={isCorrect ? nextChallenge : resetCurrent}
+                                        className={`w-full flex items-center justify-center gap-2 rounded-2xl font-bold text-xl py-5 shadow-[0_6px_0_0] active:shadow-[0_0px_0_0] active:translate-y-1.5 transition-all
                                         ${isCorrect
-                                            ? 'bg-emerald-600 text-white shadow-emerald-800 hover:bg-emerald-500'
-                                            : 'bg-rose-600 text-white shadow-rose-800 hover:bg-rose-500'
-                                        }`}>
-                                    {isCorrect ? 'Next Challenge' : 'Try Again'}
-                                    <ArrowRight className="w-6 h-6" />
-                                </button>
-                            </div>
+                                                ? 'bg-emerald-600 text-white shadow-emerald-800 hover:bg-emerald-500'
+                                                : 'bg-rose-600 text-white shadow-rose-800 hover:bg-rose-500'
+                                            }`}>
+                                        {isCorrect ? 'Next Challenge' : 'Try Again'}
+                                        <ArrowRight className="w-6 h-6" />
+                                    </button>
+                                </div>
+                            </ScrollReveal>
                         )}
                     </div>
 

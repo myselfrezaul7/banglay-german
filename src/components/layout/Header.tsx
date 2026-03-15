@@ -52,8 +52,8 @@ export default function Header() {
         <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'py-2 md:py-3' : 'py-4 md:py-6'}`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
                 <div className={`flex items-center justify-between transition-all duration-500 rounded-[2rem] px-4 md:px-6 h-16 md:h-20 ${isScrolled
-                        ? 'bg-white/60 dark:bg-slate-900/60 backdrop-blur-[20px] shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)] border border-white/50 dark:border-slate-800/50'
-                        : 'bg-transparent'
+                    ? 'bg-white/60 dark:bg-slate-900/60 backdrop-blur-[20px] shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)] border border-white/50 dark:border-slate-800/50'
+                    : 'bg-transparent'
                     }`}>
 
                     {/* Logo Area */}
@@ -67,7 +67,7 @@ export default function Header() {
                                 className="object-cover relative z-10"
                             />
                         </div>
-                        <span className="text-xl md:text-2xl font-extrabold text-slate-900 dark:text-white font-poppins tracking-tight flex items-center gap-1.5">
+                        <span className={`text-xl md:text-2xl font-extrabold text-slate-900 dark:text-white font-poppins tracking-tight flex items-center transition-all duration-500 overflow-hidden whitespace-nowrap ${isScrolled ? 'max-w-0 opacity-0 md:max-w-[200px] md:opacity-100 md:gap-1.5' : 'max-w-[300px] opacity-100 gap-1.5'}`}>
                             Banglay<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-teal-500">German</span>
                         </span>
                     </Link>
@@ -81,8 +81,8 @@ export default function Header() {
                                     key={link.href}
                                     href={link.href}
                                     className={`relative px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 font-poppins overflow-hidden ${isActive
-                                            ? 'text-blue-700 dark:text-blue-300 bg-white dark:bg-slate-700 shadow-sm'
-                                            : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-700/50'
+                                        ? 'text-blue-700 dark:text-blue-300 bg-white dark:bg-slate-700 shadow-sm'
+                                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-700/50'
                                         }`}
                                 >
                                     {link.label}

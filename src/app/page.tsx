@@ -3,10 +3,14 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { allWords } from '@/data/vocabulary';
 import { Word } from '@/types';
+import ScrollReveal from '@/components/animations/ScrollReveal';
+import TextReveal from '@/components/animations/TextReveal';
+import { useAuth } from '@/contexts/AuthContext';
 
-import { PlayCircle, Bookmark, ArrowRight, BookOpen, Award, Zap, Puzzle, Globe, Volume2, MessageSquare } from 'lucide-react';
+import { PlayCircle, Bookmark, ArrowRight, BookOpen, Award, Zap, Puzzle, Globe, Volume2, MessageSquare, Flame } from 'lucide-react';
 
 const levels = [
   { level: 'A1', title: 'Beginner', titleBn: 'প্রাথমিক', words: 500, colorFrom: 'from-emerald-400', colorTo: 'to-teal-500', href: '/vocabulary/a1', progress: 0 },
@@ -16,6 +20,7 @@ const levels = [
 ];
 
 export default function HomePage() {
+  const { user } = useAuth();
   const [mounted, setMounted] = useState(false);
   const [wordOfDay, setWordOfDay] = useState<Word | null>(null);
   const [isWordFlipped, setIsWordFlipped] = useState(false);
@@ -43,28 +48,32 @@ export default function HomePage() {
               <span>ফ্রিতে জার্মান শিখুন • Free German Course</span>
             </div>
             <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 dark:text-white mb-6 leading-[1.1] tracking-tight font-poppins drop-shadow-sm">
-              Master German <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-teal-400">Effortlessly.</span>
+              <TextReveal text="Master German" /> <br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-teal-400">
+                <TextReveal text="Effortlessly." delay={0.4} />
+              </span>
             </h1>
-            <p className="text-xl text-slate-600 dark:text-slate-300 mb-10 max-w-xl mx-auto lg:mx-0 leading-relaxed font-inter">
-              একদম ফ্রি, ওপেন-সোর্স প্ল্যাটফর্ম - সহজ <span className="text-slate-900 dark:text-white font-semibold">ইংরেজি</span> ব্যাখ্যা আর <span className="text-slate-900 dark:text-white font-semibold font-bengali">বাংলা</span> অর্থ সহ জার্মান শিখুন।
-            </p>
+            <ScrollReveal delay={0.2} direction="up">
+              <p className="text-xl text-slate-600 dark:text-slate-300 mb-10 max-w-xl mx-auto lg:mx-0 leading-relaxed font-inter">
+                একদম ফ্রি, ওপেন-সোর্স প্ল্যাটফর্ম - সহজ <span className="text-slate-900 dark:text-white font-semibold">ইংরেজি</span> ব্যাখ্যা আর <span className="text-slate-900 dark:text-white font-semibold font-bengali">বাংলা</span> অর্থ সহ জার্মান শিখুন।
+              </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <Link href="/vocabulary/a1" className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-bold text-lg overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_40px_-10px_rgba(59,130,246,0.5)]">
-                <span className="relative z-10">A1 শুরু করুন</span>
-                <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
-                <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-blue-600 to-teal-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0 text-white"></div>
-              </Link>
-              <Link href="/practice" className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md text-slate-900 dark:text-white border-2 border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-lg hover:bg-slate-50 dark:hover:bg-slate-800/80 hover:border-blue-500/50 transition-all hover:scale-105 active:scale-95">
-                <Zap className="w-5 h-5 text-orange-500" />
-                <span>কুইজ দিন</span>
-              </Link>
-            </div>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                <Link href="/vocabulary/a1" className="group relative inline-flex items-center justify-center gap-2 px-8 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-2xl font-bold text-lg overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-[0_0_40px_-10px_rgba(59,130,246,0.5)]">
+                  <span className="relative z-10">A1 শুরু করুন</span>
+                  <ArrowRight className="w-5 h-5 relative z-10 group-hover:translate-x-1 transition-transform" />
+                  <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-blue-600 to-teal-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-0 text-white"></div>
+                </Link>
+                <Link href="/practice" className="group inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md text-slate-900 dark:text-white border-2 border-slate-200 dark:border-slate-800 rounded-2xl font-bold text-lg hover:bg-slate-50 dark:hover:bg-slate-800/80 hover:border-blue-500/50 transition-all hover:scale-105 active:scale-95">
+                  <Zap className="w-5 h-5 text-orange-500" />
+                  <span>কুইজ দিন</span>
+                </Link>
+              </div>
+            </ScrollReveal>
           </div>
 
-          {/* Right Visual Image */}
-          <div className="relative mx-auto w-full max-w-lg lg:max-w-none aspect-[4/3] lg:aspect-square flex items-center justify-center">
+          {/* Right Visual Image (Hidden on Mobile) */}
+          <div className="hidden lg:flex relative mx-auto w-full max-w-none aspect-square items-center justify-center">
             {/* Decorative background for image */}
             <div className="absolute inset-4 bg-gradient-to-br from-blue-100 to-teal-50 dark:from-blue-900/40 dark:to-teal-900/20 rounded-[3rem] transform rotate-3 scale-105 opacity-70"></div>
             <div className="absolute inset-4 bg-white dark:bg-slate-800 rounded-[3rem] transform -rotate-2 shadow-2xl overflow-hidden border border-slate-100 dark:border-slate-700/50 flex flex-col justify-between p-6">
@@ -97,91 +106,137 @@ export default function HomePage() {
       </section>
 
       {/* Stats Ribbon */}
-      <section className="border-y border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-lg">
-        <div className="max-w-7xl mx-auto px-6 py-8 flex flex-wrap justify-center md:justify-between gap-8 text-center md:text-left">
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400"><BookOpen className="w-6 h-6" /></div>
-            <div>
-              <div className="text-2xl font-bold text-slate-900 dark:text-white">5,000+</div>
-              <div className="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase">Words & Entries</div>
-            </div>
+      <ScrollReveal direction="up" delay={0.4}>
+        <section className="border-y border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-lg">
+          <div className="max-w-7xl mx-auto px-6 py-8 flex flex-wrap justify-center md:justify-between gap-8 text-center md:text-left">
+            {user ? (
+              <>
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400"><BookOpen className="w-6 h-6" /></div>
+                  <div>
+                    <div className="text-2xl font-bold text-slate-900 dark:text-white">{user.learnedWords.length}</div>
+                    <div className="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase">Words Learned</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400"><Flame className="w-6 h-6" /></div>
+                  <div>
+                    <div className="text-2xl font-bold text-slate-900 dark:text-white">{user.streak} Days</div>
+                    <div className="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase">Current Streak</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400"><Award className="w-6 h-6" /></div>
+                  <div>
+                    <div className="text-2xl font-bold text-slate-900 dark:text-white">{user.xp}</div>
+                    <div className="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase">Total XP Points</div>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400"><BookOpen className="w-6 h-6" /></div>
+                  <div>
+                    <div className="text-2xl font-bold text-slate-900 dark:text-white">5,000+</div>
+                    <div className="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase">Words & Entries</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400"><Award className="w-6 h-6" /></div>
+                  <div>
+                    <div className="text-2xl font-bold text-slate-900 dark:text-white">A1-B2</div>
+                    <div className="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase">CEFR Levels</div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400"><Puzzle className="w-6 h-6" /></div>
+                  <div>
+                    <div className="text-2xl font-bold text-slate-900 dark:text-white">100%</div>
+                    <div className="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase">Free & Interactive</div>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400"><Award className="w-6 h-6" /></div>
-            <div>
-              <div className="text-2xl font-bold text-slate-900 dark:text-white">A1-B2</div>
-              <div className="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase">CEFR Levels</div>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400"><Puzzle className="w-6 h-6" /></div>
-            <div>
-              <div className="text-2xl font-bold text-slate-900 dark:text-white">100%</div>
-              <div className="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase">Free & Interactive</div>
-            </div>
-          </div>
-        </div>
-      </section>
+        </section>
+      </ScrollReveal>
 
       {/* Main Grid: Features & Levels */}
       <section className="px-6 py-24 max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
 
           {/* Interactive Word of the Day (Left Large) */}
-          <div className="lg:col-span-5 relative group perspective-1000">
-            <div className={`relative w-full h-[420px] transition-all duration-700 transform-style-3d ${isWordFlipped ? 'rotate-y-180' : ''}`}>
-
-              {/* Front of Card */}
-              <div className="absolute inset-0 backface-hidden bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 border border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center justify-between mb-8">
-                    <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 rounded-full text-sm font-bold uppercase tracking-widest font-bengali border border-rose-100 dark:border-rose-900/30">
-                      আজকের শব্দ
-                    </div>
-                    <button onClick={() => setIsWordFlipped(true)} className="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full transition-colors text-slate-600 dark:text-slate-400">
-                      <MessageSquare className="w-5 h-5" />
-                    </button>
-                  </div>
-
-                  {wordOfDay ? (
-                    <div className="space-y-6">
-                      <h2 className="text-5xl font-bold text-slate-900 dark:text-white leading-tight">{wordOfDay.german}</h2>
-                      <div className="space-y-2">
-                        <p className="text-2xl text-slate-600 dark:text-slate-300 font-medium">{wordOfDay.english}</p>
-                        <p className="text-xl text-slate-500 dark:text-slate-400 font-bengali font-medium">{wordOfDay.bangla}</p>
+          <div className="lg:col-span-5 relative group">
+            <div className="relative w-full h-[420px]">
+              <AnimatePresence mode="wait">
+                {!isWordFlipped ? (
+                  <motion.div
+                    key="front"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.3 }}
+                    onClick={() => setIsWordFlipped(true)}
+                    className="absolute inset-0 bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 border border-slate-200 dark:border-slate-800 shadow-2xl flex flex-col justify-between cursor-pointer"
+                  >
+                    <div>
+                      <div className="flex items-center justify-between mb-8">
+                        <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-rose-50 dark:bg-rose-900/20 text-rose-600 dark:text-rose-400 rounded-full text-sm font-bold uppercase tracking-widest font-bengali border border-rose-100 dark:border-rose-900/30">
+                          আজকের শব্দ
+                        </div>
+                        <button onClick={() => setIsWordFlipped(true)} className="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-full transition-colors text-slate-600 dark:text-slate-400 active:scale-90">
+                          <MessageSquare className="w-5 h-5" />
+                        </button>
                       </div>
+
+                      {wordOfDay ? (
+                        <div className="space-y-6">
+                          <h2 className="text-5xl font-bold text-slate-900 dark:text-white leading-tight">{wordOfDay.german}</h2>
+                          <div className="space-y-2">
+                            <p className="text-2xl text-slate-600 dark:text-slate-300 font-medium">{wordOfDay.english}</p>
+                            <p className="text-xl text-slate-500 dark:text-slate-400 font-bengali font-medium">{wordOfDay.bangla}</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="animate-pulse space-y-4">
+                          <div className="h-12 w-48 bg-slate-200 dark:bg-slate-800 rounded-xl"></div>
+                          <div className="h-8 w-32 bg-slate-200 dark:bg-slate-800 rounded-lg"></div>
+                          <div className="h-6 w-40 bg-slate-200 dark:bg-slate-800 rounded-lg"></div>
+                        </div>
+                      )}
                     </div>
-                  ) : (
-                    <div className="animate-pulse space-y-4">
-                      <div className="h-12 w-48 bg-slate-200 dark:bg-slate-800 rounded-xl"></div>
-                      <div className="h-8 w-32 bg-slate-200 dark:bg-slate-800 rounded-lg"></div>
-                      <div className="h-6 w-40 bg-slate-200 dark:bg-slate-800 rounded-lg"></div>
+
+                    <div className="flex gap-4 pt-6 border-t border-slate-100 dark:border-slate-800">
+                      <button className="flex-1 flex items-center justify-center gap-2 py-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-xl font-semibold hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors active:scale-[0.98]">
+                        <Volume2 className="w-5 h-5" /> <span>Listen</span>
+                      </button>
+                      <button className="flex items-center justify-center w-12 h-12 bg-slate-50 dark:bg-slate-800 text-slate-400 hover:text-blue-500 rounded-xl transition-colors active:scale-95">
+                        <Bookmark className="w-5 h-5" />
+                      </button>
                     </div>
-                  )}
-                </div>
-
-                <div className="flex gap-4 pt-6 border-t border-slate-100 dark:border-slate-800">
-                  <button className="flex-1 flex items-center justify-center gap-2 py-3 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-xl font-semibold hover:bg-blue-100 dark:hover:bg-blue-900/40 transition-colors">
-                    <Volume2 className="w-5 h-5" /> <span>Listen</span>
-                  </button>
-                  <button className="flex items-center justify-center w-12 h-12 bg-slate-50 dark:bg-slate-800 text-slate-400 hover:text-blue-500 rounded-xl transition-colors">
-                    <Bookmark className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
-
-              {/* Back of Card */}
-              <div className="absolute inset-0 backface-hidden rotate-y-180 bg-gradient-to-br from-blue-600 to-teal-500 rounded-[2.5rem] p-8 shadow-2xl flex flex-col items-center justify-center text-center text-white">
-                <div className="bg-white/20 p-4 rounded-full mb-6 backdrop-blur-sm">
-                  <PlayCircle className="w-12 h-12 text-white" />
-                </div>
-                <h3 className="text-3xl font-bold mb-4 font-poppins">Practice Makes Perfect</h3>
-                <p className="text-blue-50 mb-8 max-w-[250px] leading-relaxed">Hear the native pronunciation and practice speaking out loud.</p>
-                <button onClick={() => setIsWordFlipped(false)} className="px-6 py-3 bg-white text-blue-600 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow-lg active:scale-95">
-                  Back to Word
-                </button>
-              </div>
-
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="back"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 0.3 }}
+                    onClick={() => setIsWordFlipped(false)}
+                    className="absolute inset-0 bg-gradient-to-br from-blue-600 to-teal-500 rounded-[2.5rem] p-8 shadow-2xl flex flex-col items-center justify-center text-center text-white cursor-pointer"
+                  >
+                    <div className="bg-white/20 p-4 rounded-full mb-6 backdrop-blur-sm">
+                      <PlayCircle className="w-12 h-12 text-white" />
+                    </div>
+                    <h3 className="text-3xl font-bold mb-4 font-poppins">Practice Makes Perfect</h3>
+                    <p className="text-blue-50 mb-8 max-w-[250px] leading-relaxed">Hear the native pronunciation and practice speaking out loud.</p>
+                    <button onClick={() => setIsWordFlipped(false)} className="px-6 py-3 bg-white text-blue-600 rounded-xl font-bold hover:bg-blue-50 transition-colors shadow-lg active:scale-95">
+                      Back to Word
+                    </button>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
 
@@ -253,11 +308,8 @@ export default function HomePage() {
             </div>
 
           </div>
-
         </div>
       </section>
-
-
 
       {/* CTA Footer */}
       <section className="py-24 bg-gradient-to-b from-transparent to-slate-100 dark:to-slate-900/50 text-center relative overflow-hidden">
