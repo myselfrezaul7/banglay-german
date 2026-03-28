@@ -178,12 +178,12 @@ export default function PracticePage() {
                                     <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold">1</div>
                                     <h3 className="text-xl font-bold text-slate-900 dark:text-white font-poppins">Select Level</h3>
                                 </div>
-                                <div className="flex flex-wrap gap-3">
+                                <div className="flex overflow-x-auto pb-2 scrollbar-hide gap-3">
                                     {['all', 'a1', 'a2', 'b1', 'b2'].map((level) => (
                                         <button
                                             key={level}
                                             onClick={() => setSelectedLevel(level as Level | 'all')}
-                                            className={`px-6 py-3 border rounded-2xl font-bold text-sm transition-all duration-300 hover:-translate-y-1 ${selectedLevel === level
+                                            className={`flex-shrink-0 px-6 py-3 border rounded-2xl font-bold text-sm transition-all duration-300 hover:-translate-y-1 ${selectedLevel === level
                                                 ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/30'
                                                 : 'bg-slate-50 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-blue-400'
                                                 }`}
@@ -349,7 +349,7 @@ export default function PracticePage() {
                                             const isCorrectAnswer = option === questions[currentQuestion].correct;
                                             const isSelected = option === selectedAnswer;
 
-                                            let btnClass = "w-full text-left px-6 py-5 rounded-[1.5rem] font-bold text-lg border-2 shadow-[0_4px_0_0] transition-all origin-center ";
+                                            let btnClass = "w-full text-left px-6 py-5 min-h-[56px] rounded-[1.5rem] font-bold text-base md:text-lg border-2 shadow-[0_4px_0_0] transition-all origin-center ";
 
                                             if (showResult) {
                                                 if (isCorrectAnswer) {

@@ -99,7 +99,7 @@ export default function LoginPage() {
                                     >
                                         <div className="pb-1">
                                             <input type="text" placeholder="Full Name" value={name} onChange={e => setName(e.target.value)} required
-                                                className="w-full px-4 py-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-slate-900 dark:text-white placeholder:text-slate-400" />
+                                                className="w-full px-4 py-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-slate-900 dark:text-white placeholder:text-slate-400" />
                                         </div>
                                     </motion.div>
                                 )}
@@ -107,23 +107,23 @@ export default function LoginPage() {
 
                             <motion.div layout>
                                 <input type="email" placeholder="Email address" value={email} onChange={e => setEmail(e.target.value)} required
-                                    className="w-full px-4 py-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-slate-900 dark:text-white placeholder:text-slate-400" />
+                                    className="w-full px-4 py-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-slate-900 dark:text-white placeholder:text-slate-400" />
                             </motion.div>
                             <motion.div layout>
                                 <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required
-                                    className="w-full px-4 py-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-slate-900 dark:text-white placeholder:text-slate-400" />
+                                    className="w-full px-4 py-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 outline-none transition-all text-slate-900 dark:text-white placeholder:text-slate-400" />
                             </motion.div>
 
                             <motion.div layout className="pt-2">
-                                <button type="submit" className="w-full px-4 py-3.5 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 transition-all duration-300 active:scale-[0.98]">
+                                <button type="submit" className="w-full px-4 py-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold shadow-lg shadow-blue-600/25 hover:shadow-blue-600/40 transition-all duration-300 active:scale-[0.98]">
                                     {isSignup ? 'Create Account' : 'Sign In'}
                                 </button>
                             </motion.div>
                         </form>
 
-                        <p className="text-center mt-8 text-sm font-medium text-slate-500 dark:text-slate-400">
+                        <p className="text-center mt-8 text-base font-medium text-slate-500 dark:text-slate-400">
                             {isSignup ? 'Already have an account?' : "Don't have an account?"}{' '}
-                            <button type="button" onClick={() => setIsSignup(!isSignup)} className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-bold hover:underline transition-colors">
+                            <button type="button" onClick={() => setIsSignup(!isSignup)} className="inline-block p-2 -m-2 text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-bold hover:underline transition-colors">
                                 {isSignup ? 'Sign In' : 'Sign Up'}
                             </button>
                         </p>

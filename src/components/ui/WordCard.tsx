@@ -39,7 +39,7 @@ export default function WordCard({ word, onFavorite, onLearn }: WordCardProps) {
     };
 
     return (
-        <div className="word-card group relative flex flex-col h-full">
+        <div className="word-card group relative flex flex-col h-full bg-white dark:bg-slate-900 rounded-[1.5rem] md:rounded-[2rem] border border-slate-200 dark:border-slate-800 p-5 md:p-6 shadow-sm hover:shadow-md transition-shadow">
             {/* Header: Level Badge & Favorite */}
             <div className="flex justify-between items-start mb-4">
                 <span

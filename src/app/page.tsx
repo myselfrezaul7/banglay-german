@@ -146,7 +146,7 @@ export default function HomePage() {
 
           {/* Interactive Word of the Day (Left Large) */}
           <div className="lg:col-span-5 relative group">
-            <div className="relative w-full h-[420px]">
+            <div className="relative w-full min-h-[320px] md:h-[420px]">
               <AnimatePresence mode="wait">
                 {!isWordFlipped ? (
                   <motion.div
@@ -235,22 +235,22 @@ export default function HomePage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {/* Sentence Builder */}
-              <Link href="/sentence-builder" className="group relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] p-8 border border-slate-200 dark:border-slate-800 hover:border-blue-500 transition-all duration-300 shadow-xl shadow-slate-200/20 dark:shadow-none hover:-translate-y-1">
+              <Link href="/sentence-builder" className="group relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] p-5 md:p-8 border border-slate-200 dark:border-slate-800 hover:border-blue-500 transition-all duration-300 shadow-xl shadow-slate-200/20 dark:shadow-none hover:-translate-y-1">
                 <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
                   <Puzzle className="w-24 h-24 text-blue-500 transform rotate-12 group-hover:rotate-0 transition-transform duration-500" />
                 </div>
                 <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/50 rounded-2xl flex items-center justify-center text-blue-600 dark:text-blue-400 mb-6 group-hover:scale-110 transition-transform relative z-10 shadow-sm"><Puzzle className="w-7 h-7" /></div>
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2 relative z-10">Sentence Builder</h3>
+                <h3 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white mb-2 relative z-10">Sentence Builder</h3>
                 <p className="text-slate-500 dark:text-slate-400 leading-relaxed relative z-10 max-w-[200px]">Practice grammar interactively by arranging blocks.</p>
               </Link>
 
               {/* Speed Quiz */}
-              <Link href="/practice" className="group relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] p-8 border border-slate-200 dark:border-slate-800 hover:border-orange-500 transition-all duration-300 shadow-xl shadow-slate-200/20 dark:shadow-none hover:-translate-y-1">
+              <Link href="/practice" className="group relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] p-5 md:p-8 border border-slate-200 dark:border-slate-800 hover:border-orange-500 transition-all duration-300 shadow-xl shadow-slate-200/20 dark:shadow-none hover:-translate-y-1">
                 <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
                   <Zap className="w-24 h-24 text-orange-500 transform -rotate-12 group-hover:rotate-0 transition-transform duration-500" />
                 </div>
                 <div className="w-14 h-14 bg-orange-100 dark:bg-orange-900/50 rounded-2xl flex items-center justify-center text-orange-600 dark:text-orange-400 mb-6 group-hover:scale-110 transition-transform relative z-10 shadow-sm"><Zap className="w-7 h-7" /></div>
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2 relative z-10">Speed Quiz</h3>
+                <h3 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white mb-2 relative z-10">Speed Quiz</h3>
                 <p className="text-slate-500 dark:text-slate-400 leading-relaxed relative z-10 max-w-[200px]">Test your vocabulary recall speed and accuracy.</p>
               </Link>
             </div>

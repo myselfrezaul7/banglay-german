@@ -163,7 +163,7 @@ export default function VocabularyLevelPage() {
                                 Showing {filteredWords.length} of {words.length}
                             </p>
                         </div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
                             {isLoading ? (
                                 Array(8).fill(0).map((_, i) => (
                                     <div key={i} className="animate-pulse bg-white/60 dark:bg-slate-900/60 rounded-[2rem] h-[280px] border border-slate-200/50 dark:border-slate-800 flex flex-col p-6 shadow-sm">
