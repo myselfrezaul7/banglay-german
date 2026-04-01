@@ -262,9 +262,9 @@ export default function HomePage() {
                 <span className="text-sm font-semibold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30 px-3 py-1 rounded-full">CEFR Standard</span>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 overflow-x-auto sm:overflow-visible snap-x snap-mandatory pb-4 sm:pb-0 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
                 {levels.map((level) => (
-                  <Link key={level.level} href={level.href} className="group relative block overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 p-5 hover:border-transparent transition-all duration-300 hover:-translate-y-1">
+                  <Link key={level.level} href={level.href} className="group flex-shrink-0 w-[260px] sm:w-auto snap-center sm:snap-align-none relative block overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 p-5 hover:border-transparent transition-all duration-300 hover:-translate-y-1">
                     {/* Hover Gradient Background */}
                     <div className={`absolute inset-0 bg-gradient-to-br ${level.colorFrom} ${level.colorTo} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
 

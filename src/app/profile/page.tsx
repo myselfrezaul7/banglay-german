@@ -201,13 +201,13 @@ export default function ProfilePage() {
                             <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white font-poppins tracking-tight">Trophy Room</h2>
                         </div>
 
-                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
                             {achievementsData.map((a, i) => {
                                 const unlocked = user.achievements.includes(a.id);
                                 return (
                                     <div
                                         key={a.id}
-                                        className={`relative overflow-hidden rounded-[2rem] p-6 text-center border transition-all duration-300
+                                        className={`relative overflow-hidden rounded-[1.5rem] md:rounded-[2rem] p-4 md:p-6 text-center border transition-all duration-300
                                         ${unlocked
                                                 ? 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 shadow-xl shadow-slate-200/50 dark:shadow-none hover:-translate-y-2'
                                                 : 'bg-slate-50/50 dark:bg-slate-900/30 border-slate-100 dark:border-slate-800/50 grayscale opacity-60 hover:grayscale-0 hover:opacity-100'
@@ -215,11 +215,11 @@ export default function ProfilePage() {
                                         }
                                     >
                                         {unlocked && (
-                                            <div className={`absolute -top-10 -right-10 w-32 h-32 rounded-full ${a.color} opacity-10 blur-xl md:blur-2xl`}></div>
+                                            <div className={`absolute -top-10 -right-10 w-24 h-24 md:w-32 md:h-32 rounded-full ${a.color} opacity-10 blur-xl md:blur-2xl`}></div>
                                         )}
-                                        <div className="text-5xl mb-4 drop-shadow-md relative z-10">{a.icon}</div>
-                                        <h3 className="font-bold text-slate-900 dark:text-white mb-1 font-poppins relative z-10">{a.name}</h3>
-                                        <p className="text-xs font-semibold text-slate-500 dark:text-slate-400 relative z-10">{a.desc}</p>
+                                        <div className="text-4xl md:text-5xl mb-2 md:mb-4 drop-shadow-md relative z-10">{a.icon}</div>
+                                        <h3 className="font-bold text-sm md:text-base text-slate-900 dark:text-white mb-1 font-poppins relative z-10 leading-tight">{a.name}</h3>
+                                        <p className="text-[10px] md:text-xs font-semibold text-slate-500 dark:text-slate-400 relative z-10">{a.desc}</p>
 
                                         {!unlocked && (
                                             <div className="absolute inset-0 bg-slate-900/5 backdrop-blur-[1px] flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity rounded-[2rem]">

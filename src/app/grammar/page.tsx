@@ -234,10 +234,10 @@ export default function GrammarPage() {
             {/* Sticky Filter Bar */}
             <ScrollReveal direction="down" delay={0.2}>
                 <section className="sticky top-20 z-40 px-6 py-4">
-                    <div className="max-w-3xl mx-auto bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50 shadow-2xl shadow-slate-200/20 dark:shadow-none rounded-[1.5rem] p-2 flex flex-wrap justify-center gap-2 transition-all duration-300">
+                    <div className="max-w-3xl mx-auto bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-slate-200/50 dark:border-slate-700/50 shadow-2xl shadow-slate-200/20 dark:shadow-none rounded-[1.5rem] p-2 flex overflow-x-auto justify-start md:justify-center scrollbar-hide snap-x gap-2 transition-all duration-300">
                         <button
                             onClick={() => setSelectedLevel('all')}
-                            className={`px-6 py-2.5 rounded-xl text-sm font-bold transition-all duration-300 shadow-sm
+                            className={`px-5 py-2.5 md:px-6 md:py-2.5 rounded-[1.25rem] text-sm font-bold transition-all duration-300 shadow-sm flex-shrink-0 snap-start
                             ${selectedLevel === 'all'
                                     ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900'
                                     : 'bg-transparent text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
@@ -253,7 +253,7 @@ export default function GrammarPage() {
                                 <button
                                     key={level}
                                     onClick={() => setSelectedLevel(level)}
-                                    className={`px-6 py-2.5 rounded-xl text-sm font-bold uppercase tracking-wider transition-all duration-300 shadow-sm flex items-center gap-2
+                                    className={`px-5 py-2.5 md:px-6 md:py-2.5 rounded-[1.25rem] text-sm font-bold uppercase tracking-wider transition-all duration-300 shadow-sm flex items-center gap-2 flex-shrink-0 snap-start
                                     ${isActive
                                             ? `bg-gradient-to-r ${colors.from} ${colors.to} text-white shadow-lg`
                                             : 'bg-transparent text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 border border-transparent'
@@ -295,10 +295,10 @@ export default function GrammarPage() {
                                                 {guide.level}
                                             </span>
                                         </div>
-                                        <h3 className={`text-2xl font-bold font-poppins mb-1 transition-colors ${isExpanded ? colors.text : 'text-slate-900 dark:text-white group-hover:text-blue-500'}`}>
+                                        <h3 className={`text-xl md:text-2xl font-bold font-poppins mb-1 transition-colors ${isExpanded ? colors.text : 'text-slate-900 dark:text-white group-hover:text-blue-500'}`}>
                                             {guide.title}
                                         </h3>
-                                        <p className="font-bengali text-slate-500 dark:text-slate-400 font-medium">
+                                        <p className="font-bengali text-sm md:text-base text-slate-500 dark:text-slate-400 font-medium">
                                             {guide.titleBn}
                                         </p>
                                     </div>
@@ -322,9 +322,9 @@ export default function GrammarPage() {
                                             transition={{ duration: 0.3, ease: [0.25, 0.4, 0.25, 1] }}
                                             className="overflow-hidden"
                                         >
-                                            <div className="px-6 pb-8 md:px-8 md:pb-10 pt-2 border-t border-slate-100 dark:border-slate-800/50">
+                                            <div className="px-5 pb-6 md:px-8 md:pb-10 pt-2 border-t border-slate-100 dark:border-slate-800/50">
 
-                                                <p className="text-lg text-slate-700 dark:text-slate-300 leading-relaxed mb-8">
+                                                <p className="text-base md:text-lg text-slate-700 dark:text-slate-300 leading-relaxed mb-6 md:mb-8">
                                                     {guide.description}
                                                 </p>
 
@@ -338,9 +338,11 @@ export default function GrammarPage() {
                                                             <GraduationCap className="w-4 h-4" />
                                                             Formula
                                                         </div>
-                                                        <code className="text-xl md:text-2xl font-mono font-bold text-indigo-900 dark:text-indigo-200">
-                                                            {guide.structure}
-                                                        </code>
+                                                        <div className="overflow-x-auto scrollbar-hide pb-2">
+                                                            <code className="text-lg md:text-2xl font-mono font-bold text-indigo-900 dark:text-indigo-200 whitespace-nowrap">
+                                                                {guide.structure}
+                                                            </code>
+                                                        </div>
                                                     </div>
                                                 )}
 
@@ -379,8 +381,8 @@ export default function GrammarPage() {
                                                     <div className="text-xs uppercase font-bold text-slate-400 tracking-widest mb-4">Examples in context</div>
                                                     <div className="grid sm:grid-cols-2 gap-4">
                                                         {guide.examples.map((ex, i) => (
-                                                            <div key={i} className="group p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 transition-colors shadow-sm">
-                                                                <div className="font-bold text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                                            <div key={i} className="group p-4 md:p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 transition-colors shadow-sm">
+                                                                <div className="font-bold text-base md:text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                                                                     "{ex.german}"
                                                                 </div>
                                                                 <div className="text-slate-600 dark:text-slate-400 text-sm mb-2">{ex.english}</div>
@@ -400,9 +402,9 @@ export default function GrammarPage() {
                 })}
             </div>
 
-            <div className="text-center pb-12 opacity-50 font-bold uppercase tracking-widest text-xs text-slate-500">
+            <div className="text-center pb-24 opacity-50 font-bold uppercase tracking-widest text-xs text-slate-500">
                 More guides added continuously
             </div>
-        </div >
+        </div>
     );
 }

@@ -175,19 +175,19 @@ export default function SentenceBuilderPage() {
                     </div>
 
                     {/* The Drop Zone (Selected Words) */}
-                    <div className={`min-h-[140px] p-5 rounded-[2rem] border-2 border-dashed transition-all duration-300 flex flex-wrap gap-3 items-start content-start mb-10 ${isCorrect === true ? 'bg-emerald-50/50 dark:bg-emerald-900/10 border-emerald-400/50' :
+                    <div className={`min-h-[140px] px-5 pb-5 pt-7 md:p-5 rounded-[2rem] border-2 border-dashed transition-all duration-300 flex flex-wrap gap-2.5 md:gap-3 items-start content-start mb-8 md:mb-10 relative ${isCorrect === true ? 'bg-emerald-50/50 dark:bg-emerald-900/10 border-emerald-400/50' :
                         isCorrect === false ? 'bg-rose-50/50 dark:bg-rose-900/10 border-rose-400/50' :
                             'bg-slate-50/50 dark:bg-slate-900/30 border-slate-200 dark:border-slate-700'
                         }`}>
                         {selectedWords.length === 0 && (
-                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-50">
+                            <div className="absolute inset-0 flex items-center justify-center pointer-events-none p-4 text-center">
                                 <span className="font-bengali text-slate-400 font-medium">নিচের শব্দগুলোতে ট্যাপ করে এখানে সাজান...</span>
                             </div>
                         )}
 
                         {selectedWords.map((word, i) => (
                             <button key={i} onClick={() => handleWordClick(word, true)}
-                                className={`px-5 py-3 rounded-2xl font-bold text-lg shadow-[0_4px_0_0] active:shadow-[0_0px_0_0] active:translate-y-1 transition-all origin-center animate-fadeIn ${isCorrect === true ? 'bg-emerald-500 text-white shadow-emerald-700 hover:bg-emerald-400' :
+                                className={`px-4 py-2.5 md:px-5 md:py-3 rounded-[1.25rem] md:rounded-2xl font-bold text-base md:text-lg shadow-[0_4px_0_0] active:shadow-[0_0px_0_0] active:translate-y-1 transition-all origin-center animate-fadeIn ${isCorrect === true ? 'bg-emerald-500 text-white shadow-emerald-700 hover:bg-emerald-400' :
                                     isCorrect === false ? 'bg-rose-500 text-white shadow-rose-700 hover:bg-rose-400' :
                                         'bg-white dark:bg-slate-800 text-slate-800 dark:text-white border border-slate-200/50 dark:border-slate-700 shadow-slate-200 dark:shadow-slate-950 hover:border-blue-400 dark:hover:border-blue-500'
                                     }`}>
@@ -197,10 +197,10 @@ export default function SentenceBuilderPage() {
                     </div>
 
                     {/* Available Words Bank */}
-                    <div className="flex flex-wrap gap-4 mb-10 justify-center min-h-[100px]">
+                    <div className="flex flex-wrap gap-2.5 md:gap-4 mb-10 justify-center min-h-[100px]">
                         {availableWords.map((word, i) => (
                             <button key={i} onClick={() => handleWordClick(word, false)}
-                                className="px-5 py-3 rounded-2xl bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-lg border border-slate-200/80 dark:border-slate-700 shadow-[0_4px_0_0] shadow-slate-200 dark:shadow-slate-950 active:shadow-[0_0px_0_0] active:translate-y-1 transition-all hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 animate-fadeIn">
+                                className="px-4 py-2.5 md:px-5 md:py-3 rounded-[1.25rem] md:rounded-2xl bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-base md:text-lg border border-slate-200/80 dark:border-slate-700 shadow-[0_4px_0_0] shadow-slate-200 dark:shadow-slate-950 active:shadow-[0_0px_0_0] active:translate-y-1 transition-all hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 animate-fadeIn">
                                 {word}
                             </button>
                         ))}

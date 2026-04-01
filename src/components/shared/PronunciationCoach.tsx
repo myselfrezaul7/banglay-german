@@ -56,7 +56,7 @@ export default function PronunciationCoach({ targetText, onSuccess }: Pronunciat
                 console.error('Failed to start recognition', error);
             }
         } else {
-            alert('Your browser does not support speech recognition. Try Chrome or Safari.');
+            setPermissionError(true);
         }
     };
 
@@ -78,10 +78,12 @@ export default function PronunciationCoach({ targetText, onSuccess }: Pronunciat
     };
 
     return (
-        <div className="mt-4 p-4 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700">
-            <div className="flex flex-col items-center gap-4">
-                <h4 className="text-sm font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                    Pronunciation Coach 🎙️
+        <div className="mt-6 p-6 md:p-8 rounded-[2rem] bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-white/40 dark:border-slate-800/60 shadow-xl shadow-slate-200/40 dark:shadow-none transition-all">
+            <div className="flex flex-col items-center gap-5">
+                <h4 className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                    <span className="w-6 h-[2px] bg-slate-300 dark:bg-slate-700 rounded-full inline-block"></span>
+                    Pronunciation Coach
+                    <span className="w-6 h-[2px] bg-slate-300 dark:bg-slate-700 rounded-full inline-block"></span>
                 </h4>
 
                 {spokenText && (
@@ -106,21 +108,24 @@ export default function PronunciationCoach({ targetText, onSuccess }: Pronunciat
                 )}
 
                 {permissionError && (
-                    <div className="text-red-500 text-xs">
-                        Microphone access denied. Please allow it in browser settings.
+                    <div className="w-full text-center p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-600 dark:bg-rose-900/20 dark:border-rose-800/50 dark:text-rose-400 text-sm font-medium">
+                        Microphone access denied or browser unsupported. Please use Chrome.
                     </div>
                 )}
 
                 <button
                     onClick={startListening}
                     disabled={isListening}
-                    className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all shadow-lg ${isListening
-                            ? 'bg-red-500 text-white animate-pulse'
-                            : 'bg-blue-600 hover:bg-blue-700 text-white hover:scale-105'
+                    className={`relative flex items-center justify-center gap-3 px-8 py-5 rounded-[2rem] font-bold text-lg md:text-xl transition-all shadow-lg active:scale-95 min-w-[200px] overflow-hidden ${isListening
+                            ? 'bg-rose-500 text-white shadow-rose-500/30'
+                            : 'bg-blue-600 hover:bg-blue-700 text-white shadow-blue-600/30 hover:shadow-blue-600/40'
                         }`}
                 >
-                    <span className="text-xl">{isListening ? '🛑' : '🎤'}</span>
-                    {isListening ? 'Listening...' : 'Speak Now'}
+                    {isListening && (
+                        <span className="absolute inset-0 bg-white/20 animate-ping rounded-[2rem]"></span>
+                    )}
+                    <span className="text-2xl relative z-10">{isListening ? '🛑' : '🎤'}</span>
+                    <span className="relative z-10">{isListening ? 'Listening...' : 'Speak Now'}</span>
                 </button>
             </div>
         </div>

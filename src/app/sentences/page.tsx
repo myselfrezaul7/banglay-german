@@ -31,35 +31,43 @@ export default function SentencesPage() {
 
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+            {/* Ambient Background Glows */}
+            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+            <div className="absolute top-40 left-0 w-[400px] h-[400px] bg-indigo-500/10 rounded-full blur-[100px] pointer-events-none"></div>
+
             {/* Header */}
-            <section className="py-16 bg-slate-100/50 dark:bg-slate-900/50">
+            <section className="relative pt-24 pb-12 bg-transparent z-10">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                    <h1 className="text-4xl md:text-5xl font-bold mb-4 text-slate-900 dark:text-white">
-                        <span className="gradient-text">বাক্য</span>
+                    <div className="inline-flex items-center gap-2 mb-4 px-4 py-1.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-bold tracking-widest uppercase border border-blue-200 dark:border-blue-800/50 shadow-sm">
+                        <span>💬</span> Daily Phrases
+                    </div>
+                    <h1 className="text-4xl md:text-5xl font-extrabold mb-4 font-poppins tracking-tight text-slate-900 dark:text-white drop-shadow-sm">
+                        Sentences
                     </h1>
-                    <p className="text-xl text-slate-600 dark:text-slate-400 mb-2">
+                    <p className="text-xl text-slate-600 dark:text-slate-400 mb-2 leading-relaxed max-w-xl mx-auto">
                         Learn German through practical sentences
                     </p>
-                    <p className="text-lg font-bengali text-slate-500 dark:text-slate-500">
+                    <p className="text-lg font-bengali text-slate-500 dark:text-slate-500 font-medium">
                         দৈনন্দিন কাজে লাগে এমন বাক্য শিখুন
                     </p>
                 </div>
             </section>
 
             {/* Filter */}
-            <section className="py-6 border-b border-slate-200 dark:border-slate-800 sticky top-20 bg-slate-50/90 dark:bg-slate-950/90 backdrop-blur-sm z-40">
+            <section className="py-4 border-b border-slate-200/50 dark:border-slate-800/50 sticky top-16 md:top-20 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md z-40 shadow-sm">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex gap-2 justify-center">
+                    <div className="flex gap-2 justify-start md:justify-center overflow-x-auto scrollbar-hide pb-2 sm:pb-0">
                         {['all', 'a1', 'a2', 'b1', 'b2'].map((level) => (
                             <button
                                 key={level}
                                 onClick={() => setSelectedLevel(level)}
-                                className={`px-4 py-2 rounded-lg transition-all duration-300 active:scale-95 ${selectedLevel === level
-                                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20 hover:bg-blue-700'
-                                    : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                                className={`px-5 py-2.5 rounded-[1.25rem] text-sm font-bold uppercase tracking-wider transition-all duration-300 shadow-sm flex items-center gap-2 flex-shrink-0 snap-start
+                                    ${selectedLevel === level
+                                        ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20 hover:bg-blue-700'
+                                        : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
                                     }`}
                             >
-                                {level === 'all' ? 'সব লেভেল' : level.toUpperCase()}
+                                {level === 'all' ? 'All Levels' : level}
                             </button>
                         ))}
                     </div>
@@ -130,16 +138,16 @@ export default function SentencesPage() {
                             <div className={`grid transition-all duration-400 ease-in-out ${expandedId === sentence.id && sentence.wordBreakdown ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
                                 <div className="overflow-hidden">
                                     <div className="border-t border-slate-200 dark:border-slate-700 bg-slate-100/50 dark:bg-slate-900/50 p-6">
-                                        <h4 className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-4">শব্দে শব্দে অর্থ</h4>
-                                        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                        <h4 className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-4 font-bengali">শব্দে শব্দে অর্থ</h4>
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
                                             {sentence.wordBreakdown?.map((word, index) => (
                                                 <div
                                                     key={index}
-                                                    className="p-3 rounded-lg bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 hover:-translate-y-1 transition-transform"
+                                                    className="p-4 rounded-[1.25rem] bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 hover:shadow-sm transition-shadow shadow-sm"
                                                 >
-                                                    <div className="font-semibold text-blue-600 dark:text-blue-400">{word.german}</div>
-                                                    <div className="text-sm text-slate-600 dark:text-slate-400">{word.english}</div>
-                                                    <div className="text-sm text-slate-500 dark:text-slate-500 font-bengali">{word.bangla}</div>
+                                                    <div className="font-bold text-blue-600 dark:text-blue-400 mb-1">{word.german}</div>
+                                                    <div className="text-sm font-semibold text-slate-600 dark:text-slate-300">{word.english}</div>
+                                                    <div className="text-sm text-slate-500 dark:text-slate-400 font-bengali mt-1">{word.bangla}</div>
                                                 </div>
                                             ))}
                                         </div>
@@ -150,6 +158,9 @@ export default function SentencesPage() {
                     ))}
                 </div>
             </section>
+            <div className="text-center pb-24 opacity-50 font-bold uppercase tracking-widest text-xs text-slate-500">
+                End of list
+            </div>
         </div>
     );
 }

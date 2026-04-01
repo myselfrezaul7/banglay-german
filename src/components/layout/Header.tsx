@@ -67,7 +67,7 @@ export default function Header() {
                                 className="object-cover relative z-10"
                             />
                         </div>
-                        <span className={`text-xl md:text-2xl font-extrabold text-slate-900 dark:text-white font-poppins tracking-tight flex items-center transition-all duration-500 overflow-hidden whitespace-nowrap ${isScrolled ? 'max-w-0 opacity-0 md:max-w-[200px] md:opacity-100 md:gap-1.5' : 'max-w-[300px] opacity-100 gap-1.5'}`}>
+                        <span className={`text-xl md:text-2xl font-extrabold text-slate-900 dark:text-white font-poppins tracking-tight flex items-center transition-all duration-700 ease-in-out overflow-hidden whitespace-nowrap ${isScrolled ? 'max-w-0 opacity-0 md:max-w-[200px] md:opacity-100 md:gap-1.5' : 'max-w-[300px] opacity-100 gap-1.5'}`}>
                             Banglay<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-teal-500">German</span>
                         </span>
                     </Link>
