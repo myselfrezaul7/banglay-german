@@ -89,40 +89,40 @@ export default function VocabularyPage() {
 
                 {/* Level Cards Grid */}
                 <section className="max-w-6xl mx-auto px-6 pt-16 relative z-10">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
                         {levels.map((level, i) => (
                             <ScrollReveal key={level.level} direction="up" delay={0.4 + (i * 0.1)}>
                                 <Link
                                     href={`/vocabulary/${level.level}`}
-                                    className="group relative block overflow-hidden rounded-[1.5rem] md:rounded-[2rem] border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-5 md:p-6 hover:border-transparent transition-all duration-500 hover:-translate-y-2 shadow-xl shadow-slate-200/20 dark:shadow-none"
+                                    className="group relative block flex flex-col h-full overflow-hidden rounded-3xl md:rounded-[2rem] border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 md:p-6 hover:border-transparent transition-all duration-500 hover:-translate-y-2 shadow-xl shadow-slate-200/20 dark:shadow-none"
                                 >
                                     {/* Hover Gradient Background */}
                                     <div className={`absolute inset-0 bg-gradient-to-br ${level.colorFrom} ${level.colorTo} opacity-0 group-hover:opacity-[0.03] dark:group-hover:opacity-10 transition-opacity duration-500`}></div>
 
                                     <div className="relative z-10 flex flex-col h-full">
                                         <div className="flex justify-between items-start mb-4 md:mb-6">
-                                            <div className={`w-14 md:w-16 h-14 md:h-16 rounded-[1.2rem] bg-gradient-to-br ${level.colorFrom} ${level.colorTo} flex items-center justify-center text-white text-xl md:text-2xl font-black shadow-lg transform group-hover:scale-110 transition-transform duration-500`}>
+                                            <div className={`w-12 h-12 md:w-16 md:h-16 rounded-[1rem] md:rounded-[1.2rem] bg-gradient-to-br ${level.colorFrom} ${level.colorTo} flex items-center justify-center text-white text-lg md:text-2xl font-black shadow-lg transform group-hover:scale-110 transition-transform duration-500`}>
                                                 {level.level.toUpperCase()}
                                             </div>
-                                            <div className="w-10 h-10 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 group-hover:bg-slate-900 group-hover:text-white transition-all transform group-hover:-rotate-45">
-                                                <ArrowRight className="w-5 h-5" />
+                                            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400 group-hover:bg-slate-900 group-hover:text-white transition-all transform group-hover:-rotate-45">
+                                                <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
                                             </div>
                                         </div>
 
-                                        <h2 className="text-2xl font-bold mb-1 text-slate-900 dark:text-white font-poppins">{level.title}</h2>
-                                        <p className="text-sm font-bengali font-semibold text-slate-500 dark:text-slate-400 mb-4">{level.titleBn}</p>
+                                        <h2 className="text-xl md:text-2xl font-extrabold mb-1 md:mb-1.5 text-slate-900 dark:text-white font-poppins tracking-tight">{level.title}</h2>
+                                        <p className="text-[11px] md:text-sm font-bengali font-bold text-slate-500 dark:text-slate-400 mb-3 md:mb-4">{level.titleBn}</p>
 
-                                        <p className="text-sm text-slate-600 dark:text-slate-400 mb-6 flex-grow leading-relaxed">
+                                        <p className="text-[12px] md:text-sm text-slate-600 dark:text-slate-400 mb-4 md:mb-6 flex-grow leading-relaxed hidden sm:block">
                                             {level.description}
                                         </p>
 
                                         {/* Tags */}
-                                        <div className="flex justify-between items-center pt-4 border-t border-slate-100 dark:border-slate-800">
+                                        <div className="flex flex-col sm:flex-row justify-start sm:justify-between items-start sm:items-center gap-2 pt-4 border-t border-slate-100 dark:border-slate-800 mt-auto">
                                             <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-50 dark:bg-slate-800 rounded-lg text-xs font-bold text-slate-600 dark:text-slate-400">
                                                 <BookOpen className="w-3.5 h-3.5" />
                                                 {level.words.length} Words
                                             </div>
-                                            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-50 dark:bg-slate-800 rounded-lg text-xs font-bold text-slate-600 dark:text-slate-400">
+                                            <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-slate-50 dark:bg-slate-800 rounded-lg text-xs font-bold text-slate-600 dark:text-slate-400 hidden sm:inline-flex">
                                                 <Layers className="w-3.5 h-3.5" />
                                                 {new Set(level.words.map(w => w.category)).size} Categories
                                             </div>

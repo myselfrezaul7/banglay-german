@@ -86,52 +86,52 @@ export default function HomePage() {
       {/* Stats Ribbon */}
       <ScrollReveal direction="up" delay={0.4}>
         <section className="border-y border-slate-200 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-lg">
-          <div className="max-w-7xl mx-auto px-6 py-8 flex flex-wrap justify-center md:justify-between gap-8 text-center md:text-left">
+          <div className="max-w-7xl mx-auto py-8 lg:py-10 flex overflow-x-auto scrollbar-hide snap-x md:flex-wrap justify-start md:justify-center lg:justify-between gap-6 md:gap-8 text-center md:text-left px-6 sm:px-10 md:mx-0">
             {user ? (
               <>
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400"><BookOpen className="w-6 h-6" /></div>
+                <div className="flex flex-col md:flex-row items-center md:items-start gap-3 shrink-0 snap-center w-[140px] md:w-auto">
+                  <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shadow-sm border border-emerald-200 dark:border-emerald-800/50"><BookOpen className="w-5 h-5 md:w-6 md:h-6" /></div>
                   <div>
-                    <div className="text-2xl font-bold text-slate-900 dark:text-white">{user.learnedWords.length}</div>
-                    <div className="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase">Words Learned</div>
+                    <div className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white text-center md:text-left">{user.learnedWords.length}</div>
+                    <div className="text-[10px] md:text-sm text-slate-500 dark:text-slate-400 font-bold tracking-widest uppercase">Learned</div>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400"><Flame className="w-6 h-6" /></div>
+                <div className="flex flex-col md:flex-row items-center md:items-start gap-3 shrink-0 snap-center w-[140px] md:w-auto">
+                  <div className="w-12 h-12 rounded-full bg-orange-100 dark:bg-orange-900/30 flex items-center justify-center text-orange-600 dark:text-orange-400 shadow-sm border border-orange-200 dark:border-orange-800/50"><Flame className="w-5 h-5 md:w-6 md:h-6" /></div>
                   <div>
-                    <div className="text-2xl font-bold text-slate-900 dark:text-white">{user.streak} Days</div>
-                    <div className="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase">Current Streak</div>
+                    <div className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white text-center md:text-left">{user.streak} Days</div>
+                    <div className="text-[10px] md:text-sm text-slate-500 dark:text-slate-400 font-bold tracking-widest uppercase">Streak</div>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400"><Award className="w-6 h-6" /></div>
+                <div className="flex flex-col md:flex-row items-center md:items-start gap-3 shrink-0 snap-center w-[140px] md:w-auto">
+                  <div className="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400 shadow-sm border border-purple-200 dark:border-purple-800/50"><Award className="w-5 h-5 md:w-6 md:h-6" /></div>
                   <div>
-                    <div className="text-2xl font-bold text-slate-900 dark:text-white">{user.xp}</div>
-                    <div className="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase">Total XP Points</div>
+                    <div className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white text-center md:text-left">{user.xp}</div>
+                    <div className="text-[10px] md:text-sm text-slate-500 dark:text-slate-400 font-bold tracking-widest uppercase">XP Points</div>
                   </div>
                 </div>
               </>
             ) : (
               <>
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400"><BookOpen className="w-6 h-6" /></div>
+                <div className="flex flex-col md:flex-row items-center md:items-start gap-3 shrink-0 snap-center w-[140px] md:w-auto">
+                  <div className="w-12 h-12 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center text-emerald-600 dark:text-emerald-400 shadow-sm border border-emerald-200 dark:border-emerald-800/50"><BookOpen className="w-5 h-5 md:w-6 md:h-6" /></div>
                   <div>
-                    <div className="text-2xl font-bold text-slate-900 dark:text-white">5,000+</div>
-                    <div className="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase">Words & Entries</div>
+                    <div className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white text-center md:text-left">5,000+</div>
+                    <div className="text-[10px] md:text-sm text-slate-500 dark:text-slate-400 font-bold tracking-widest uppercase">Words</div>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400"><Award className="w-6 h-6" /></div>
+                <div className="flex flex-col md:flex-row items-center md:items-start gap-3 shrink-0 snap-center w-[140px] md:w-auto">
+                  <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 shadow-sm border border-blue-200 dark:border-blue-800/50"><Award className="w-5 h-5 md:w-6 md:h-6" /></div>
                   <div>
-                    <div className="text-2xl font-bold text-slate-900 dark:text-white">A1-B2</div>
-                    <div className="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase">CEFR Levels</div>
+                    <div className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white text-center md:text-left">A1-B2</div>
+                    <div className="text-[10px] md:text-sm text-slate-500 dark:text-slate-400 font-bold tracking-widest uppercase">Levels</div>
                   </div>
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400"><Puzzle className="w-6 h-6" /></div>
+                <div className="flex flex-col md:flex-row items-center md:items-start gap-3 shrink-0 snap-center w-[140px] md:w-auto">
+                  <div className="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center text-purple-600 dark:text-purple-400 shadow-sm border border-purple-200 dark:border-purple-800/50"><Puzzle className="w-5 h-5 md:w-6 md:h-6" /></div>
                   <div>
-                    <div className="text-2xl font-bold text-slate-900 dark:text-white">100%</div>
-                    <div className="text-sm text-slate-500 dark:text-slate-400 font-medium tracking-wide uppercase">Free & Interactive</div>
+                    <div className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white text-center md:text-left">100%</div>
+                    <div className="text-[10px] md:text-sm text-slate-500 dark:text-slate-400 font-bold tracking-widest uppercase">Free</div>
                   </div>
                 </div>
               </>

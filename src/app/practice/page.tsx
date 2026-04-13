@@ -289,7 +289,8 @@ export default function PracticePage() {
                             </div>
 
                             {/* Animated Progress Bar */}
-                            <div className="flex-1 max-w-[200px] mx-4 hidden sm:block">
+                            <div className="w-px h-8 bg-slate-200 dark:bg-slate-700 mx-2 sm:hidden"></div>
+                            <div className="flex-1 max-w-[200px] mx-2 md:mx-4">
                                 <div className="h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
                                     <div className="h-full bg-gradient-to-r from-blue-500 to-teal-400 rounded-full transition-all duration-500 ease-out" style={{ width: `${((currentQuestion) / 10) * 100}%` }}></div>
                                 </div>
