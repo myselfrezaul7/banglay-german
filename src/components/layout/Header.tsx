@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
@@ -17,7 +17,10 @@ const navLinks = [
 
 export default function Header() {
     const [isScrolled, setIsScrolled] = useState(false);
+    const [isHeaderVisible, setIsHeaderVisible] = useState(true);
     const [theme, setTheme] = useState('light');
+    const lastScrollY = useRef(0);
+    const scrollTimer = useRef<NodeJS.Timeout | null>(null);
     const { user } = useAuth();
     const pathname = usePathname();
 
@@ -30,11 +33,37 @@ export default function Header() {
             document.documentElement.classList.remove('dark');
         }
 
-        const handleScroll = () => setIsScrolled(window.scrollY > 20);
-        window.addEventListener('scroll', handleScroll);
+        const handleScroll = () => {
+            const currentY = window.scrollY;
+            setIsScrolled(currentY > 20);
+
+            // Always show at top of page
+            if (currentY <= 20) {
+                setIsHeaderVisible(true);
+            } else if (currentY > lastScrollY.current && currentY > 60) {
+                // Scrolling DOWN past threshold -> hide
+                setIsHeaderVisible(false);
+            } else if (currentY < lastScrollY.current) {
+                // Scrolling UP -> show
+                setIsHeaderVisible(true);
+            }
+
+            lastScrollY.current = currentY;
+
+            // Idle timer: reappear when scrolling stops
+            if (scrollTimer.current) clearTimeout(scrollTimer.current);
+            scrollTimer.current = setTimeout(() => {
+                setIsHeaderVisible(true);
+            }, 150);
+        };
+
+        window.addEventListener('scroll', handleScroll, { passive: true });
         // Initial check
         handleScroll();
-        return () => window.removeEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            if (scrollTimer.current) clearTimeout(scrollTimer.current);
+        };
     }, []);
 
     const toggleTheme = () => {
@@ -49,7 +78,7 @@ export default function Header() {
     };
 
     return (
-        <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${isScrolled ? 'py-2 md:py-3' : 'py-4 md:py-6'}`}>
+        <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-out ${isScrolled ? 'py-2 md:py-3' : 'py-4 md:py-6'} ${isHeaderVisible ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0'}`}>
             <div className="max-w-7xl mx-auto px-4 sm:px-6">
                 <div className={`flex items-center justify-between transition-all duration-500 rounded-[2rem] px-4 md:px-6 h-16 md:h-20 ${isScrolled
                     ? 'bg-white/60 dark:bg-slate-900/60 backdrop-blur-[20px] shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)] border border-white/50 dark:border-slate-800/50'
