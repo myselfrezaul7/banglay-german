@@ -76,18 +76,11 @@ export default function WordCard({ word, onFavorite, onLearn }: WordCardProps) {
             </div>
 
             {/* Category */}
-            <div className="text-xs text-slate-400 dark:text-slate-500 capitalize mb-6 mt-auto">
-                <span className="inline-flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800/50 px-2.5 py-1 rounded-lg border border-slate-100 dark:border-slate-800">
-                    📂 {word.category}
-                </span>
-            </div>
-
-            {/* Actions */}
-            <div className="flex items-center gap-2 pt-4 border-t border-slate-100 dark:border-slate-800">
+            <div className="flex flex-col sm:flex-row items-center gap-2 pt-4 border-t border-slate-100 dark:border-slate-800 mt-auto">
                 <button
                     onClick={handleSpeak}
                     disabled={isPlaying}
-                    className={`relative flex-1 flex items-center justify-center gap-2 py-3 rounded-xl transition-all duration-300 active:scale-95 border ${isPlaying
+                    className={`relative w-full sm:flex-1 flex items-center justify-center gap-1.5 md:gap-2 py-2.5 md:py-3 rounded-xl transition-all duration-300 active:scale-95 border ${isPlaying
                         ? 'bg-blue-600 border-blue-600 text-white shadow-lg shadow-blue-500/30'
                         : 'bg-slate-50 dark:bg-slate-800 border-slate-200/50 dark:border-slate-700 hover:bg-blue-50 dark:hover:bg-blue-900/20 hover:border-blue-200 dark:hover:border-blue-800 hover:text-blue-600 dark:hover:text-blue-400 text-slate-600 dark:text-slate-400'
                         }`}
@@ -95,19 +88,19 @@ export default function WordCard({ word, onFavorite, onLearn }: WordCardProps) {
                     {isPlaying && (
                         <span className="absolute inset-0 bg-blue-500 rounded-xl animate-ping opacity-40 -z-10" />
                     )}
-                    <svg className={`w-5 h-5 ${isPlaying ? 'animate-pulse' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className={`w-4 h-4 md:w-5 md:h-5 ${isPlaying ? 'animate-pulse' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
                     </svg>
-                    <span className="text-sm font-bold tracking-wide">{isPlaying ? 'Playing...' : 'Listen'}</span>
+                    <span className="text-xs md:text-sm font-bold tracking-wide">{isPlaying ? 'Playing...' : 'Listen'}</span>
                 </button>
                 <button
                     onClick={() => onLearn?.(word.id)}
-                    className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200/50 dark:border-slate-700 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 dark:hover:border-emerald-800 hover:text-emerald-600 dark:hover:text-emerald-400 text-slate-600 dark:text-slate-400 transition-all active:scale-95"
+                    className="w-full sm:flex-1 flex items-center justify-center gap-1.5 md:gap-2 py-2.5 md:py-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200/50 dark:border-slate-700 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 hover:border-emerald-200 dark:hover:border-emerald-800 hover:text-emerald-600 dark:hover:text-emerald-400 text-slate-600 dark:text-slate-400 transition-all active:scale-95"
                 >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    <span className="text-sm font-bold tracking-wide">Learned</span>
+                    <span className="text-xs md:text-sm font-bold tracking-wide">Learned</span>
                 </button>
             </div>
         </div>
