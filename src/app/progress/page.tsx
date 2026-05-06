@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { a1Words, a2Words, b1Words } from '@/data/vocabulary';
+import { a1Words, a2Words, b1Words, b2Words } from '@/data/vocabulary';
 
 export default function ProgressPage() {
     const [mounted, setMounted] = useState(false);
@@ -11,7 +11,7 @@ export default function ProgressPage() {
         setMounted(true);
     }, []);
 
-    const totalWords = a1Words.length + a2Words.length + b1Words.length;
+    const totalWords = a1Words.length + a2Words.length + b1Words.length + b2Words.length;
 
     if (!mounted) return null;
 
@@ -93,7 +93,7 @@ export default function ProgressPage() {
                                 { level: 'A1', title: 'Beginner', words: a1Words.length, color: '#10b981', glow: 'shadow-emerald-500/20' },
                                 { level: 'A2', title: 'Elementary', words: a2Words.length, color: '#3b82f6', glow: 'shadow-blue-500/20' },
                                 { level: 'B1', title: 'Intermediate', words: b1Words.length, color: '#f97316', glow: 'shadow-orange-500/20' },
-                                { level: 'B2', title: 'Upper Int.', words: 500, color: '#ec4899', glow: 'shadow-pink-500/20' }, // Hardcoded 500 for missing array
+                                { level: 'B2', title: 'Upper Int.', words: b2Words.length, color: '#ec4899', glow: 'shadow-pink-500/20' },
                             ].map((item) => {
                                 const progress = 0; // Replace with actual progress logic later
                                 const radius = 40;

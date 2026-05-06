@@ -280,7 +280,10 @@ export default function GrammarPage() {
                             <div
                                 className={`overflow-hidden transition-all duration-500 rounded-[2rem] border bg-white/60 dark:bg-slate-900/60 backdrop-blur-md shadow-xl
                                 ${isExpanded
-                                        ? `border-${guide.level === 'a1' ? 'emerald' : guide.level === 'a2' ? 'blue' : guide.level === 'b1' ? 'orange' : 'purple'}-400/50 dark:border-${guide.level === 'a1' ? 'emerald' : guide.level === 'a2' ? 'blue' : guide.level === 'b1' ? 'orange' : 'purple'}-500/50 shadow-${guide.level === 'a1' ? 'emerald' : guide.level === 'a2' ? 'blue' : guide.level === 'b1' ? 'orange' : 'purple'}-900/10`
+                                        ? guide.level === 'a1' ? 'border-emerald-400/50 dark:border-emerald-500/50 shadow-emerald-900/10' :
+                                          guide.level === 'a2' ? 'border-blue-400/50 dark:border-blue-500/50 shadow-blue-900/10' :
+                                          guide.level === 'b1' ? 'border-orange-400/50 dark:border-orange-500/50 shadow-orange-900/10' :
+                                          'border-purple-400/50 dark:border-purple-500/50 shadow-purple-900/10'
                                         : 'border-slate-200/50 dark:border-slate-800/50 shadow-slate-200/20 dark:shadow-none hover:border-slate-300 dark:hover:border-slate-700 hover:bg-white dark:hover:bg-slate-900'
                                     }`}
                             >

@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { allWords } from '@/data/vocabulary';
+import { allWords, a1Words, a2Words, b1Words, b2Words } from '@/data/vocabulary';
 import { Word } from '@/types';
 import ScrollReveal from '@/components/animations/ScrollReveal';
 import TextReveal from '@/components/animations/TextReveal';
@@ -13,10 +13,10 @@ import { useAuth } from '@/contexts/AuthContext';
 import { PlayCircle, Bookmark, ArrowRight, BookOpen, Award, Zap, Puzzle, Globe, Volume2, MessageSquare, Flame } from 'lucide-react';
 
 const levels = [
-  { level: 'A1', title: 'Beginner', titleBn: 'প্রাথমিক', words: 500, colorFrom: 'from-emerald-400', colorTo: 'to-teal-500', href: '/vocabulary/a1', progress: 0 },
-  { level: 'A2', title: 'Elementary', titleBn: 'প্রাথমিক+', words: 500, colorFrom: 'from-blue-400', colorTo: 'to-indigo-500', href: '/vocabulary/a2', progress: 0 },
-  { level: 'B1', title: 'Intermediate', titleBn: 'মধ্যম', words: 500, colorFrom: 'from-orange-400', colorTo: 'to-rose-500', href: '/vocabulary/b1', progress: 0 },
-  { level: 'B2', title: 'Upper Int.', titleBn: 'উচ্চ মধ্যম', words: 500, colorFrom: 'from-purple-400', colorTo: 'to-pink-500', href: '/vocabulary/b2', progress: 0 },
+  { level: 'A1', title: 'Beginner', titleBn: 'প্রাথমিক', words: a1Words.length, colorFrom: 'from-emerald-400', colorTo: 'to-teal-500', href: '/vocabulary/a1', progress: 0 },
+  { level: 'A2', title: 'Elementary', titleBn: 'প্রাথমিক+', words: a2Words.length, colorFrom: 'from-blue-400', colorTo: 'to-indigo-500', href: '/vocabulary/a2', progress: 0 },
+  { level: 'B1', title: 'Intermediate', titleBn: 'মধ্যম', words: b1Words.length, colorFrom: 'from-orange-400', colorTo: 'to-rose-500', href: '/vocabulary/b1', progress: 0 },
+  { level: 'B2', title: 'Upper Int.', titleBn: 'উচ্চ মধ্যম', words: b2Words.length, colorFrom: 'from-purple-400', colorTo: 'to-pink-500', href: '/vocabulary/b2', progress: 0 },
 ];
 
 export default function HomePage() {

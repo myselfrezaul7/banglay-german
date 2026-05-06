@@ -14,6 +14,7 @@ export default function SentenceBuilderPage() {
     const [availableWords, setAvailableWords] = useState<string[]>([]);
     const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
     const [score, setScore] = useState(0);
+    const [combo, setCombo] = useState(0);
     const [showHint, setShowHint] = useState(false);
 
     const filteredChallenges = level === 'all' ? challenges : challenges.filter(c => c.level === level);
@@ -55,12 +56,14 @@ export default function SentenceBuilderPage() {
         const correct = JSON.stringify(selectedWords) === JSON.stringify(current.correctOrder);
         setIsCorrect(correct);
         if (correct) {
-            setScore(s => s + 10); // Give more points for gamification feel
+            setCombo(c => c + 1);
+            setScore(s => s + 10 + (combo >= 2 ? 5 : 0)); // Give more points for gamification feel
             // Add success vibration if supported
             if (typeof window !== 'undefined' && window.navigator && window.navigator.vibrate) {
                 window.navigator.vibrate([30, 50, 30]);
             }
         } else {
+            setCombo(0);
             // Error vibration
             if (typeof window !== 'undefined' && window.navigator && window.navigator.vibrate) {
                 window.navigator.vibrate(100);
@@ -106,23 +109,37 @@ export default function SentenceBuilderPage() {
                 {/* Score & Level Control Header */}
                 <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
                     {/* Level Selector Pills */}
-                    <div className="flex bg-white/60 dark:bg-slate-900/60 backdrop-blur-md p-1.5 rounded-2xl border border-slate-200/50 dark:border-slate-800/50 shadow-sm">
-                        {['all', 'a1', 'a2', 'b1', 'b2'].map(l => (
-                            <button key={l} onClick={() => { setLevel(l as typeof level); setCurrentIndex(0); }}
-                                className={`px-4 py-2 rounded-xl text-sm font-bold transition-all duration-300 ${level === l
-                                    ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20 scale-100'
-                                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 scale-95'
-                                    }`}>
-                                {l === 'all' ? 'Mixed' : l.toUpperCase()}
-                            </button>
-                        ))}
+                    <div className="flex bg-white/60 dark:bg-slate-900/60 backdrop-blur-md p-1.5 rounded-2xl border border-slate-200/50 dark:border-slate-800/50 shadow-sm overflow-x-auto scrollbar-hide">
+                        {['all', 'a1', 'a2', 'b1', 'b2'].map(l => {
+                            const count = l === 'all' ? challenges.length : challenges.filter(c => c.level === l).length;
+                            return (
+                                <button key={l} onClick={() => { setLevel(l as typeof level); setCurrentIndex(0); }}
+                                    className={`px-4 py-2 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${level === l
+                                        ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20 scale-100'
+                                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 scale-95'
+                                        }`}>
+                                    {l === 'all' ? 'Mixed' : l.toUpperCase()}
+                                    <span className={`text-[10px] px-1.5 py-0.5 rounded-md ${level === l ? 'bg-white/20 text-white' : 'bg-slate-200 dark:bg-slate-700 text-slate-500 dark:text-slate-300'}`}>{count}</span>
+                                </button>
+                            );
+                        })}
                     </div>
 
                     {/* Floating Score Tracker */}
-                    <div className="flex items-center gap-3 bg-gradient-to-r from-amber-400 to-orange-500 p-[2px] rounded-2xl shadow-lg shadow-orange-500/20 transform hover:scale-105 transition-transform">
-                        <div className="flex items-center gap-2 bg-white dark:bg-slate-900 px-4 py-2 rounded-[14px] h-full font-bold text-slate-900 dark:text-white">
-                            <Trophy className="w-5 h-5 text-orange-500" />
-                            <span>{score} XP</span>
+                    <div className="flex gap-3">
+                        {combo >= 2 && (
+                            <div className="hidden sm:flex items-center gap-3 bg-gradient-to-r from-emerald-400 to-teal-500 p-[2px] rounded-2xl shadow-lg shadow-emerald-500/20 animate-bounce">
+                                <div className="flex items-center gap-2 bg-white dark:bg-slate-900 px-4 py-2 rounded-[14px] h-full font-bold text-slate-900 dark:text-white">
+                                    <Sparkles className="w-5 h-5 text-emerald-500" />
+                                    <span>{combo}x Combo</span>
+                                </div>
+                            </div>
+                        )}
+                        <div className="flex items-center gap-3 bg-gradient-to-r from-amber-400 to-orange-500 p-[2px] rounded-2xl shadow-lg shadow-orange-500/20 transform hover:scale-105 transition-transform">
+                            <div className="flex items-center gap-2 bg-white dark:bg-slate-900 px-4 py-2 rounded-[14px] h-full font-bold text-slate-900 dark:text-white">
+                                <Trophy className="w-5 h-5 text-orange-500" />
+                                <span>{score} XP</span>
+                            </div>
                         </div>
                     </div>
                 </div>

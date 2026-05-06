@@ -30,7 +30,7 @@ export default function SentencesPage() {
     if (!mounted) return null;
 
     return (
-        <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
+        <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pb-24">
             {/* Ambient Background Glows */}
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[120px] pointer-events-none"></div>
             <div className="absolute top-40 left-0 w-[400px] h-[400px] bg-indigo-500/10 rounded-full blur-[100px] pointer-events-none"></div>
@@ -80,14 +80,19 @@ export default function SentencesPage() {
                     {filteredSentences.map((sentence) => (
                         <div
                             key={sentence.id}
-                            className="glass-card overflow-hidden"
+                            className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border border-slate-200/50 dark:border-slate-800/50 shadow-xl rounded-[2rem] overflow-hidden"
                         >
                             {/* Main Sentence */}
                             <div className="p-6">
                                 <div className="flex items-start justify-between gap-4">
                                     <div className="flex-1">
                                         {/* Level Badge */}
-                                        <span className={`badge badge-${sentence.level} mb-3 inline-block`}>
+                                        <span className={`px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-widest mb-3 inline-block
+                                            ${sentence.level === 'a1' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/50' : 
+                                              sentence.level === 'a2' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border border-blue-200 dark:border-blue-800/50' :
+                                              sentence.level === 'b1' ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 border border-orange-200 dark:border-orange-800/50' :
+                                              'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400 border border-purple-200 dark:border-purple-800/50'}
+                                        `}>
                                             {sentence.level.toUpperCase()}
                                         </span>
 

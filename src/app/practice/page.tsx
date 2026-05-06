@@ -23,6 +23,8 @@ export default function PracticePage() {
     const [showResult, setShowResult] = useState(false);
     const [quizStarted, setQuizStarted] = useState(false);
     const [quizComplete, setQuizComplete] = useState(false);
+    const [quizLength, setQuizLength] = useState<number>(10);
+    const [wrongAnswers, setWrongAnswers] = useState<{question: string, correct: string, given: string}[]>([]);
 
     useEffect(() => {
         setMounted(true);
@@ -34,7 +36,7 @@ export default function PracticePage() {
     }, [selectedLevel]);
 
     const questions = useMemo(() => {
-        const shuffled = [...filteredWords].sort(() => Math.random() - 0.5).slice(0, 10);
+        const shuffled = [...filteredWords].sort(() => Math.random() - 0.5).slice(0, quizLength);
         return shuffled.map(word => {
             const otherWords = filteredWords.filter(w => w.id !== word.id).sort(() => Math.random() - 0.5).slice(0, 3);
             let question: string, correct: string, options: string[];
@@ -92,6 +94,11 @@ export default function PracticePage() {
             }
         } else {
             setStreakCount(0);
+            setWrongAnswers(prev => [...prev, {
+                question: questions[currentQuestion].question,
+                correct: questions[currentQuestion].correct,
+                given: answer
+            }]);
             // Error Haptic
             if (typeof window !== 'undefined' && window.navigator && window.navigator.vibrate) {
                 window.navigator.vibrate(100);
@@ -127,6 +134,7 @@ export default function PracticePage() {
         setSelectedAnswer(null);
         setShowResult(false);
         setQuizComplete(false);
+        setWrongAnswers([]);
     };
 
     const resetQuiz = () => {
@@ -135,6 +143,7 @@ export default function PracticePage() {
         setCurrentQuestion(0);
         setScore(0);
         setStreakCount(0);
+        setWrongAnswers([]);
     };
 
     if (!mounted) return null;
@@ -223,6 +232,28 @@ export default function PracticePage() {
                                 </div>
                             </div>
 
+                            {/* Quiz Length Selection */}
+                            <div className="mb-10">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <div className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-900/50 flex items-center justify-center text-emerald-600 dark:text-emerald-400 font-bold">3</div>
+                                    <h3 className="text-xl font-bold text-slate-900 dark:text-white font-poppins">Questions</h3>
+                                </div>
+                                <div className="flex gap-4">
+                                    {[10, 20, 50].map((len) => (
+                                        <button
+                                            key={len}
+                                            onClick={() => setQuizLength(len)}
+                                            className={`flex-1 py-3 border rounded-2xl font-bold transition-all duration-300 hover:-translate-y-1 ${quizLength === len
+                                                ? 'bg-emerald-600 border-emerald-600 text-white shadow-lg shadow-emerald-500/30'
+                                                : 'bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:border-emerald-400'
+                                                }`}
+                                        >
+                                            {len}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
                             {/* Start Button */}
                             <button
                                 onClick={startQuiz}
@@ -264,6 +295,21 @@ export default function PracticePage() {
                                 </div>
                             </div>
 
+                            {wrongAnswers.length > 0 && (
+                                <div className="max-w-md mx-auto mb-10 text-left bg-slate-50 dark:bg-slate-800/50 p-6 rounded-[1.5rem] border border-slate-100 dark:border-slate-700 max-h-64 overflow-y-auto">
+                                    <h4 className="font-bold text-lg mb-4 text-slate-900 dark:text-white">Review Mistakes</h4>
+                                    <div className="space-y-4">
+                                        {wrongAnswers.map((w, i) => (
+                                            <div key={i} className="text-sm">
+                                                <div className="text-slate-600 dark:text-slate-400 font-medium">{w.question}</div>
+                                                <div className="text-emerald-600 dark:text-emerald-400 font-bold mt-1">✓ {w.correct}</div>
+                                                <div className="text-rose-500 dark:text-rose-400 line-through">✗ {w.given}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+
                             <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
                                 <button onClick={startQuiz} className="flex-1 flex justify-center items-center gap-2 py-4 rounded-2xl font-bold text-lg shadow-[0_4px_0_0] active:shadow-[0_0px_0_0] active:translate-y-1 transition-all bg-blue-600 text-white shadow-blue-800 hover:bg-blue-500">
                                     <RefreshCcw className="w-5 h-5" /> Play Again
@@ -284,7 +330,7 @@ export default function PracticePage() {
                                 <div className="hidden sm:flex w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 items-center justify-center text-slate-500"><Timer className="w-5 h-5" /></div>
                                 <div>
                                     <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">Question</div>
-                                    <div className="font-bold text-slate-900 dark:text-white">{currentQuestion + 1} of 10</div>
+                                    <div className="font-bold text-slate-900 dark:text-white">{currentQuestion + 1} of {quizLength}</div>
                                 </div>
                             </div>
 
@@ -292,7 +338,7 @@ export default function PracticePage() {
                             <div className="w-px h-8 bg-slate-200 dark:bg-slate-700 mx-2 sm:hidden"></div>
                             <div className="flex-1 max-w-[200px] mx-2 md:mx-4">
                                 <div className="h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
-                                    <div className="h-full bg-gradient-to-r from-blue-500 to-teal-400 rounded-full transition-all duration-500 ease-out" style={{ width: `${((currentQuestion) / 10) * 100}%` }}></div>
+                                    <div className="h-full bg-gradient-to-r from-blue-500 to-teal-400 rounded-full transition-all duration-500 ease-out" style={{ width: `${((currentQuestion) / quizLength) * 100}%` }}></div>
                                 </div>
                             </div>
 
@@ -338,12 +384,28 @@ export default function PracticePage() {
                                     )}
                                 </div>
 
-                                {/* Answer Options */}
                                 {quizMode === 'speaking' ? (
-                                    <PronunciationCoach
-                                        targetText={questions[currentQuestion]?.correct}
-                                        onSuccess={handleSpeakingSuccess}
-                                    />
+                                    <div className="flex flex-col items-center">
+                                        <PronunciationCoach
+                                            targetText={questions[currentQuestion]?.correct}
+                                            onSuccess={handleSpeakingSuccess}
+                                        />
+                                        {!showResult && (
+                                            <button 
+                                                onClick={() => {
+                                                    setWrongAnswers(prev => [...prev, {
+                                                        question: questions[currentQuestion].question,
+                                                        correct: questions[currentQuestion].correct,
+                                                        given: 'Skipped'
+                                                    }]);
+                                                    setShowResult(true);
+                                                }}
+                                                className="mt-4 text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 underline text-sm"
+                                            >
+                                                Skip Question
+                                            </button>
+                                        )}
+                                    </div>
                                 ) : (
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                                         {questions[currentQuestion]?.options.map((option, index) => {

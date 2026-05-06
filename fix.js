@@ -1,0 +1,1 @@
+const fs = require('fs'); let c = fs.readFileSync('src/data/sentences.ts', 'utf8'); c = c.replace(/"de":/g, '"german":').replace(/"en":/g, '"english":').replace(/"bn":/g, '"bangla":'); fs.writeFileSync('src/data/sentences.ts', c);
