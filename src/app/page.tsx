@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useMotionTemplate } from 'framer-motion';
 import { allWords, a1Words, a2Words, b1Words, b2Words } from '@/data/vocabulary';
 import { Word } from '@/types';
 import ScrollReveal from '@/components/animations/ScrollReveal';
@@ -235,24 +235,24 @@ export default function HomePage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {/* Sentence Builder */}
-              <Link href="/sentence-builder" className="group relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] p-5 md:p-8 border border-slate-200 dark:border-slate-800 hover:border-blue-500 transition-all duration-300 shadow-xl shadow-slate-200/20 dark:shadow-none hover:-translate-y-1">
+              <SpotlightCard href="/sentence-builder" activeColor="rgba(59, 130, 246, 0.15)">
                 <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
                   <Puzzle className="w-24 h-24 text-blue-500 transform rotate-12 group-hover:rotate-0 transition-transform duration-500" />
                 </div>
                 <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/50 rounded-2xl flex items-center justify-center text-blue-600 dark:text-blue-400 mb-6 group-hover:scale-110 transition-transform relative z-10 shadow-sm"><Puzzle className="w-7 h-7" /></div>
                 <h3 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white mb-2 relative z-10">Sentence Builder</h3>
                 <p className="text-slate-500 dark:text-slate-400 leading-relaxed relative z-10 max-w-[200px]">Practice grammar interactively by arranging blocks.</p>
-              </Link>
+              </SpotlightCard>
 
               {/* Speed Quiz */}
-              <Link href="/practice" className="group relative overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] p-5 md:p-8 border border-slate-200 dark:border-slate-800 hover:border-orange-500 transition-all duration-300 shadow-xl shadow-slate-200/20 dark:shadow-none hover:-translate-y-1">
+              <SpotlightCard href="/practice" activeColor="rgba(249, 115, 22, 0.15)">
                 <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
                   <Zap className="w-24 h-24 text-orange-500 transform -rotate-12 group-hover:rotate-0 transition-transform duration-500" />
                 </div>
                 <div className="w-14 h-14 bg-orange-100 dark:bg-orange-900/50 rounded-2xl flex items-center justify-center text-orange-600 dark:text-orange-400 mb-6 group-hover:scale-110 transition-transform relative z-10 shadow-sm"><Zap className="w-7 h-7" /></div>
                 <h3 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white mb-2 relative z-10">Speed Quiz</h3>
                 <p className="text-slate-500 dark:text-slate-400 leading-relaxed relative z-10 max-w-[200px]">Test your vocabulary recall speed and accuracy.</p>
-              </Link>
+              </SpotlightCard>
             </div>
 
             {/* Course Levels Upgrade */}
@@ -314,5 +314,36 @@ export default function HomePage() {
       </section>
 
     </div>
+  );
+}
+
+function SpotlightCard({ children, href, activeColor }: { children: React.ReactNode, href: string, activeColor: string }) {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
+
+  return (
+    <Link href={href} onMouseMove={handleMouseMove} className="group relative block overflow-hidden bg-white dark:bg-slate-900 rounded-[2rem] border border-slate-200 dark:border-slate-800 transition-all duration-300 shadow-xl shadow-slate-200/20 dark:shadow-none hover:-translate-y-1 z-10">
+      <motion.div
+        className="pointer-events-none absolute -inset-px rounded-[2rem] opacity-0 transition duration-300 group-hover:opacity-100 z-0"
+        style={{
+          background: useMotionTemplate`
+            radial-gradient(
+              400px circle at ${mouseX}px ${mouseY}px,
+              ${activeColor},
+              transparent 80%
+            )
+          `,
+        }}
+      />
+      <div className="relative h-full p-5 md:p-8 bg-transparent z-10">
+        {children}
+      </div>
+    </Link>
   );
 }

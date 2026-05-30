@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { challenges, SentenceChallenge } from '@/data/sentence-challenges';
-import { CheckCircle2, XCircle, ArrowRight, RefreshCcw, Sparkles, Wand2, Crown, Trophy, HelpCircle } from 'lucide-react';
+import { CheckCircle2, XCircle, ArrowRight, RefreshCcw, Sparkles, Trophy, HelpCircle } from 'lucide-react';
 import ScrollReveal from '@/components/animations/ScrollReveal';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function SentenceBuilderPage() {
     const [mounted, setMounted] = useState(false);
@@ -150,12 +151,17 @@ export default function SentenceBuilderPage() {
                         'border-slate-200/50 dark:border-slate-700/50 shadow-slate-200/50 dark:shadow-none'
                     }`}>
 
-                    {/* Current Level Tag */}
-                    <div className={`absolute -top-4 -right-2 md:top-6 md:right-6 md:absolute px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg transform rotate-[-5deg] ${current.level === 'a1' ? 'bg-emerald-500 text-white shadow-emerald-500/30' :
-                        current.level === 'a2' ? 'bg-blue-500 text-white shadow-blue-500/30' :
-                            'bg-orange-500 text-white shadow-orange-500/30'
-                        }`}>
-                        {current.level.toUpperCase()}
+                    {/* Difficulty Badges */}
+                    <div className="absolute -top-4 -right-2 md:top-6 md:right-6 md:absolute flex flex-col items-end gap-2 z-10">
+                        <div className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg transform rotate-[-5deg] ${current.level === 'a1' ? 'bg-emerald-500 text-white shadow-emerald-500/30' :
+                            current.level === 'a2' ? 'bg-blue-500 text-white shadow-blue-500/30' :
+                                'bg-orange-500 text-white shadow-orange-500/30'
+                            }`}>
+                            {current.level.toUpperCase()}
+                        </div>
+                        <div className="px-3 py-1 rounded-full bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-widest shadow-sm transform rotate-[-3deg] border border-slate-200 dark:border-slate-700">
+                            {current.correctOrder.length} words
+                        </div>
                     </div>
 
                     {/* Translation Prompt */}
@@ -202,25 +208,42 @@ export default function SentenceBuilderPage() {
                             </div>
                         )}
 
-                        {selectedWords.map((word, i) => (
-                            <button key={i} onClick={() => handleWordClick(word, true)}
-                                className={`px-4 py-2.5 md:px-5 md:py-3 rounded-[1.25rem] md:rounded-2xl font-bold text-base md:text-lg shadow-[0_4px_0_0] active:shadow-[0_0px_0_0] active:translate-y-1 transition-all origin-center animate-fadeIn ${isCorrect === true ? 'bg-emerald-500 text-white shadow-emerald-700 hover:bg-emerald-400' :
-                                    isCorrect === false ? 'bg-rose-500 text-white shadow-rose-700 hover:bg-rose-400' :
-                                        'bg-white dark:bg-slate-800 text-slate-800 dark:text-white border border-slate-200/50 dark:border-slate-700 shadow-slate-200 dark:shadow-slate-950 hover:border-blue-400 dark:hover:border-blue-500'
-                                    }`}>
-                                {word}
-                            </button>
-                        ))}
+                        <AnimatePresence mode="popLayout">
+                            {isCorrect === true ? (
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
+                                    animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                                    className="w-full py-4 px-6 bg-gradient-to-r from-emerald-400 to-teal-500 text-white rounded-[1.5rem] font-bold text-xl md:text-2xl shadow-xl shadow-emerald-500/40 text-center tracking-wide"
+                                >
+                                    {current.correctOrder.join(' ')}
+                                </motion.div>
+                            ) : (
+                                selectedWords.map((word, i) => (
+                                    <motion.button layout layoutId={`word-${word}`} key={`sel-${word}-${i}`} onClick={() => handleWordClick(word, true)}
+                                        whileHover={{ scale: 1.05 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className={`px-4 py-2.5 md:px-5 md:py-3 rounded-[1.25rem] md:rounded-2xl font-bold text-base md:text-lg shadow-[0_4px_0_0] active:shadow-[0_0px_0_0] active:translate-y-1 transition-colors origin-center ${isCorrect === false ? 'bg-rose-500 text-white shadow-rose-700 hover:bg-rose-400' :
+                                            'bg-white dark:bg-slate-800 text-slate-800 dark:text-white border border-slate-200/50 dark:border-slate-700 shadow-slate-200 dark:shadow-slate-950 hover:border-blue-400 dark:hover:border-blue-500 cursor-pointer'
+                                            }`}>
+                                        {word}
+                                    </motion.button>
+                                ))
+                            )}
+                        </AnimatePresence>
                     </div>
 
                     {/* Available Words Bank */}
                     <div className="flex flex-wrap gap-2.5 md:gap-4 mb-10 justify-center min-h-[100px]">
-                        {availableWords.map((word, i) => (
-                            <button key={i} onClick={() => handleWordClick(word, false)}
-                                className="px-4 py-2.5 md:px-5 md:py-3 rounded-[1.25rem] md:rounded-2xl bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-base md:text-lg border border-slate-200/80 dark:border-slate-700 shadow-[0_4px_0_0] shadow-slate-200 dark:shadow-slate-950 active:shadow-[0_0px_0_0] active:translate-y-1 transition-all hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 animate-fadeIn">
-                                {word}
-                            </button>
-                        ))}
+                        <AnimatePresence>
+                            {isCorrect !== true && availableWords.map((word, i) => (
+                                <motion.button layout layoutId={`word-${word}`} key={`avail-${word}-${i}`} onClick={() => handleWordClick(word, false)}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    className="px-4 py-2.5 md:px-5 md:py-3 rounded-[1.25rem] md:rounded-2xl bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-base md:text-lg border border-slate-200/80 dark:border-slate-700 shadow-[0_4px_0_0] shadow-slate-200 dark:shadow-slate-950 active:shadow-[0_0px_0_0] active:translate-y-1 transition-colors hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer">
+                                    {word}
+                                </motion.button>
+                            ))}
+                        </AnimatePresence>
                     </div>
 
                     {/* Primary Action Button (Check / Next) */}

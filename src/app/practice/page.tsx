@@ -8,6 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import PronunciationCoach from '@/components/shared/PronunciationCoach';
 import ScrollReveal from '@/components/animations/ScrollReveal';
 import { Zap, Timer, Trophy, ArrowRight, RefreshCcw, Medal } from 'lucide-react';
+import confetti from 'canvas-confetti';
 
 type QuizMode = 'de-to-en' | 'en-to-de' | 'de-to-bn' | 'bn-to-de' | 'speaking';
 
@@ -101,7 +102,19 @@ export default function PracticePage() {
             }]);
             // Error Haptic
             if (typeof window !== 'undefined' && window.navigator && window.navigator.vibrate) {
-                window.navigator.vibrate(100);
+                window.navigator.vibrate([100, 50, 100]);
+            }
+            // Trigger Shake
+            const card = document.getElementById('quiz-card');
+            if (card) {
+                card.animate([
+                    { transform: 'translateX(0px)' },
+                    { transform: 'translateX(-10px)' },
+                    { transform: 'translateX(10px)' },
+                    { transform: 'translateX(-10px)' },
+                    { transform: 'translateX(10px)' },
+                    { transform: 'translateX(0px)' }
+                ], { duration: 400, easing: 'ease-in-out' });
             }
         }
     };
@@ -123,6 +136,34 @@ export default function PracticePage() {
             setQuizComplete(true);
             incrementStreak();
             addXP(50); // Bonus for completion
+            
+            // Confetti explosion!
+            if (score >= quizLength * 0.8) {
+                const duration = 3000;
+                const end = Date.now() + duration;
+
+                const frame = () => {
+                    confetti({
+                        particleCount: 5,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0 },
+                        colors: ['#3b82f6', '#10b981', '#f59e0b']
+                    });
+                    confetti({
+                        particleCount: 5,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1 },
+                        colors: ['#3b82f6', '#10b981', '#f59e0b']
+                    });
+
+                    if (Date.now() < end) {
+                        requestAnimationFrame(frame);
+                    }
+                };
+                frame();
+            }
         }
     };
 
@@ -355,11 +396,12 @@ export default function PracticePage() {
                         {/* Quiz Question Card */}
                         <AnimatePresence mode="wait">
                             <motion.div
+                                id="quiz-card"
                                 key={currentQuestion}
-                                initial={{ opacity: 0, x: 50 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -50 }}
-                                transition={{ duration: 0.3, ease: "easeInOut" }}
+                                initial={{ opacity: 0, x: 50, rotate: 2 }}
+                                animate={{ opacity: 1, x: 0, rotate: 0 }}
+                                exit={{ opacity: 0, x: -50, rotate: -2 }}
+                                transition={{ duration: 0.3, type: "spring", stiffness: 200, damping: 20 }}
                                 className={`bg-white/90 dark:bg-slate-900/90 backdrop-blur-2xl rounded-[2.5rem] p-6 md:p-10 border shadow-2xl transition-colors duration-500 ${showResult
                                     ? selectedAnswer === questions[currentQuestion]?.correct || selectedAnswer === null
                                         ? 'border-emerald-400 shadow-emerald-500/20'

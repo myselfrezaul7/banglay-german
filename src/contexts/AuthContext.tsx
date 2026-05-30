@@ -4,6 +4,7 @@ import { createContext, useContext, useState, useEffect, ReactNode } from 'react
 import { auth, db } from '@/lib/firebase';
 import { signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut as firebaseSignOut } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
+import LevelUpModal from '@/components/ui/LevelUpModal';
 
 interface User {
     id: string;
@@ -38,6 +39,8 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
+    const [showLevelUpModal, setShowLevelUpModal] = useState(false);
+    const [newLevel, setNewLevel] = useState(1);
 
     const STORAGE_KEY = 'banglay-german-storage';
 
@@ -49,7 +52,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const saveUser = (u: User) => {
         setUser(u);
-        localStorage.setItem('german-shikhi-user', JSON.stringify(u));
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(u));
         if (auth.currentUser) {
             setDoc(doc(db, 'users', u.id), u).catch(console.error);
         }
@@ -97,14 +100,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const logout = async () => {
         await firebaseSignOut(auth);
         setUser(null);
-        localStorage.removeItem('german-shikhi-user');
+        localStorage.removeItem(STORAGE_KEY);
     };
 
     const addXP = (amount: number) => {
         if (!user) return;
         const newXP = user.xp + amount;
-        const newLevel = Math.floor(newXP / 100) + 1;
-        saveUser({ ...user, xp: newXP, level: newLevel });
+        const calculatedLevel = Math.floor(newXP / 100) + 1;
+        
+        if (calculatedLevel > user.level) {
+            setNewLevel(calculatedLevel);
+            setShowLevelUpModal(true);
+        }
+        
+        saveUser({ ...user, xp: newXP, level: calculatedLevel });
     };
 
     const incrementStreak = () => {
@@ -133,6 +142,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return (
         <AuthContext.Provider value={{ user, loading, login, loginWithGoogle, signup, logout, addXP, incrementStreak, addAchievement, toggleFavorite, markWordLearned }}>
             {children}
+            <LevelUpModal isOpen={showLevelUpModal} level={newLevel} onClose={() => setShowLevelUpModal(false)} />
         </AuthContext.Provider>
     );
 }
