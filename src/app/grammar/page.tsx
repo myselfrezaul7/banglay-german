@@ -373,7 +373,7 @@ export default function GrammarPage() {
                                                                 Pro Tip
                                                             </div>
                                                             <p className="text-slate-700 dark:text-slate-300 italic leading-relaxed">
-                                                                "{guide.tip}"
+                                                                &ldquo;{guide.tip}&rdquo;
                                                             </p>
                                                         </div>
                                                     )}
@@ -386,7 +386,7 @@ export default function GrammarPage() {
                                                         {guide.examples.map((ex, i) => (
                                                             <div key={i} className="group p-4 md:p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 transition-colors shadow-sm">
                                                                 <div className="font-bold text-base md:text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                                                                    "{ex.german}"
+                                                                    &ldquo;{ex.german}&rdquo;
                                                                 </div>
                                                                 <div className="text-slate-600 dark:text-slate-400 text-sm mb-2">{ex.english}</div>
                                                                 <div className="font-bengali text-sm text-slate-500 dark:text-slate-500 leading-relaxed shadow-sm font-medium">{ex.bangla}</div>

@@ -96,9 +96,6 @@ export default function ProgressPage() {
                                 { level: 'B2', title: 'Upper Int.', words: b2Words.length, color: '#ec4899', glow: 'shadow-pink-500/20' },
                             ].map((item) => {
                                 const progress = 0; // Replace with actual progress logic later
-                                const radius = 40;
-                                const circumference = 2 * Math.PI * radius;
-                                const strokeDashoffset = circumference - (progress / 100) * circumference;
 
                                 return (
                                     <div key={item.level} className="flex flex-col items-center p-6 bg-slate-50/50 dark:bg-slate-800/30 rounded-[2rem] border border-slate-100 dark:border-slate-700/50 hover:-translate-y-1 transition-transform duration-300">

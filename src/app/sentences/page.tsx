@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Sentence } from '@/types';
 
 import { sentences } from '@/data/sentences';
 

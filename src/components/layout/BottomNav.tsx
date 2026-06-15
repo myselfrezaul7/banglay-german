@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, BookOpen, Target, User } from 'lucide-react';
+import { Home, BookOpen, Target, User, Trophy } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function BottomNav() {
@@ -13,6 +13,7 @@ export default function BottomNav() {
         { href: '/', label: 'Home', icon: Home },
         { href: '/vocabulary', label: 'Learn', icon: BookOpen },
         { href: '/practice', label: 'Practice', icon: Target },
+        { href: '/leaderboard', label: 'Top', icon: Trophy },
         { href: '/profile', label: 'Profile', icon: User },
     ];
 

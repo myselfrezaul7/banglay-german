@@ -1,14 +1,22 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import ScrollReveal from '@/components/animations/ScrollReveal';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function LoginPage() {
+    const searchParams = useSearchParams();
     const [isSignup, setIsSignup] = useState(false);
+    
+    useEffect(() => {
+        if (searchParams.get('action') === 'signup') {
+            setIsSignup(true);
+        }
+    }, [searchParams]);
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
@@ -47,7 +55,7 @@ export default function LoginPage() {
             <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-indigo-500/10 dark:bg-indigo-500/10 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/3"></div>
 
             <ScrollReveal direction="up" duration={0.8} className="w-full max-w-md relative z-10">
-                <div className="bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-white/40 dark:border-slate-800/60 shadow-2xl rounded-[2rem] p-8 md:p-10">
+                <div className="glass-panel p-8 md:p-10">
                     <div className="text-center mb-10">
                         <Link href="/" className="inline-flex items-center gap-3 mb-6 group">
                             <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold shadow-lg shadow-blue-500/25 group-hover:scale-105 transition-transform duration-300">বG</div>

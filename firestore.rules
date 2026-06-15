@@ -1,0 +1,17 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Match any document in the 'users' collection
+    match /users/{userId} {
+      
+      // Anyone can read a user's document (required for Leaderboard)
+      allow read: if true;
+      
+      // A user can only write to their own document if they are authenticated
+      // and their auth token UID matches the document ID.
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+  }
+}

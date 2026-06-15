@@ -1,11 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/contexts/AuthContext';
 import { allWords } from '@/data/vocabulary';
-import { Trophy, Flame, Star, BookOpen, Target, LogOut, Medal, Diamond, Crown, Zap, ArrowRight } from 'lucide-react';
+import { Trophy, Flame, Star, BookOpen, Target, LogOut, Medal, Crown, Zap, ArrowRight } from 'lucide-react';
 import ScrollReveal from '@/components/animations/ScrollReveal';
 
 const achievementsData = [
@@ -27,7 +26,6 @@ const achievementsData = [
 
 export default function ProfilePage() {
     const { user, logout, loading } = useAuth();
-    const router = useRouter();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => { setMounted(true); }, []);
@@ -42,7 +40,7 @@ export default function ProfilePage() {
                 <div className="absolute bottom-1/4 left-0 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-[120px] pointer-events-none"></div>
 
                 <ScrollReveal direction="up" className="relative z-10 max-w-lg w-full flex flex-col items-center">
-                    <div className="bg-white/70 dark:bg-slate-900/70 backdrop-blur-2xl p-10 md:p-14 rounded-[3rem] border border-slate-200/50 dark:border-slate-800/50 shadow-2xl w-full">
+                    <div className="glass-panel p-10 md:p-14 rounded-[3rem] w-full">
                         <div className="w-24 h-24 bg-gradient-to-br from-blue-100 to-indigo-100 dark:from-blue-900/40 dark:to-indigo-900/40 mx-auto rounded-[2rem] flex items-center justify-center mb-8 border-4 border-white dark:border-slate-800 shadow-xl transform rotate-3 hover:rotate-12 transition-transform">
                             <Crown className="w-12 h-12 text-blue-600 dark:text-blue-400" />
                         </div>
@@ -79,7 +77,7 @@ export default function ProfilePage() {
 
                 {/* Hero Profile Card */}
                 <ScrollReveal direction="up">
-                    <div className="bg-white/70 dark:bg-slate-900/70 backdrop-blur-2xl rounded-[3rem] p-8 md:p-12 border border-slate-200/50 dark:border-slate-800/50 shadow-2xl shadow-indigo-900/5 mb-8">
+                    <div className="glass-panel rounded-[3rem] p-8 md:p-12 shadow-indigo-900/5 mb-8">
                         <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
 
                             {/* Avatar with Circular SVG Progress Ring */}
@@ -160,28 +158,28 @@ export default function ProfilePage() {
                 {/* Key Statistics Grid */}
                 <ScrollReveal direction="up" delay={0.1}>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-12">
-                        <div className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl p-6 rounded-[2rem] border border-slate-200/50 dark:border-slate-800/50 shadow-lg text-center hover:-translate-y-1 transition-transform">
+                        <div className="glass-panel p-6 rounded-[2rem] text-center hover:-translate-y-1 transition-transform">
                             <div className="w-12 h-12 mx-auto bg-blue-100 dark:bg-blue-900/40 rounded-[1rem] flex items-center justify-center text-blue-600 dark:text-blue-400 mb-4">
                                 <BookOpen className="w-6 h-6" />
                             </div>
                             <div className="text-4xl font-black text-slate-900 dark:text-white mb-1">{user.learnedWords.length}</div>
                             <div className="text-xs font-bold text-slate-500 uppercase tracking-widest">Words Learned</div>
                         </div>
-                        <div className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl p-6 rounded-[2rem] border border-slate-200/50 dark:border-slate-800/50 shadow-lg text-center hover:-translate-y-1 transition-transform">
+                        <div className="glass-panel p-6 rounded-[2rem] text-center hover:-translate-y-1 transition-transform">
                             <div className="w-12 h-12 mx-auto bg-emerald-100 dark:bg-emerald-900/40 rounded-[1rem] flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-4">
                                 <Medal className="w-6 h-6" />
                             </div>
                             <div className="text-4xl font-black text-slate-900 dark:text-white mb-1">{user.achievements.length}</div>
                             <div className="text-xs font-bold text-slate-500 uppercase tracking-widest">Achievements</div>
                         </div>
-                        <div className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl p-6 rounded-[2rem] border border-slate-200/50 dark:border-slate-800/50 shadow-lg text-center hover:-translate-y-1 transition-transform">
+                        <div className="glass-panel p-6 rounded-[2rem] text-center hover:-translate-y-1 transition-transform">
                             <div className="w-12 h-12 mx-auto bg-amber-100 dark:bg-amber-900/40 rounded-[1rem] flex items-center justify-center text-amber-600 dark:text-amber-400 mb-4">
                                 <Star className="w-6 h-6 fill-amber-500" />
                             </div>
                             <div className="text-4xl font-black text-slate-900 dark:text-white mb-1">{user.favorites.length}</div>
                             <div className="text-xs font-bold text-slate-500 uppercase tracking-widest">Favorites</div>
                         </div>
-                        <div className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl p-6 rounded-[2rem] border border-slate-200/50 dark:border-slate-800/50 shadow-lg text-center hover:-translate-y-1 transition-transform">
+                        <div className="glass-panel p-6 rounded-[2rem] text-center hover:-translate-y-1 transition-transform">
                             <div className="w-12 h-12 mx-auto bg-purple-100 dark:bg-purple-900/40 rounded-[1rem] flex items-center justify-center text-purple-600 dark:text-purple-400 mb-4">
                                 <Target className="w-6 h-6" />
                             </div>
@@ -202,7 +200,7 @@ export default function ProfilePage() {
                         </div>
 
                         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
-                            {achievementsData.map((a, i) => {
+                            {achievementsData.map((a) => {
                                 const unlocked = user.achievements.includes(a.id);
                                 return (
                                     <div

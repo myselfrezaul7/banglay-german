@@ -151,7 +151,7 @@ export default function VocabularyLevelPage() {
                             <Search className="w-10 h-10 text-slate-400" />
                         </div>
                         <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2 font-poppins">No words found</h3>
-                        <p className="text-slate-500 dark:text-slate-400 text-lg">We couldn't find anything matching your search criteria.</p>
+                        <p className="text-slate-500 dark:text-slate-400 text-lg">We couldn&apos;t find anything matching your search criteria.</p>
                         <button onClick={() => { setSearchQuery(''); setSelectedCategory('all'); }} className="mt-8 px-8 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-bold hover:scale-105 transition-transform shadow-lg">
                             Clear Filters
                         </button>

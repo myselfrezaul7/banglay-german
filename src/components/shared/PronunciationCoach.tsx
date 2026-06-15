@@ -1,7 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 interface PronunciationCoachProps {
     targetText: string;
@@ -14,6 +13,23 @@ export default function PronunciationCoach({ targetText, onSuccess }: Pronunciat
     const [feedback, setFeedback] = useState<'neutral' | 'success' | 'error'>('neutral');
     const [permissionError, setPermissionError] = useState(false);
     const recognitionRef = useRef<any>(null); // Using any for SpeechRecognition as types might not be available
+
+    const checkPronunciation = useCallback((transcript: string) => {
+        // Basic normalization: remove punctuation and lowercase
+        const normalize = (text: string) => text.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").trim();
+
+        const normalizedTarget = normalize(targetText);
+        const normalizedSpoken = normalize(transcript);
+
+        // Simple Levenshtein distance check could be better, but direct comparison for now
+        // Allow for small differences or partial matches if needed, but 'includes' is a start
+        if (normalizedTarget === normalizedSpoken || normalizedSpoken.includes(normalizedTarget)) {
+            setFeedback('success');
+            if (onSuccess) onSuccess();
+        } else {
+            setFeedback('error');
+        }
+    }, [targetText, onSuccess]);
 
     useEffect(() => {
         if (typeof window !== 'undefined' && (window as any).webkitSpeechRecognition) {
@@ -42,7 +58,7 @@ export default function PronunciationCoach({ targetText, onSuccess }: Pronunciat
                 setIsListening(false);
             };
         }
-    }, [targetText]);
+    }, [checkPronunciation]);
 
     const startListening = () => {
         setFeedback('neutral');
@@ -60,23 +76,6 @@ export default function PronunciationCoach({ targetText, onSuccess }: Pronunciat
         }
     };
 
-    const checkPronunciation = (transcript: string) => {
-        // Basic normalization: remove punctuation and lowercase
-        const normalize = (text: string) => text.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").trim();
-
-        const normalizedTarget = normalize(targetText);
-        const normalizedSpoken = normalize(transcript);
-
-        // Simple Levenshtein distance check could be better, but direct comparison for now
-        // Allow for small differences or partial matches if needed, but 'includes' is a start
-        if (normalizedTarget === normalizedSpoken || normalizedSpoken.includes(normalizedTarget)) {
-            setFeedback('success');
-            if (onSuccess) onSuccess();
-        } else {
-            setFeedback('error');
-        }
-    };
-
     return (
         <div className="mt-6 p-6 md:p-8 rounded-[2rem] bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl border border-white/40 dark:border-slate-800/60 shadow-xl shadow-slate-200/40 dark:shadow-none transition-all">
             <div className="flex flex-col items-center gap-5">
@@ -91,7 +90,7 @@ export default function PronunciationCoach({ targetText, onSuccess }: Pronunciat
                             feedback === 'error' ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400' :
                                 'bg-slate-100 text-slate-700'
                         }`}>
-                        "{spokenText}"
+                        &ldquo;{spokenText}&rdquo;
                     </div>
                 )}
 
@@ -108,7 +107,7 @@ export default function PronunciationCoach({ targetText, onSuccess }: Pronunciat
                 )}
 
                 {permissionError && (
-                    <div className="w-full text-center p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-600 dark:bg-rose-900/20 dark:border-rose-800/50 dark:text-rose-400 text-sm font-medium">
+                    <div className="w-full text-center p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-600 dark:bg-rose-950/20 dark:border-rose-800/50 dark:text-rose-400 text-sm font-medium">
                         Microphone access denied or browser unsupported. Please use Chrome.
                     </div>
                 )}

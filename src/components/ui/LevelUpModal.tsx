@@ -2,7 +2,6 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trophy, ChevronRight } from 'lucide-react';
-import confetti from 'canvas-confetti';
 import { useEffect } from 'react';
 
 interface LevelUpModalProps {
@@ -19,29 +18,33 @@ export default function LevelUpModal({ isOpen, level, onClose }: LevelUpModalPro
                 window.navigator.vibrate([50, 100, 150]);
             }
             
-            const end = Date.now() + 2000;
-            const colors = ['#fbbf24', '#f59e0b', '#d97706'];
+            const triggerConfetti = async () => {
+                const confetti = (await import('canvas-confetti')).default;
+                const end = Date.now() + 2000;
+                const colors = ['#fbbf24', '#f59e0b', '#d97706'];
 
-            (function frame() {
-                confetti({
-                    particleCount: 5,
-                    angle: 60,
-                    spread: 55,
-                    origin: { x: 0 },
-                    colors: colors
-                });
-                confetti({
-                    particleCount: 5,
-                    angle: 120,
-                    spread: 55,
-                    origin: { x: 1 },
-                    colors: colors
-                });
+                (function frame() {
+                    confetti({
+                        particleCount: 5,
+                        angle: 60,
+                        spread: 55,
+                        origin: { x: 0 },
+                        colors: colors
+                    });
+                    confetti({
+                        particleCount: 5,
+                        angle: 120,
+                        spread: 55,
+                        origin: { x: 1 },
+                        colors: colors
+                    });
 
-                if (Date.now() < end) {
-                    requestAnimationFrame(frame);
-                }
-            }());
+                    if (Date.now() < end) {
+                        requestAnimationFrame(frame);
+                    }
+                }());
+            };
+            triggerConfetti();
         }
     }, [isOpen]);
 

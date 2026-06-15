@@ -7,8 +7,8 @@ import { Word, Level } from '@/types';
 import { useAuth } from '@/contexts/AuthContext';
 import PronunciationCoach from '@/components/shared/PronunciationCoach';
 import ScrollReveal from '@/components/animations/ScrollReveal';
-import { Zap, Timer, Trophy, ArrowRight, RefreshCcw, Medal } from 'lucide-react';
-import confetti from 'canvas-confetti';
+import { Zap, Timer, ArrowRight, RefreshCcw, Medal } from 'lucide-react';
+import JsonLd from '@/components/seo/JsonLd';
 
 type QuizMode = 'de-to-en' | 'en-to-de' | 'de-to-bn' | 'bn-to-de' | 'speaking';
 
@@ -36,46 +36,7 @@ export default function PracticePage() {
         return allWords.filter(w => w.level === selectedLevel);
     }, [selectedLevel]);
 
-    const questions = useMemo(() => {
-        const shuffled = [...filteredWords].sort(() => Math.random() - 0.5).slice(0, quizLength);
-        return shuffled.map(word => {
-            const otherWords = filteredWords.filter(w => w.id !== word.id).sort(() => Math.random() - 0.5).slice(0, 3);
-            let question: string, correct: string, options: string[];
-
-            switch (quizMode) {
-                case 'de-to-en':
-                    question = word.german;
-                    correct = word.english;
-                    options = [word.english, ...otherWords.map(w => w.english)].sort(() => Math.random() - 0.5);
-                    break;
-                case 'en-to-de':
-                    question = word.english;
-                    correct = word.german;
-                    options = [word.german, ...otherWords.map(w => w.german)].sort(() => Math.random() - 0.5);
-                    break;
-                case 'de-to-bn':
-                    question = word.german;
-                    correct = word.bangla;
-                    options = [word.bangla, ...otherWords.map(w => w.bangla)].sort(() => Math.random() - 0.5);
-                    break;
-                case 'bn-to-de':
-                    question = word.bangla;
-                    correct = word.german;
-                    options = [word.german, ...otherWords.map(w => w.german)].sort(() => Math.random() - 0.5);
-                    break;
-                case 'speaking':
-                    question = word.german;
-                    correct = word.german;
-                    options = [];
-                    break;
-                default:
-                    question = word.german;
-                    correct = word.english;
-                    options = [];
-            }
-            return { word, question, correct, options };
-        });
-    }, [filteredWords, quizMode]);
+    const [questions, setQuestions] = useState<{word: Word, question: string, correct: string, options: string[]}[]>([]);
 
     const handleAnswer = (answer: string) => {
         if (showResult) return;
@@ -139,35 +100,79 @@ export default function PracticePage() {
             
             // Confetti explosion!
             if (score >= quizLength * 0.8) {
-                const duration = 3000;
-                const end = Date.now() + duration;
+                const triggerConfetti = async () => {
+                    const confetti = (await import('canvas-confetti')).default;
+                    const duration = 3000;
+                    const end = Date.now() + duration;
 
-                const frame = () => {
-                    confetti({
-                        particleCount: 5,
-                        angle: 60,
-                        spread: 55,
-                        origin: { x: 0 },
-                        colors: ['#3b82f6', '#10b981', '#f59e0b']
-                    });
-                    confetti({
-                        particleCount: 5,
-                        angle: 120,
-                        spread: 55,
-                        origin: { x: 1 },
-                        colors: ['#3b82f6', '#10b981', '#f59e0b']
-                    });
+                    const frame = () => {
+                        confetti({
+                            particleCount: 5,
+                            angle: 60,
+                            spread: 55,
+                            origin: { x: 0 },
+                            colors: ['#3b82f6', '#10b981', '#f59e0b']
+                        });
+                        confetti({
+                            particleCount: 5,
+                            angle: 120,
+                            spread: 55,
+                            origin: { x: 1 },
+                            colors: ['#3b82f6', '#10b981', '#f59e0b']
+                        });
 
-                    if (Date.now() < end) {
-                        requestAnimationFrame(frame);
-                    }
+                        if (Date.now() < end) {
+                            requestAnimationFrame(frame);
+                        }
+                    };
+                    frame();
                 };
-                frame();
+                triggerConfetti();
             }
         }
     };
 
     const startQuiz = () => {
+        const shuffled = [...filteredWords].sort(() => Math.random() - 0.5).slice(0, quizLength);
+        const generated = shuffled.map(word => {
+            const otherWords = filteredWords.filter(w => w.id !== word.id).sort(() => Math.random() - 0.5).slice(0, 3);
+            let question: string, correct: string, options: string[];
+
+            switch (quizMode) {
+                case 'de-to-en':
+                    question = word.german;
+                    correct = word.english;
+                    options = [word.english, ...otherWords.map(w => w.english)].sort(() => Math.random() - 0.5);
+                    break;
+                case 'en-to-de':
+                    question = word.english;
+                    correct = word.german;
+                    options = [word.german, ...otherWords.map(w => w.german)].sort(() => Math.random() - 0.5);
+                    break;
+                case 'de-to-bn':
+                    question = word.german;
+                    correct = word.bangla;
+                    options = [word.bangla, ...otherWords.map(w => w.bangla)].sort(() => Math.random() - 0.5);
+                    break;
+                case 'bn-to-de':
+                    question = word.bangla;
+                    correct = word.german;
+                    options = [word.german, ...otherWords.map(w => w.german)].sort(() => Math.random() - 0.5);
+                    break;
+                case 'speaking':
+                    question = word.german;
+                    correct = word.german;
+                    options = [];
+                    break;
+                default:
+                    question = word.german;
+                    correct = word.english;
+                    options = [];
+            }
+            return { word, question, correct, options };
+        });
+
+        setQuestions(generated);
         setQuizStarted(true);
         setCurrentQuestion(0);
         setScore(0);
@@ -198,6 +203,7 @@ export default function PracticePage() {
 
     return (
         <div className={`min-h-screen pb-24 transition-colors duration-500 overflow-hidden relative ${bgClass}`}>
+            <JsonLd type="Course" data={{ name: 'Speed Quiz - German Practice', description: 'Test your speed, accuracy, and vocabulary recall.' }} />
 
             {/* Ambient Background Glows */}
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-orange-500/10 rounded-full blur-[120px] pointer-events-none"></div>

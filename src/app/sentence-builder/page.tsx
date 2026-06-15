@@ -1,8 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { challenges, SentenceChallenge } from '@/data/sentence-challenges';
+import { challenges } from '@/data/sentence-challenges';
 import { CheckCircle2, XCircle, ArrowRight, RefreshCcw, Sparkles, Trophy, HelpCircle } from 'lucide-react';
 import ScrollReveal from '@/components/animations/ScrollReveal';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -30,7 +29,7 @@ export default function SentenceBuilderPage() {
             setIsCorrect(null);
             setShowHint(false);
         }
-    }, [currentIndex, level]);
+    }, [current]);
 
     const handleWordClick = (word: string, fromSelected: boolean) => {
         if (isCorrect !== null) return;

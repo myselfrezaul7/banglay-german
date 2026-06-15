@@ -13,6 +13,7 @@ const navLinks = [
     { href: '/sentences', label: 'Sentences' },
     { href: '/sentence-builder', label: 'Builder' },
     { href: '/practice', label: 'Practice' },
+    { href: '/leaderboard', label: 'Leaderboard' },
 ];
 
 export default function Header() {

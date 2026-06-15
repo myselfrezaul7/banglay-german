@@ -2,8 +2,8 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { auth, db } from '@/lib/firebase';
-import { signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut as firebaseSignOut } from 'firebase/auth';
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut as firebaseSignOut, onAuthStateChanged } from 'firebase/auth';
+import { doc, getDoc, setDoc, onSnapshot } from 'firebase/firestore';
 import LevelUpModal from '@/components/ui/LevelUpModal';
 
 interface User {
@@ -46,15 +46,48 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     useEffect(() => {
         const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) setUser(JSON.parse(saved));
-        setLoading(false);
+        if (saved) {
+            setUser(JSON.parse(saved));
+        }
+
+        let snapshotUnsubscribe: (() => void) | undefined;
+
+        const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+            if (firebaseUser) {
+                // Attach real-time listener to sync XP, streak, etc. across tabs/devices
+                const userRef = doc(db, 'users', firebaseUser.uid);
+                snapshotUnsubscribe = onSnapshot(userRef, (docSnap) => {
+                    if (docSnap.exists()) {
+                        const u = docSnap.data() as User;
+                        setUser(u);
+                        localStorage.setItem(STORAGE_KEY, JSON.stringify(u));
+                    }
+                });
+            } else {
+                // User is signed out of Firebase
+                setUser(null);
+                localStorage.removeItem(STORAGE_KEY);
+                if (snapshotUnsubscribe) {
+                    snapshotUnsubscribe();
+                }
+            }
+            setLoading(false);
+        });
+
+        return () => {
+            unsubscribe();
+            if (snapshotUnsubscribe) {
+                snapshotUnsubscribe();
+            }
+        };
     }, []);
 
     const saveUser = (u: User) => {
+        // Optimistic UI update
         setUser(u);
         localStorage.setItem(STORAGE_KEY, JSON.stringify(u));
         if (auth.currentUser) {
-            setDoc(doc(db, 'users', u.id), u).catch(console.error);
+            setDoc(doc(db, 'users', u.id), u, { merge: true }).catch(console.error);
         }
     };
 

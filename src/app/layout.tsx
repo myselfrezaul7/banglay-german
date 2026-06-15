@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter, Poppins } from 'next/font/google';
+import { Inter, Poppins, Noto_Sans_Bengali } from 'next/font/google';
 import './globals.css';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -13,6 +13,11 @@ const poppins = Poppins({
   weight: ['400', '500', '600', '700'],
   subsets: ['latin'],
   variable: '--font-poppins'
+});
+const notoSansBengali = Noto_Sans_Bengali({
+  weight: ['400', '500', '600', '700'],
+  subsets: ['bengali'],
+  variable: '--font-bengali'
 });
 
 export const metadata: Metadata = {
@@ -80,9 +85,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="manifest" href="/manifest.json" />
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet" />
       </head>
-      <body className={`${inter.variable} ${poppins.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${poppins.variable} ${notoSansBengali.variable} font-sans antialiased`}>
         <AuthProvider>
           <JsonLd type="Organization" />
           <JsonLd type="WebSite" />
