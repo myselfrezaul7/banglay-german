@@ -18,7 +18,7 @@ export default function SentenceBuilderPage() {
     const [showHint, setShowHint] = useState(false);
 
     const filteredChallenges = level === 'all' ? challenges : challenges.filter(c => c.level === level);
-    const current = filteredChallenges[currentIndex % filteredChallenges.length];
+    const current = filteredChallenges.length > 0 ? filteredChallenges[currentIndex % filteredChallenges.length] : null;
 
     useEffect(() => { setMounted(true); }, []);
 
@@ -28,10 +28,15 @@ export default function SentenceBuilderPage() {
             setSelectedWords([]);
             setIsCorrect(null);
             setShowHint(false);
+        } else {
+            setAvailableWords([]);
+            setSelectedWords([]);
+            setIsCorrect(null);
+            setShowHint(false);
         }
-    }, [current]);
+    }, [current, level]);
 
-    const handleWordClick = (word: string, fromSelected: boolean) => {
+    const handleWordClick = (index: number, fromSelected: boolean) => {
         if (isCorrect !== null) return;
 
         // Add subtle haptic/visual pop
@@ -40,31 +45,28 @@ export default function SentenceBuilderPage() {
         }
 
         if (fromSelected) {
-            setSelectedWords(prev => prev.filter((w, i) => !(w === word && i === prev.indexOf(word))));
+            const word = selectedWords[index];
+            setSelectedWords(prev => prev.filter((_, i) => i !== index));
             setAvailableWords(prev => [...prev, word]);
         } else {
-            setAvailableWords(prev => {
-                const idx = prev.indexOf(word);
-                return [...prev.slice(0, idx), ...prev.slice(idx + 1)];
-            });
+            const word = availableWords[index];
+            setAvailableWords(prev => prev.filter((_, i) => i !== index));
             setSelectedWords(prev => [...prev, word]);
         }
     };
 
     const checkAnswer = () => {
-        if (selectedWords.length === 0) return;
+        if (!current || selectedWords.length === 0) return;
         const correct = JSON.stringify(selectedWords) === JSON.stringify(current.correctOrder);
         setIsCorrect(correct);
         if (correct) {
             setCombo(c => c + 1);
-            setScore(s => s + 10 + (combo >= 2 ? 5 : 0)); // Give more points for gamification feel
-            // Add success vibration if supported
+            setScore(s => s + 10 + (combo >= 2 ? 5 : 0));
             if (typeof window !== 'undefined' && window.navigator && window.navigator.vibrate) {
                 window.navigator.vibrate([30, 50, 30]);
             }
         } else {
             setCombo(0);
-            // Error vibration
             if (typeof window !== 'undefined' && window.navigator && window.navigator.vibrate) {
                 window.navigator.vibrate(100);
             }
@@ -76,10 +78,12 @@ export default function SentenceBuilderPage() {
     };
 
     const resetCurrent = () => {
-        setAvailableWords([...current.shuffledWords]);
-        setSelectedWords([]);
-        setIsCorrect(null);
-        setShowHint(false);
+        if (current) {
+            setAvailableWords([...current.shuffledWords]);
+            setSelectedWords([]);
+            setIsCorrect(null);
+            setShowHint(false);
+        }
     };
 
     if (!mounted) return null;
@@ -145,6 +149,13 @@ export default function SentenceBuilderPage() {
                 </div>
 
                 {/* The Board */}
+                {!current ? (
+                    <div className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl rounded-[2.5rem] p-10 text-center border border-slate-200/50 dark:border-slate-700/50 shadow-2xl">
+                        <p className="text-xl font-bold text-slate-700 dark:text-slate-300 font-bengali">
+                            এই লেভেলের জন্য কোনো বাক্য পাওয়া যায়নি।
+                        </p>
+                    </div>
+                ) : (
                 <div className={`relative bg-white/80 dark:bg-slate-900/80 backdrop-blur-2xl rounded-[2.5rem] p-6 md:p-10 border shadow-2xl transition-all duration-500 ${isCorrect === true ? 'border-emerald-400 shadow-emerald-500/20' :
                     isCorrect === false ? 'border-rose-400 shadow-rose-500/20' :
                         'border-slate-200/50 dark:border-slate-700/50 shadow-slate-200/50 dark:shadow-none'
@@ -218,7 +229,7 @@ export default function SentenceBuilderPage() {
                                 </motion.div>
                             ) : (
                                 selectedWords.map((word, i) => (
-                                    <motion.button layout layoutId={`word-${word}`} key={`sel-${word}-${i}`} onClick={() => handleWordClick(word, true)}
+                                    <motion.button layout layoutId={`word-${word}-${i}`} key={`sel-${word}-${i}`} onClick={() => handleWordClick(i, true)}
                                         whileHover={{ scale: 1.05 }}
                                         whileTap={{ scale: 0.95 }}
                                         className={`px-4 py-2.5 md:px-5 md:py-3 rounded-[1.25rem] md:rounded-2xl font-bold text-base md:text-lg shadow-[0_4px_0_0] active:shadow-[0_0px_0_0] active:translate-y-1 transition-colors origin-center ${isCorrect === false ? 'bg-rose-500 text-white shadow-rose-700 hover:bg-rose-400' :
@@ -235,7 +246,7 @@ export default function SentenceBuilderPage() {
                     <div className="flex flex-wrap gap-2.5 md:gap-4 mb-10 justify-center min-h-[100px]">
                         <AnimatePresence>
                             {isCorrect !== true && availableWords.map((word, i) => (
-                                <motion.button layout layoutId={`word-${word}`} key={`avail-${word}-${i}`} onClick={() => handleWordClick(word, false)}
+                                <motion.button layout layoutId={`word-${word}-${i}`} key={`avail-${word}-${i}`} onClick={() => handleWordClick(i, false)}
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
                                     className="px-4 py-2.5 md:px-5 md:py-3 rounded-[1.25rem] md:rounded-2xl bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-base md:text-lg border border-slate-200/80 dark:border-slate-700 shadow-[0_4px_0_0] shadow-slate-200 dark:shadow-slate-950 active:shadow-[0_0px_0_0] active:translate-y-1 transition-colors hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer">
@@ -287,6 +298,7 @@ export default function SentenceBuilderPage() {
                     </div>
 
                 </div>
+                )}
             </section>
         </div>
     );

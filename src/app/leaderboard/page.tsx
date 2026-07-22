@@ -19,8 +19,10 @@ export default function LeaderboardPage() {
     const { user: currentUser } = useAuth();
     const [users, setUsers] = useState<LeaderboardUser[]>([]);
     const [loading, setLoading] = useState(true);
+    const [fetchError, setFetchError] = useState(false);
 
     useEffect(() => {
+        let isMounted = true;
         const fetchLeaderboard = async () => {
             try {
                 const q = query(collection(db, 'users'), orderBy('xp', 'desc'), limit(50));
@@ -36,15 +38,20 @@ export default function LeaderboardPage() {
                         avatar: data.avatar,
                     });
                 });
-                setUsers(fetchedUsers);
+                if (isMounted) {
+                    setUsers(fetchedUsers);
+                    setFetchError(false);
+                }
             } catch (error) {
                 console.error("Error fetching leaderboard: ", error);
+                if (isMounted) setFetchError(true);
             } finally {
-                setLoading(false);
+                if (isMounted) setLoading(false);
             }
         };
 
         fetchLeaderboard();
+        return () => { isMounted = false; };
     }, []);
 
     const getRankIcon = (index: number) => {
@@ -73,6 +80,11 @@ export default function LeaderboardPage() {
                 </ScrollReveal>
 
                 <div className="glass-panel rounded-[2rem] overflow-hidden border border-white/40 dark:border-slate-800/60 shadow-xl shadow-slate-200/50 dark:shadow-none">
+                    {fetchError && (
+                        <div className="p-6 text-center text-rose-600 dark:text-rose-400 font-semibold bg-rose-50/50 dark:bg-rose-900/20">
+                            Unable to load leaderboard. Please check your network connection.
+                        </div>
+                    )}
                     {loading ? (
                         <div className="flex justify-center items-center h-64">
                             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-500"></div>
@@ -95,7 +107,7 @@ export default function LeaderboardPage() {
                                             </div>
 
                                             <div className="w-12 h-12 md:w-14 md:h-14 rounded-full flex-shrink-0 flex items-center justify-center text-xl font-bold text-white shadow-inner bg-gradient-to-br from-slate-400 to-slate-600">
-                                                {user.name.charAt(0).toUpperCase()}
+                                                {(user.name || 'Anonymous').charAt(0).toUpperCase()}
                                             </div>
 
                                             <div className="flex-1 min-w-0">

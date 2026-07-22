@@ -36,40 +36,65 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
+const STORAGE_KEY = 'banglay-german-storage';
+
+const normalizeUser = (data: any): User => ({
+    id: data?.id || '',
+    name: data?.name || 'User',
+    email: data?.email || '',
+    avatar: data?.avatar || '',
+    xp: typeof data?.xp === 'number' ? data.xp : 0,
+    streak: typeof data?.streak === 'number' ? data.streak : 0,
+    level: typeof data?.level === 'number' ? data.level : 1,
+    achievements: Array.isArray(data?.achievements) ? data.achievements : [],
+    learnedWords: Array.isArray(data?.learnedWords) ? data.learnedWords : [],
+    favorites: Array.isArray(data?.favorites) ? data.favorites : [],
+    joinedAt: data?.joinedAt || new Date().toISOString(),
+});
+
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
     const [showLevelUpModal, setShowLevelUpModal] = useState(false);
     const [newLevel, setNewLevel] = useState(1);
 
-    const STORAGE_KEY = 'banglay-german-storage';
-
     useEffect(() => {
-        const saved = localStorage.getItem(STORAGE_KEY);
-        if (saved) {
-            setUser(JSON.parse(saved));
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            if (saved) {
+                setUser(normalizeUser(JSON.parse(saved)));
+            }
+        } catch (e) {
+            console.error('Failed to parse saved user:', e);
+            localStorage.removeItem(STORAGE_KEY);
         }
 
         let snapshotUnsubscribe: (() => void) | undefined;
 
-        const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+        const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+            if (snapshotUnsubscribe) {
+                snapshotUnsubscribe();
+                snapshotUnsubscribe = undefined;
+            }
+
             if (firebaseUser) {
-                // Attach real-time listener to sync XP, streak, etc. across tabs/devices
                 const userRef = doc(db, 'users', firebaseUser.uid);
                 snapshotUnsubscribe = onSnapshot(userRef, (docSnap) => {
                     if (docSnap.exists()) {
-                        const u = docSnap.data() as User;
+                        const u = normalizeUser(docSnap.data());
                         setUser(u);
-                        localStorage.setItem(STORAGE_KEY, JSON.stringify(u));
+                        try {
+                            localStorage.setItem(STORAGE_KEY, JSON.stringify(u));
+                        } catch {}
                     }
+                }, (err) => {
+                    console.error("Firestore onSnapshot error:", err);
                 });
             } else {
-                // User is signed out of Firebase
                 setUser(null);
-                localStorage.removeItem(STORAGE_KEY);
-                if (snapshotUnsubscribe) {
-                    snapshotUnsubscribe();
-                }
+                try {
+                    localStorage.removeItem(STORAGE_KEY);
+                } catch {}
             }
             setLoading(false);
         });
@@ -83,34 +108,40 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }, []);
 
     const saveUser = (u: User) => {
-        // Optimistic UI update
-        setUser(u);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(u));
+        const normalized = normalizeUser(u);
+        setUser(normalized);
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
+        } catch {}
         if (auth.currentUser) {
-            setDoc(doc(db, 'users', u.id), u, { merge: true }).catch(console.error);
+            setDoc(doc(db, 'users', normalized.id), normalized, { merge: true }).catch(console.error);
         }
     };
 
     const syncUserFromFirestore = async (uid: string, email: string, name: string) => {
-        const userRef = doc(db, 'users', uid);
-        const userSnap = await getDoc(userRef);
-        if (userSnap.exists()) {
-            saveUser(userSnap.data() as User);
-        } else {
-            const newUser: User = {
-                id: uid,
-                name,
-                email,
-                xp: 0,
-                streak: 0,
-                level: 1,
-                achievements: ['first-login'],
-                learnedWords: [],
-                favorites: [],
-                joinedAt: new Date().toISOString(),
-            };
-            await setDoc(userRef, newUser);
-            saveUser(newUser);
+        try {
+            const userRef = doc(db, 'users', uid);
+            const userSnap = await getDoc(userRef);
+            if (userSnap.exists()) {
+                saveUser(normalizeUser(userSnap.data()));
+            } else {
+                const newUser: User = {
+                    id: uid,
+                    name,
+                    email,
+                    xp: 0,
+                    streak: 0,
+                    level: 1,
+                    achievements: ['first-login'],
+                    learnedWords: [],
+                    favorites: [],
+                    joinedAt: new Date().toISOString(),
+                };
+                await setDoc(userRef, newUser);
+                saveUser(newUser);
+            }
+        } catch (err) {
+            console.error("Error syncing user from Firestore:", err);
         }
     };
 
@@ -131,45 +162,71 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     const logout = async () => {
-        await firebaseSignOut(auth);
+        try {
+            await firebaseSignOut(auth);
+        } catch (err) {
+            console.error("Logout error:", err);
+        }
         setUser(null);
-        localStorage.removeItem(STORAGE_KEY);
+        try {
+            localStorage.removeItem(STORAGE_KEY);
+        } catch {}
     };
 
     const addXP = (amount: number) => {
-        if (!user) return;
-        const newXP = user.xp + amount;
-        const calculatedLevel = Math.floor(newXP / 100) + 1;
-        
-        if (calculatedLevel > user.level) {
-            setNewLevel(calculatedLevel);
-            setShowLevelUpModal(true);
-        }
-        
-        saveUser({ ...user, xp: newXP, level: calculatedLevel });
+        setUser(prev => {
+            if (!prev) return null;
+            const newXP = prev.xp + amount;
+            const calculatedLevel = Math.floor(newXP / 100) + 1;
+            
+            if (calculatedLevel > prev.level) {
+                setNewLevel(calculatedLevel);
+                setShowLevelUpModal(true);
+            }
+            
+            const updated = { ...prev, xp: newXP, level: calculatedLevel };
+            saveUser(updated);
+            return updated;
+        });
     };
 
     const incrementStreak = () => {
-        if (!user) return;
-        saveUser({ ...user, streak: user.streak + 1 });
+        setUser(prev => {
+            if (!prev) return null;
+            const updated = { ...prev, streak: prev.streak + 1 };
+            saveUser(updated);
+            return updated;
+        });
     };
 
     const addAchievement = (id: string) => {
-        if (!user || user.achievements.includes(id)) return;
-        saveUser({ ...user, achievements: [...user.achievements, id] });
+        setUser(prev => {
+            if (!prev || prev.achievements.includes(id)) return prev;
+            const updated = { ...prev, achievements: [...prev.achievements, id] };
+            saveUser(updated);
+            return updated;
+        });
     };
 
     const toggleFavorite = (wordId: string) => {
-        if (!user) return;
-        const favorites = user.favorites.includes(wordId)
-            ? user.favorites.filter(f => f !== wordId)
-            : [...user.favorites, wordId];
-        saveUser({ ...user, favorites });
+        setUser(prev => {
+            if (!prev) return null;
+            const favorites = prev.favorites.includes(wordId)
+                ? prev.favorites.filter(f => f !== wordId)
+                : [...prev.favorites, wordId];
+            const updated = { ...prev, favorites };
+            saveUser(updated);
+            return updated;
+        });
     };
 
     const markWordLearned = (wordId: string) => {
-        if (!user || user.learnedWords.includes(wordId)) return;
-        saveUser({ ...user, learnedWords: [...user.learnedWords, wordId] });
+        setUser(prev => {
+            if (!prev || prev.learnedWords.includes(wordId)) return prev;
+            const updated = { ...prev, learnedWords: [...prev.learnedWords, wordId] };
+            saveUser(updated);
+            return updated;
+        });
     };
 
     return (

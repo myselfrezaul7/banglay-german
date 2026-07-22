@@ -60,6 +60,7 @@ export default function WordCard({ word, onFavorite, onLearn }: WordCardProps) {
             utterance.lang = 'de-DE';
             utterance.rate = 0.8;
             utterance.onend = () => setIsPlaying(false);
+            utterance.onerror = () => setIsPlaying(false);
             speechSynthesis.speak(utterance);
         }
     };

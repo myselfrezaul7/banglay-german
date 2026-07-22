@@ -15,15 +15,18 @@ export default function PronunciationCoach({ targetText, onSuccess }: Pronunciat
     const recognitionRef = useRef<any>(null); // Using any for SpeechRecognition as types might not be available
 
     const checkPronunciation = useCallback((transcript: string) => {
-        // Basic normalization: remove punctuation and lowercase
-        const normalize = (text: string) => text.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "").trim();
+        // Basic normalization: remove non-alphanumeric punctuation (preserving German umlauts and ß) and lowercase
+        const normalize = (text: string) => text.toLowerCase().replace(/[^\w\säöüß]/gi, "").trim();
 
         const normalizedTarget = normalize(targetText);
         const normalizedSpoken = normalize(transcript);
 
-        // Simple Levenshtein distance check could be better, but direct comparison for now
-        // Allow for small differences or partial matches if needed, but 'includes' is a start
-        if (normalizedTarget === normalizedSpoken || normalizedSpoken.includes(normalizedTarget)) {
+        if (!normalizedTarget || !normalizedSpoken) {
+            setFeedback('neutral');
+            return;
+        }
+
+        if (normalizedTarget === normalizedSpoken || (normalizedTarget.length > 2 && normalizedSpoken.includes(normalizedTarget))) {
             setFeedback('success');
             if (onSuccess) onSuccess();
         } else {
@@ -32,32 +35,42 @@ export default function PronunciationCoach({ targetText, onSuccess }: Pronunciat
     }, [targetText, onSuccess]);
 
     useEffect(() => {
-        if (typeof window !== 'undefined' && (window as any).webkitSpeechRecognition) {
-            const SpeechRecognition = (window as any).webkitSpeechRecognition;
-            recognitionRef.current = new SpeechRecognition();
-            recognitionRef.current.continuous = false;
-            recognitionRef.current.lang = 'de-DE'; // German language
-            recognitionRef.current.interimResults = false;
+        if (typeof window !== 'undefined') {
+            const SpeechRecognitionClass = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+            if (SpeechRecognitionClass) {
+                recognitionRef.current = new SpeechRecognitionClass();
+                recognitionRef.current.continuous = false;
+                recognitionRef.current.lang = 'de-DE';
+                recognitionRef.current.interimResults = false;
 
-            recognitionRef.current.onresult = (event: any) => {
-                const transcript = event.results[0][0].transcript;
-                setSpokenText(transcript);
-                checkPronunciation(transcript);
-                setIsListening(false);
-            };
+                recognitionRef.current.onresult = (event: any) => {
+                    const transcript = event.results[0][0].transcript;
+                    setSpokenText(transcript);
+                    checkPronunciation(transcript);
+                    setIsListening(false);
+                };
 
-            recognitionRef.current.onerror = (event: any) => {
-                console.error('Speech recognition error', event.error);
-                if (event.error === 'not-allowed') {
-                    setPermissionError(true);
-                }
-                setIsListening(false);
-            };
+                recognitionRef.current.onerror = (event: any) => {
+                    console.error('Speech recognition error', event.error);
+                    if (event.error === 'not-allowed') {
+                        setPermissionError(true);
+                    }
+                    setIsListening(false);
+                };
 
-            recognitionRef.current.onend = () => {
-                setIsListening(false);
-            };
+                recognitionRef.current.onend = () => {
+                    setIsListening(false);
+                };
+            }
         }
+
+        return () => {
+            if (recognitionRef.current) {
+                try {
+                    recognitionRef.current.abort();
+                } catch {}
+            }
+        };
     }, [checkPronunciation]);
 
     const startListening = () => {

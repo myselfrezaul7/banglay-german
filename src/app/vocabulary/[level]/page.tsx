@@ -58,7 +58,7 @@ export default function VocabularyLevelPage() {
     const info = levelInfo[level] || levelInfo.a1;
     const currentIndex = levelOrder.indexOf(level);
     const prevLevel = currentIndex > 0 ? levelOrder[currentIndex - 1] : null;
-    const nextLevel = currentIndex < levelOrder.length - 1 ? levelOrder[currentIndex + 1] : null;
+    const nextLevel = (currentIndex >= 0 && currentIndex < levelOrder.length - 1) ? levelOrder[currentIndex + 1] : null;
 
     if (!mounted) return null;
 

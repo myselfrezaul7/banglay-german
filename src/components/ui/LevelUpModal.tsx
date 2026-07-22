@@ -12,6 +12,9 @@ interface LevelUpModalProps {
 
 export default function LevelUpModal({ isOpen, level, onClose }: LevelUpModalProps) {
     useEffect(() => {
+        let animId: number;
+        let isCancelled = false;
+
         if (isOpen) {
             // Haptic
             if (typeof window !== 'undefined' && window.navigator && window.navigator.vibrate) {
@@ -23,7 +26,8 @@ export default function LevelUpModal({ isOpen, level, onClose }: LevelUpModalPro
                 const end = Date.now() + 2000;
                 const colors = ['#fbbf24', '#f59e0b', '#d97706'];
 
-                (function frame() {
+                function frame() {
+                    if (isCancelled) return;
                     confetti({
                         particleCount: 5,
                         angle: 60,
@@ -40,12 +44,18 @@ export default function LevelUpModal({ isOpen, level, onClose }: LevelUpModalPro
                     });
 
                     if (Date.now() < end) {
-                        requestAnimationFrame(frame);
+                        animId = requestAnimationFrame(frame);
                     }
-                }());
+                }
+                frame();
             };
             triggerConfetti();
         }
+
+        return () => {
+            isCancelled = true;
+            if (animId) cancelAnimationFrame(animId);
+        };
     }, [isOpen]);
 
     return (

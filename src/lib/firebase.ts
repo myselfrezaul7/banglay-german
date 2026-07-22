@@ -17,5 +17,10 @@ const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 
-// Initialize analytics only on client side where supported
-export const analytics = typeof window !== 'undefined' ? isSupported().then(yes => yes ? getAnalytics(app) : null) : null;
+// Initialize analytics helper safely on client side where supported
+export const getFirebaseAnalytics = async () => {
+    if (typeof window !== 'undefined' && await isSupported()) {
+        return getAnalytics(app);
+    }
+    return null;
+};

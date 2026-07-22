@@ -107,19 +107,19 @@ export default function ProfilePage() {
                                 </svg>
                                 <div className="absolute inset-0 flex items-center justify-center p-4">
                                     <div className="w-full h-full rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-5xl font-black text-white shadow-inner">
-                                        {user.name.charAt(0).toUpperCase()}
+                                        {(user.name || 'User').charAt(0).toUpperCase()}
                                     </div>
                                 </div>
 
                                 {/* Floating Level Badge */}
                                 <div className="absolute -bottom-2 -right-2 bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-2xl px-4 py-1.5 font-black text-lg shadow-lg border-2 border-white dark:border-slate-900 transform rotate-12 hover:rotate-0 transition-transform">
-                                    Lvl {user.level}
+                                    Lvl {user.level || 1}
                                 </div>
                             </div>
 
                             <div className="text-center md:text-left flex-1">
                                 <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white font-poppins tracking-tight mb-2">
-                                    {user.name}
+                                    {user.name || 'Learner'}
                                 </h1>
                                 <p className="text-lg text-slate-500 dark:text-slate-400 mb-6">{user.email}</p>
 
@@ -162,21 +162,21 @@ export default function ProfilePage() {
                             <div className="w-12 h-12 mx-auto bg-blue-100 dark:bg-blue-900/40 rounded-[1rem] flex items-center justify-center text-blue-600 dark:text-blue-400 mb-4">
                                 <BookOpen className="w-6 h-6" />
                             </div>
-                            <div className="text-4xl font-black text-slate-900 dark:text-white mb-1">{user.learnedWords.length}</div>
+                            <div className="text-4xl font-black text-slate-900 dark:text-white mb-1">{(user.learnedWords || []).length}</div>
                             <div className="text-xs font-bold text-slate-500 uppercase tracking-widest">Words Learned</div>
                         </div>
                         <div className="glass-panel p-6 rounded-[2rem] text-center hover:-translate-y-1 transition-transform">
                             <div className="w-12 h-12 mx-auto bg-emerald-100 dark:bg-emerald-900/40 rounded-[1rem] flex items-center justify-center text-emerald-600 dark:text-emerald-400 mb-4">
                                 <Medal className="w-6 h-6" />
                             </div>
-                            <div className="text-4xl font-black text-slate-900 dark:text-white mb-1">{user.achievements.length}</div>
+                            <div className="text-4xl font-black text-slate-900 dark:text-white mb-1">{(user.achievements || []).length}</div>
                             <div className="text-xs font-bold text-slate-500 uppercase tracking-widest">Achievements</div>
                         </div>
                         <div className="glass-panel p-6 rounded-[2rem] text-center hover:-translate-y-1 transition-transform">
                             <div className="w-12 h-12 mx-auto bg-amber-100 dark:bg-amber-900/40 rounded-[1rem] flex items-center justify-center text-amber-600 dark:text-amber-400 mb-4">
                                 <Star className="w-6 h-6 fill-amber-500" />
                             </div>
-                            <div className="text-4xl font-black text-slate-900 dark:text-white mb-1">{user.favorites.length}</div>
+                            <div className="text-4xl font-black text-slate-900 dark:text-white mb-1">{(user.favorites || []).length}</div>
                             <div className="text-xs font-bold text-slate-500 uppercase tracking-widest">Favorites</div>
                         </div>
                         <div className="glass-panel p-6 rounded-[2rem] text-center hover:-translate-y-1 transition-transform">
@@ -184,7 +184,7 @@ export default function ProfilePage() {
                                 <Target className="w-6 h-6" />
                             </div>
                             <div className="text-4xl font-black text-slate-900 dark:text-white mb-1">
-                                {Math.round((user.learnedWords.length / allWords.length) * 100)}%
+                                {Math.round((((user.learnedWords || []).length) / allWords.length) * 100)}%
                             </div>
                             <div className="text-xs font-bold text-slate-500 uppercase tracking-widest">Mastery</div>
                         </div>
@@ -201,7 +201,7 @@ export default function ProfilePage() {
 
                         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-6">
                             {achievementsData.map((a) => {
-                                const unlocked = user.achievements.includes(a.id);
+                                const unlocked = (user.achievements || []).includes(a.id);
                                 return (
                                     <div
                                         key={a.id}

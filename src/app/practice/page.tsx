@@ -134,8 +134,9 @@ export default function PracticePage() {
 
     const startQuiz = () => {
         const shuffled = [...filteredWords].sort(() => Math.random() - 0.5).slice(0, quizLength);
+        const distractorPool = filteredWords.length >= 4 ? filteredWords : allWords;
         const generated = shuffled.map(word => {
-            const otherWords = filteredWords.filter(w => w.id !== word.id).sort(() => Math.random() - 0.5).slice(0, 3);
+            const otherWords = distractorPool.filter(w => w.id !== word.id).sort(() => Math.random() - 0.5).slice(0, 3);
             let question: string, correct: string, options: string[];
 
             switch (quizMode) {
@@ -330,8 +331,8 @@ export default function PracticePage() {
                             <div className="grid grid-cols-2 gap-4 max-w-md mx-auto mb-10">
                                 <div className="bg-slate-50 dark:bg-slate-800/50 rounded-[1.5rem] p-6 border border-slate-100 dark:border-slate-700">
                                     <div className="text-sm text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest mb-1">Score</div>
-                                    <div className={`text-4xl font-black ${score >= 8 ? 'text-emerald-500' : score >= 5 ? 'text-orange-500' : 'text-rose-500'}`}>
-                                        {score}/10
+                                    <div className={`text-4xl font-black ${score >= quizLength * 0.8 ? 'text-emerald-500' : score >= quizLength * 0.5 ? 'text-orange-500' : 'text-rose-500'}`}>
+                                        {score}/{quizLength}
                                     </div>
                                 </div>
                                 <div className="bg-amber-50 dark:bg-amber-900/20 rounded-[1.5rem] p-6 border border-amber-100 dark:border-amber-900/50">

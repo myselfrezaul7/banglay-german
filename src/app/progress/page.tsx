@@ -3,8 +3,10 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { a1Words, a2Words, b1Words, b2Words } from '@/data/vocabulary';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function ProgressPage() {
+    const { user } = useAuth();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -12,6 +14,17 @@ export default function ProgressPage() {
     }, []);
 
     const totalWords = a1Words.length + a2Words.length + b1Words.length + b2Words.length;
+    const learnedCount = user?.learnedWords?.length || 0;
+    const favoritesCount = user?.favorites?.length || 0;
+    const streakCount = user?.streak || 0;
+    const levelCount = user?.level || 1;
+
+    const calculateLevelProgress = (lvlWords: { id: string }[]) => {
+        if (!user || !user.learnedWords || lvlWords.length === 0) return 0;
+        const lvlWordIds = new Set(lvlWords.map(w => w.id));
+        const learnedInLvl = user.learnedWords.filter(id => lvlWordIds.has(id)).length;
+        return Math.min(100, Math.round((learnedInLvl / lvlWords.length) * 100));
+    };
 
     if (!mounted) return null;
 
@@ -48,7 +61,9 @@ export default function ProgressPage() {
 
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-orange-400 to-rose-500"></div>
                         <div className="text-6xl md:text-7xl mb-4 md:mb-6 animate-pulseSubtle drop-shadow-[0_0_15px_rgba(249,115,22,0.5)]">🔥</div>
-                        <h2 className="text-3xl md:text-5xl font-extrabold mb-3 text-slate-900 dark:text-white font-poppins tracking-tight">Start Your Streak!</h2>
+                        <h2 className="text-3xl md:text-5xl font-extrabold mb-3 text-slate-900 dark:text-white font-poppins tracking-tight">
+                            {streakCount > 0 ? `${streakCount} Day Streak!` : 'Start Your Streak!'}
+                        </h2>
                         <p className="text-base md:text-lg text-slate-600 dark:text-slate-400 mb-8 max-w-md mx-auto">
                             Practice daily to build your learning streak and unlock special rewards.
                         </p>
@@ -67,16 +82,16 @@ export default function ProgressPage() {
                             <div className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Total Words</div>
                         </div>
                         <div className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border border-slate-200/50 dark:border-slate-800/50 shadow-lg hover:shadow-xl p-6 rounded-[1.5rem] md:rounded-[2rem] text-center transition-all hover:-translate-y-1">
-                            <div className="text-3xl font-black text-emerald-600 dark:text-emerald-400 mb-1">0</div>
+                            <div className="text-3xl font-black text-emerald-600 dark:text-emerald-400 mb-1">{learnedCount}</div>
                             <div className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Learned</div>
                         </div>
                         <div className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border border-slate-200/50 dark:border-slate-800/50 shadow-lg hover:shadow-xl p-6 rounded-[1.5rem] md:rounded-[2rem] text-center transition-all hover:-translate-y-1">
-                            <div className="text-3xl font-black text-amber-500 mb-1">0</div>
+                            <div className="text-3xl font-black text-amber-500 mb-1">{favoritesCount}</div>
                             <div className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Favorites</div>
                         </div>
                         <div className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border border-slate-200/50 dark:border-slate-800/50 shadow-lg hover:shadow-xl p-6 rounded-[1.5rem] md:rounded-[2rem] text-center transition-all hover:-translate-y-1">
-                            <div className="text-3xl font-black text-cyan-600 dark:text-cyan-400 mb-1">0</div>
-                            <div className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Quizzes</div>
+                            <div className="text-3xl font-black text-cyan-600 dark:text-cyan-400 mb-1">Level {levelCount}</div>
+                            <div className="text-xs font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Current Level</div>
                         </div>
                     </div>
 
@@ -90,37 +105,41 @@ export default function ProgressPage() {
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                             {[
-                                { level: 'A1', title: 'Beginner', words: a1Words.length, color: '#10b981', glow: 'shadow-emerald-500/20' },
-                                { level: 'A2', title: 'Elementary', words: a2Words.length, color: '#3b82f6', glow: 'shadow-blue-500/20' },
-                                { level: 'B1', title: 'Intermediate', words: b1Words.length, color: '#f97316', glow: 'shadow-orange-500/20' },
-                                { level: 'B2', title: 'Upper Int.', words: b2Words.length, color: '#ec4899', glow: 'shadow-pink-500/20' },
+                                { level: 'A1', title: 'Beginner', list: a1Words, color: '#10b981', glow: 'shadow-emerald-500/20' },
+                                { level: 'A2', title: 'Elementary', list: a2Words, color: '#3b82f6', glow: 'shadow-blue-500/20' },
+                                { level: 'B1', title: 'Intermediate', list: b1Words, color: '#f97316', glow: 'shadow-orange-500/20' },
+                                { level: 'B2', title: 'Upper Int.', list: b2Words, color: '#ec4899', glow: 'shadow-pink-500/20' },
                             ].map((item) => {
-                                const progress = 0; // Replace with actual progress logic later
+                                const progress = calculateLevelProgress(item.list);
+                                const desktopOffset = 251.2 - (251.2 * progress) / 100;
+                                const mobileOffset = 188.5 - (188.5 * progress) / 100;
 
                                 return (
                                     <div key={item.level} className="flex flex-col items-center p-6 bg-slate-50/50 dark:bg-slate-800/30 rounded-[2rem] border border-slate-100 dark:border-slate-700/50 hover:-translate-y-1 transition-transform duration-300">
-                                        <div className="relative w-24 h-24 md:w-32 md:h-32 mb-4">
+                                        <div className="relative w-24 h-24 md:w-32 md:h-32 mb-4 flex items-center justify-center">
                                             {/* Background Ring */}
-                                            <svg className="w-full h-full transform -rotate-90 md:block hidden">
+                                            <svg className="w-full h-full transform -rotate-90 md:block hidden absolute inset-0">
                                                 <circle cx="64" cy="64" r={40} stroke="currentColor" strokeWidth="8" fill="transparent" className="text-slate-200 dark:text-slate-700" />
                                                 {/* Animated Progress Ring */}
-                                                <circle cx="64" cy="64" r={40} stroke={item.color} strokeWidth="8" fill="transparent" strokeDasharray={251.2} strokeDashoffset={251.2} strokeLinecap="round" className="transition-all duration-1000 ease-out" style={{ filter: `drop-shadow(0 0 6px ${item.color}40)` }} />
+                                                <circle cx="64" cy="64" r={40} stroke={item.color} strokeWidth="8" fill="transparent" strokeDasharray={251.2} strokeDashoffset={desktopOffset} strokeLinecap="round" className="transition-all duration-1000 ease-out" style={{ filter: `drop-shadow(0 0 6px ${item.color}40)` }} />
                                             </svg>
                                             
                                             {/* Mobile Sized SVG */}
-                                            <svg className="w-full h-full transform -rotate-90 md:hidden block">
+                                            <svg className="w-full h-full transform -rotate-90 md:hidden block absolute inset-0">
                                                 <circle cx="48" cy="48" r={30} stroke="currentColor" strokeWidth="8" fill="transparent" className="text-slate-200 dark:text-slate-700" />
-                                                <circle cx="48" cy="48" r={30} stroke={item.color} strokeWidth="8" fill="transparent" strokeDasharray={188.5} strokeDashoffset={188.5} strokeLinecap="round" className="transition-all duration-1000 ease-out" />
+                                                <circle cx="48" cy="48" r={30} stroke={item.color} strokeWidth="8" fill="transparent" strokeDasharray={188.5} strokeDashoffset={mobileOffset} strokeLinecap="round" className="transition-all duration-1000 ease-out" />
                                             </svg>
                                             
-                                            <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                                <span className="text-xl md:text-2xl font-black" style={{ color: item.color }}>{progress}%</span>
-                                            </div>
+                                            <span className="text-lg md:text-xl font-extrabold text-slate-900 dark:text-white z-10 font-poppins">
+                                                {progress}%
+                                            </span>
                                         </div>
                                         <div className="text-center">
                                             <div className="font-extrabold text-lg md:text-xl text-slate-900 dark:text-white font-poppins mb-1">{item.level}</div>
                                             <div className="text-xs md:text-sm font-semibold text-slate-500 dark:text-slate-400 mb-3">{item.title}</div>
-                                            <div className="text-[10px] md:text-xs font-bold text-slate-400 bg-white dark:bg-slate-800 px-3 py-1 rounded-full border border-slate-200 dark:border-slate-700 uppercase tracking-widest whitespace-nowrap">0 / {item.words} learned</div>
+                                            <div className="text-[10px] md:text-xs font-bold text-slate-400 bg-white dark:bg-slate-800 px-3 py-1 rounded-full border border-slate-200 dark:border-slate-700 uppercase tracking-widest whitespace-nowrap">
+                                                {user?.learnedWords ? user.learnedWords.filter(id => item.list.some(w => w.id === id)).length : 0} / {item.list.length} learned
+                                            </div>
                                         </div>
                                     </div>
                                 );

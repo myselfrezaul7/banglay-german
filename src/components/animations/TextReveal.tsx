@@ -9,7 +9,7 @@ interface TextRevealProps {
 }
 
 export default function TextReveal({ text, className = '', delay = 0 }: TextRevealProps) {
-    const words = text.split(' ');
+    const words = (text || '').split(' ');
 
     const container: Variants = {
         hidden: { opacity: 0 },

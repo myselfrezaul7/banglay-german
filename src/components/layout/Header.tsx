@@ -146,7 +146,7 @@ export default function Header() {
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-2 border-l border-slate-200 dark:border-slate-700 pl-3">
-                                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200 hidden xl:block">{user.name.split(' ')[0]}</span>
+                                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-200 hidden xl:block">{(user?.name || 'User').split(' ')[0]}</span>
                                     <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-teal-400 flex items-center justify-center text-white shadow-inner group-hover:scale-110 transition-transform">
                                         <User className="w-5 h-5" />
                                     </div>
