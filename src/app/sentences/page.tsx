@@ -19,6 +19,7 @@ export default function SentencesPage() {
 
     const handleSpeak = (text: string) => {
         if ('speechSynthesis' in window) {
+            speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'de-DE';
             utterance.rate = 0.8;
@@ -117,6 +118,7 @@ export default function SentencesPage() {
                                             onClick={() => handleSpeak(sentence.german)}
                                             className="p-3 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-blue-600 hover:text-white transition-all text-slate-600 dark:text-slate-300"
                                             title="শুনুন"
+                                            aria-label={`Listen to sentence: ${sentence.german}`}
                                         >
                                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
@@ -129,6 +131,7 @@ export default function SentencesPage() {
                                                 : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300'
                                                 }`}
                                             title="শব্দ বিশ্লেষণ"
+                                            aria-label="Expand word breakdown"
                                         >
                                             <svg className={`w-5 h-5 transition-transform ${expandedId === sentence.id ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -139,7 +142,7 @@ export default function SentencesPage() {
                             </div>
 
                             {/* Word Breakdown (Expandable) */}
-                            <div className={`grid transition-all duration-400 ease-in-out ${expandedId === sentence.id && sentence.wordBreakdown ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
+                            <div className={`grid transition-all duration-300 ease-in-out ${expandedId === sentence.id && sentence.wordBreakdown ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'}`}>
                                 <div className="overflow-hidden">
                                     <div className="border-t border-slate-200 dark:border-slate-700 bg-slate-100/50 dark:bg-slate-900/50 p-6">
                                         <h4 className="text-sm font-medium text-slate-500 dark:text-slate-400 mb-4 font-bengali">শব্দে শব্দে অর্থ</h4>

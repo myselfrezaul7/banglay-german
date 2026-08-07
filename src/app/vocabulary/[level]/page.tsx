@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useMemo } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, notFound } from 'next/navigation';
 import Link from 'next/link';
 import WordCard from '@/components/ui/WordCard';
 import ScrollReveal from '@/components/animations/ScrollReveal';
@@ -20,8 +20,14 @@ const levelOrder = ['a1', 'a2', 'b1', 'b2'];
 
 export default function VocabularyLevelPage() {
     const params = useParams();
-    const level = params.level as Level;
     const [mounted, setMounted] = useState(false);
+    const rawLevel = (params.level as string || '').toLowerCase();
+    
+    if (mounted && !levelOrder.includes(rawLevel)) {
+        notFound();
+    }
+
+    const level = rawLevel as Level;
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState<string>('all');
     const [words, setWords] = useState<Word[]>([]);

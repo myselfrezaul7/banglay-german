@@ -83,6 +83,7 @@ export default function PronunciationCoach({ targetText, onSuccess }: Pronunciat
                 setIsListening(true);
             } catch (error) {
                 console.error('Failed to start recognition', error);
+                setIsListening(false);
             }
         } else {
             setPermissionError(true);

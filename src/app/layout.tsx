@@ -76,8 +76,6 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -91,7 +89,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <JsonLd type="Organization" />
           <JsonLd type="WebSite" />
           <Header />
-          <main className="min-h-screen pt-16 md:pt-20 pb-16 md:pb-0">
+          <main className="min-h-screen pt-16 md:pt-20 pb-28 md:pb-0">
             <PageTransition>{children}</PageTransition>
           </main>
           <div className="hidden md:block">

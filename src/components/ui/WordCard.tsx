@@ -55,6 +55,7 @@ export default function WordCard({ word, onFavorite, onLearn }: WordCardProps) {
     const handleSpeak = (e: React.MouseEvent) => {
         e.stopPropagation();
         if ('speechSynthesis' in window) {
+            speechSynthesis.cancel();
             setIsPlaying(true);
             const utterance = new SpeechSynthesisUtterance(word.german);
             utterance.lang = 'de-DE';

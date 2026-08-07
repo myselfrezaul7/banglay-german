@@ -2,11 +2,21 @@ import { Metadata } from 'next';
 import { ReactNode } from 'react';
 
 type Props = {
-    params: { level: string }
+    params: Promise<{ level: string }>;
 };
 
+export async function generateStaticParams() {
+    return [
+        { level: 'a1' },
+        { level: 'a2' },
+        { level: 'b1' },
+        { level: 'b2' },
+    ];
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-    const level = params.level.toUpperCase();
+    const { level: rawLevel } = await params;
+    const level = (rawLevel || 'A1').toUpperCase();
     
     return {
         title: `${level} German Vocabulary - Banglay German`,

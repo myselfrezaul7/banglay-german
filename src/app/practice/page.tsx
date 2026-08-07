@@ -90,7 +90,7 @@ export default function PracticePage() {
 
     const handleNext = () => {
         if (currentQuestion < questions.length - 1) {
-            setCurrentQuestion(c => c + 1);
+            setCurrentQuestion(c => Math.min(c + 1, questions.length - 1));
             setSelectedAnswer(null);
             setShowResult(false);
         } else {
@@ -101,31 +101,35 @@ export default function PracticePage() {
             // Confetti explosion!
             if (score >= quizLength * 0.8) {
                 const triggerConfetti = async () => {
-                    const confetti = (await import('canvas-confetti')).default;
-                    const duration = 3000;
-                    const end = Date.now() + duration;
+                    try {
+                        const confetti = (await import('canvas-confetti')).default;
+                        const duration = 3000;
+                        const end = Date.now() + duration;
 
-                    const frame = () => {
-                        confetti({
-                            particleCount: 5,
-                            angle: 60,
-                            spread: 55,
-                            origin: { x: 0 },
-                            colors: ['#3b82f6', '#10b981', '#f59e0b']
-                        });
-                        confetti({
-                            particleCount: 5,
-                            angle: 120,
-                            spread: 55,
-                            origin: { x: 1 },
-                            colors: ['#3b82f6', '#10b981', '#f59e0b']
-                        });
+                        const frame = () => {
+                            confetti({
+                                particleCount: 5,
+                                angle: 60,
+                                spread: 55,
+                                origin: { x: 0 },
+                                colors: ['#3b82f6', '#10b981', '#f59e0b']
+                            });
+                            confetti({
+                                particleCount: 5,
+                                angle: 120,
+                                spread: 55,
+                                origin: { x: 1 },
+                                colors: ['#3b82f6', '#10b981', '#f59e0b']
+                            });
 
-                        if (Date.now() < end) {
-                            requestAnimationFrame(frame);
-                        }
-                    };
-                    frame();
+                            if (Date.now() < end) {
+                                requestAnimationFrame(frame);
+                            }
+                        };
+                        frame();
+                    } catch (e) {
+                        console.error("Failed to load confetti module", e);
+                    }
                 };
                 triggerConfetti();
             }

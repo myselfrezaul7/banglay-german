@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
         rules: {
             userAgent: '*',
             allow: '/',
-            disallow: ['/profile', '/login', '/progress'],
+            disallow: ['/profile', '/login', '/signup', '/progress'],
         },
         sitemap: 'https://banglay-german.vercel.app/sitemap.xml',
     }

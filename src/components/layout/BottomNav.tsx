@@ -26,31 +26,29 @@ export default function BottomNav() {
                         const Icon = item.icon;
 
                         return (
-                            <Link key={item.href} href={item.href} passHref legacyBehavior>
-                                <motion.a
-                                    onClick={() => {
-                                        if (typeof window !== 'undefined' && window.navigator && window.navigator.vibrate) {
-                                            window.navigator.vibrate(30);
-                                        }
-                                    }}
-                                    whileHover={{ y: -4, scale: 1.05 }}
-                                    whileTap={{ scale: 0.85, y: 2 }}
-                                    className={`relative flex flex-col items-center justify-center w-14 h-full rounded-full transition-colors duration-300 ${active
-                                        ? 'text-blue-600 dark:text-blue-400'
-                                        : 'text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300'
-                                        }`}
-                                >
-                                    <Icon className={`w-[22px] h-[22px] mb-1 transition-transform duration-300 ${active ? 'scale-110 -translate-y-0.5' : ''}`} strokeWidth={active ? 2.5 : 2} />
-                                    <span className={`text-[11px] font-semibold tracking-wide transition-all ${active ? 'opacity-100' : 'opacity-70'}`}>{item.label}</span>
-                                    
-                                    {active && (
-                                        <motion.div
-                                            layoutId="activeTabBadge"
-                                            className="absolute -bottom-1 w-1.5 h-1.5 bg-blue-600 dark:bg-blue-400 rounded-full"
-                                            transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                                        />
-                                    )}
-                                </motion.a>
+                            <Link
+                                key={item.href}
+                                href={item.href}
+                                onClick={() => {
+                                    if (typeof window !== 'undefined' && window.navigator && window.navigator.vibrate) {
+                                        window.navigator.vibrate(30);
+                                    }
+                                }}
+                                className={`relative flex flex-col items-center justify-center w-14 h-full rounded-full transition-colors duration-300 ${active
+                                    ? 'text-blue-600 dark:text-blue-400'
+                                    : 'text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300'
+                                    }`}
+                            >
+                                <Icon className={`w-[22px] h-[22px] mb-1 transition-transform duration-300 ${active ? 'scale-110 -translate-y-0.5' : ''}`} strokeWidth={active ? 2.5 : 2} />
+                                <span className={`text-[11px] font-semibold tracking-wide transition-all ${active ? 'opacity-100' : 'opacity-70'}`}>{item.label}</span>
+                                
+                                {active && (
+                                    <motion.div
+                                        layoutId="activeTabBadge"
+                                        className="absolute -bottom-1 w-1.5 h-1.5 bg-blue-600 dark:bg-blue-400 rounded-full"
+                                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                                    />
+                                )}
                             </Link>
                         );
                     })}

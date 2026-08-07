@@ -174,59 +174,44 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     const addXP = (amount: number) => {
-        setUser(prev => {
-            if (!prev) return null;
-            const newXP = prev.xp + amount;
-            const calculatedLevel = Math.floor(newXP / 100) + 1;
-            
-            if (calculatedLevel > prev.level) {
-                setNewLevel(calculatedLevel);
-                setShowLevelUpModal(true);
-            }
-            
-            const updated = { ...prev, xp: newXP, level: calculatedLevel };
-            saveUser(updated);
-            return updated;
-        });
+        if (!user) return;
+        const newXP = user.xp + amount;
+        const calculatedLevel = Math.floor(newXP / 100) + 1;
+        
+        if (calculatedLevel > user.level) {
+            setNewLevel(calculatedLevel);
+            setShowLevelUpModal(true);
+        }
+        
+        const updated = { ...user, xp: newXP, level: calculatedLevel };
+        saveUser(updated);
     };
 
     const incrementStreak = () => {
-        setUser(prev => {
-            if (!prev) return null;
-            const updated = { ...prev, streak: prev.streak + 1 };
-            saveUser(updated);
-            return updated;
-        });
+        if (!user) return;
+        const updated = { ...user, streak: user.streak + 1 };
+        saveUser(updated);
     };
 
     const addAchievement = (id: string) => {
-        setUser(prev => {
-            if (!prev || prev.achievements.includes(id)) return prev;
-            const updated = { ...prev, achievements: [...prev.achievements, id] };
-            saveUser(updated);
-            return updated;
-        });
+        if (!user || user.achievements.includes(id)) return;
+        const updated = { ...user, achievements: [...user.achievements, id] };
+        saveUser(updated);
     };
 
     const toggleFavorite = (wordId: string) => {
-        setUser(prev => {
-            if (!prev) return null;
-            const favorites = prev.favorites.includes(wordId)
-                ? prev.favorites.filter(f => f !== wordId)
-                : [...prev.favorites, wordId];
-            const updated = { ...prev, favorites };
-            saveUser(updated);
-            return updated;
-        });
+        if (!user) return;
+        const favorites = user.favorites.includes(wordId)
+            ? user.favorites.filter(f => f !== wordId)
+            : [...user.favorites, wordId];
+        const updated = { ...user, favorites };
+        saveUser(updated);
     };
 
     const markWordLearned = (wordId: string) => {
-        setUser(prev => {
-            if (!prev || prev.learnedWords.includes(wordId)) return prev;
-            const updated = { ...prev, learnedWords: [...prev.learnedWords, wordId] };
-            saveUser(updated);
-            return updated;
-        });
+        if (!user || user.learnedWords.includes(wordId)) return;
+        const updated = { ...user, learnedWords: [...user.learnedWords, wordId] };
+        saveUser(updated);
     };
 
     return (

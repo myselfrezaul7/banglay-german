@@ -19,7 +19,7 @@ const levels = [
 ];
 
 export default function HomePage() {
-  const { user } = useAuth();
+  const { user, toggleFavorite } = useAuth();
   const [mounted, setMounted] = useState(false);
   const [wordOfDay, setWordOfDay] = useState<Word | null>(null);
   const [isWordFlipped, setIsWordFlipped] = useState(false);
@@ -194,8 +194,19 @@ export default function HomePage() {
                       >
                         <Volume2 className="w-5 h-5" /> <span>Listen</span>
                       </button>
-                      <button className="flex items-center justify-center w-12 h-12 bg-slate-50 dark:bg-slate-800 text-slate-400 hover:text-blue-500 rounded-xl transition-colors active:scale-95">
-                        <Bookmark className="w-5 h-5" />
+                      <button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (wordOfDay) toggleFavorite(wordOfDay.id);
+                        }}
+                        aria-label={user?.favorites?.includes(wordOfDay?.id || '') ? 'Remove from favorites' : 'Add to favorites'}
+                        className={`flex items-center justify-center w-12 h-12 rounded-xl transition-colors active:scale-95 ${
+                          wordOfDay && user?.favorites?.includes(wordOfDay.id)
+                            ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-500 border border-amber-300 dark:border-amber-700'
+                            : 'bg-slate-50 dark:bg-slate-800 text-slate-400 hover:text-blue-500'
+                        }`}
+                      >
+                        <Bookmark className={`w-5 h-5 ${wordOfDay && user?.favorites?.includes(wordOfDay.id) ? 'fill-amber-500' : ''}`} />
                       </button>
                     </div>
                   </motion.div>
@@ -262,37 +273,43 @@ export default function HomePage() {
               </div>
 
               <div className="flex sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-4 overflow-x-auto sm:overflow-visible snap-x snap-mandatory pb-4 sm:pb-0 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
-                {levels.map((level) => (
-                  <Link key={level.level} href={level.href} className="group flex-shrink-0 w-[260px] sm:w-auto snap-center sm:snap-align-none relative block overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 p-5 hover:border-transparent transition-all duration-300 hover:-translate-y-1">
-                    {/* Hover Gradient Background */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${level.colorFrom} ${level.colorTo} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
+                {levels.map((level) => {
+                  const list = level.level === 'A1' ? a1Words : level.level === 'A2' ? a2Words : level.level === 'B1' ? b1Words : b2Words;
+                  const learnedCount = user?.learnedWords ? user.learnedWords.filter(id => list.some(w => w.id === id)).length : 0;
+                  const realProgress = list.length > 0 ? Math.round((learnedCount / list.length) * 100) : 0;
 
-                    <div className="relative z-10">
-                      <div className="flex justify-between items-start mb-4">
-                        <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${level.colorFrom} ${level.colorTo} flex items-center justify-center text-white text-xl font-black shadow-md transform group-hover:scale-110 transition-transform duration-300`}>
-                          {level.level}
+                  return (
+                    <Link key={level.level} href={level.href} className="group flex-shrink-0 w-[260px] sm:w-auto snap-center sm:snap-align-none relative block overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 p-5 hover:border-transparent transition-all duration-300 hover:-translate-y-1">
+                      {/* Hover Gradient Background */}
+                      <div className={`absolute inset-0 bg-gradient-to-br ${level.colorFrom} ${level.colorTo} opacity-0 group-hover:opacity-10 transition-opacity duration-300`}></div>
+
+                      <div className="relative z-10">
+                        <div className="flex justify-between items-start mb-4">
+                          <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${level.colorFrom} ${level.colorTo} flex items-center justify-center text-white text-xl font-black shadow-md transform group-hover:scale-110 transition-transform duration-300`}>
+                            {level.level}
+                          </div>
+                          <div className="text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors">
+                            <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all duration-300" />
+                          </div>
                         </div>
-                        <div className="text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors">
-                          <ArrowRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transform -translate-x-2 group-hover:translate-x-0 transition-all duration-300" />
+
+                        <div className="font-bold text-slate-800 dark:text-white text-lg mb-0.5">{level.title}</div>
+                        <div className="text-sm text-slate-500 dark:text-slate-400 font-bengali mb-4">{level.titleBn}</div>
+
+                        {/* Real Progress UI */}
+                        <div>
+                          <div className="flex justify-between text-xs font-semibold mb-1.5">
+                            <span className="text-slate-400">Progress</span>
+                            <span className="text-slate-600 dark:text-slate-300">{realProgress}%</span>
+                          </div>
+                          <div className="w-full h-1.5 bg-slate-200 dark:bg-slate-700/50 rounded-full overflow-hidden">
+                            <div className={`h-full bg-gradient-to-r ${level.colorFrom} ${level.colorTo} rounded-full`} style={{ width: `${realProgress}%` }}></div>
+                          </div>
                         </div>
                       </div>
-
-                      <div className="font-bold text-slate-800 dark:text-white text-lg mb-0.5">{level.title}</div>
-                      <div className="text-sm text-slate-500 dark:text-slate-400 font-bengali mb-4">{level.titleBn}</div>
-
-                      {/* Fake Progress UI */}
-                      <div>
-                        <div className="flex justify-between text-xs font-semibold mb-1.5">
-                          <span className="text-slate-400">Progress</span>
-                          <span className="text-slate-600 dark:text-slate-300">{level.progress}%</span>
-                        </div>
-                        <div className="w-full h-1.5 bg-slate-200 dark:bg-slate-700/50 rounded-full overflow-hidden">
-                          <div className={`h-full bg-gradient-to-r ${level.colorFrom} ${level.colorTo} rounded-full`} style={{ width: `${level.progress}%` }}></div>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
 
