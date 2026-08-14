@@ -65,7 +65,6 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: 'https://banglay-german.vercel.app',
     languages: {
       'en': 'https://banglay-german.vercel.app',
       'bn': 'https://banglay-german.vercel.app',

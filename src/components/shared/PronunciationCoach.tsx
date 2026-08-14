@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { Volume2 } from 'lucide-react';
 
 interface PronunciationCoachProps {
     targetText: string;
@@ -11,23 +12,57 @@ export default function PronunciationCoach({ targetText, onSuccess }: Pronunciat
     const [isListening, setIsListening] = useState(false);
     const [spokenText, setSpokenText] = useState('');
     const [feedback, setFeedback] = useState<'neutral' | 'success' | 'error'>('neutral');
-    const [permissionError, setPermissionError] = useState(false);
-    const recognitionRef = useRef<any>(null); // Using any for SpeechRecognition as types might not be available
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+    const recognitionRef = useRef<any>(null);
+    const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+
+    const speakReference = () => {
+        if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel();
+        setIsPlayingAudio(true);
+        const utterance = new SpeechSynthesisUtterance(targetText);
+        utterance.lang = 'de-DE';
+        utterance.rate = 0.8;
+        utteranceRef.current = utterance;
+        utterance.onend = () => {
+            setIsPlayingAudio(false);
+            utteranceRef.current = null;
+        };
+        utterance.onerror = () => {
+            setIsPlayingAudio(false);
+            utteranceRef.current = null;
+        };
+        window.speechSynthesis.speak(utterance);
+    };
 
     const checkPronunciation = useCallback((transcript: string) => {
-        // Basic normalization: remove non-alphanumeric punctuation (preserving German umlauts and ß) and lowercase
+        // Strip German articles and punctuation for flexible root matching
+        const cleanArticles = (text: string) => 
+            text.toLowerCase()
+                .replace(/\b(der|die|das|ein|eine|einen|einem|einer|eines|den|dem|des)\b/gi, '')
+                .replace(/[^\w\säöüß]/gi, '')
+                .trim();
+
         const normalize = (text: string) => text.toLowerCase().replace(/[^\w\säöüß]/gi, "").trim();
 
         const normalizedTarget = normalize(targetText);
         const normalizedSpoken = normalize(transcript);
+        const rootTarget = cleanArticles(targetText);
+        const rootSpoken = cleanArticles(transcript);
 
         if (!normalizedTarget || !normalizedSpoken) {
             setFeedback('neutral');
             return;
         }
 
-        if (normalizedTarget === normalizedSpoken || (normalizedTarget.length > 2 && normalizedSpoken.includes(normalizedTarget))) {
+        const isExactMatch = normalizedTarget === normalizedSpoken;
+        const isContainsMatch = normalizedTarget.length > 2 && normalizedSpoken.includes(normalizedTarget);
+        const isRootMatch = rootTarget.length > 2 && (rootTarget === rootSpoken || rootSpoken.includes(rootTarget));
+
+        if (isExactMatch || isContainsMatch || isRootMatch) {
             setFeedback('success');
+            setErrorMessage(null);
             if (onSuccess) onSuccess();
         } else {
             setFeedback('error');
@@ -52,8 +87,22 @@ export default function PronunciationCoach({ targetText, onSuccess }: Pronunciat
 
                 recognitionRef.current.onerror = (event: any) => {
                     console.error('Speech recognition error', event.error);
-                    if (event.error === 'not-allowed') {
-                        setPermissionError(true);
+                    switch (event.error) {
+                        case 'not-allowed':
+                        case 'permission-denied':
+                            setErrorMessage('Microphone access denied. Please allow microphone permission in your browser.');
+                            break;
+                        case 'no-speech':
+                            setErrorMessage('No speech detected. Please try speaking closer to the microphone.');
+                            break;
+                        case 'network':
+                            setErrorMessage('Network connection error during voice recognition.');
+                            break;
+                        case 'audio-capture':
+                            setErrorMessage('No microphone detected on your device.');
+                            break;
+                        default:
+                            setErrorMessage('Speech recognition note: ' + event.error);
                     }
                     setIsListening(false);
                 };
@@ -76,7 +125,7 @@ export default function PronunciationCoach({ targetText, onSuccess }: Pronunciat
     const startListening = () => {
         setFeedback('neutral');
         setSpokenText('');
-        setPermissionError(false);
+        setErrorMessage(null);
         if (recognitionRef.current) {
             try {
                 recognitionRef.current.start();
@@ -86,7 +135,7 @@ export default function PronunciationCoach({ targetText, onSuccess }: Pronunciat
                 setIsListening(false);
             }
         } else {
-            setPermissionError(true);
+            setErrorMessage('Speech recognition is not supported in this browser. Please use Google Chrome or Edge.');
         }
     };
 
@@ -98,6 +147,18 @@ export default function PronunciationCoach({ targetText, onSuccess }: Pronunciat
                     Pronunciation Coach
                     <span className="w-6 h-[2px] bg-slate-300 dark:bg-slate-700 rounded-full inline-block"></span>
                 </h4>
+
+                {/* Reference Audio Listen Button */}
+                <button
+                    onClick={speakReference}
+                    disabled={isPlayingAudio}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50 font-bold text-sm transition-colors"
+                    title="Listen to native German pronunciation"
+                    aria-label="Listen reference pronunciation"
+                >
+                    <Volume2 className={`w-4 h-4 ${isPlayingAudio ? 'animate-pulse' : ''}`} />
+                    <span>{isPlayingAudio ? 'Playing...' : 'Listen Reference'}</span>
+                </button>
 
                 {spokenText && (
                     <div className={`text-lg font-medium px-4 py-2 rounded-lg ${feedback === 'success' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' :
@@ -116,13 +177,13 @@ export default function PronunciationCoach({ targetText, onSuccess }: Pronunciat
 
                 {feedback === 'error' && (
                     <div className="text-red-600 dark:text-red-400 text-sm">
-                        Try again! Close, but needs more practice.
+                        Try again! Listen to the reference and speak clearly.
                     </div>
                 )}
 
-                {permissionError && (
+                {errorMessage && (
                     <div className="w-full text-center p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-600 dark:bg-rose-950/20 dark:border-rose-800/50 dark:text-rose-400 text-sm font-medium">
-                        Microphone access denied or browser unsupported. Please use Chrome.
+                        {errorMessage}
                     </div>
                 )}
 

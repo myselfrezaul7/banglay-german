@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BookOpen, Sparkles, CheckCircle, Lightbulb, ChevronDown, Check, GraduationCap } from 'lucide-react';
+import { BookOpen, Sparkles, CheckCircle, Lightbulb, ChevronDown, Check, GraduationCap, Volume2 } from 'lucide-react';
 import ScrollReveal from '@/components/animations/ScrollReveal';
 
 interface GrammarGuide {
@@ -193,6 +193,7 @@ export default function GrammarPage() {
     const [mounted, setMounted] = useState(false);
     const [selectedLevel, setSelectedLevel] = useState<string>('all');
     const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
+    const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
     useEffect(() => { setMounted(true); }, []);
 
@@ -201,6 +202,20 @@ export default function GrammarPage() {
         if (newSet.has(id)) newSet.delete(id);
         else newSet.add(id);
         setExpandedIds(newSet);
+    };
+
+    const speakExample = (text: string, e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'de-DE';
+            utterance.rate = 0.85;
+            utteranceRef.current = utterance;
+            utterance.onend = () => { utteranceRef.current = null; };
+            utterance.onerror = () => { utteranceRef.current = null; };
+            window.speechSynthesis.speak(utterance);
+        }
     };
 
     const filtered = selectedLevel === 'all' ? grammarGuides : grammarGuides.filter(r => r.level === selectedLevel);
@@ -384,9 +399,19 @@ export default function GrammarPage() {
                                                     <div className="text-xs uppercase font-bold text-slate-400 tracking-widest mb-4">Examples in context</div>
                                                     <div className="grid sm:grid-cols-2 gap-4">
                                                         {guide.examples.map((ex, i) => (
-                                                            <div key={i} className="group p-4 md:p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 transition-colors shadow-sm">
-                                                                <div className="font-bold text-base md:text-lg text-slate-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                                                                    &ldquo;{ex.german}&rdquo;
+                                                            <div key={i} className="group p-4 md:p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-blue-300 dark:hover:border-blue-700 transition-colors shadow-sm relative">
+                                                                <div className="flex items-start justify-between gap-2 mb-2">
+                                                                    <div className="font-bold text-base md:text-lg text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                                                        &ldquo;{ex.german}&rdquo;
+                                                                    </div>
+                                                                    <button
+                                                                        onClick={(e) => speakExample(ex.german, e)}
+                                                                        className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-blue-900/30 text-slate-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors shrink-0"
+                                                                        title="Listen pronunciation"
+                                                                        aria-label="Listen German pronunciation"
+                                                                    >
+                                                                        <Volume2 className="w-4 h-4" />
+                                                                    </button>
                                                                 </div>
                                                                 <div className="text-slate-600 dark:text-slate-400 text-sm mb-2">{ex.english}</div>
                                                                 <div className="font-bengali text-sm text-slate-500 dark:text-slate-500 leading-relaxed shadow-sm font-medium">{ex.bangla}</div>

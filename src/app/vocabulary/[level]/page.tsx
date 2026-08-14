@@ -8,6 +8,7 @@ import ScrollReveal from '@/components/animations/ScrollReveal';
 import { getWordsByLevel } from '@/data/vocabulary';
 import { Word, Level } from '@/types';
 import { Search, Filter, ArrowLeft, ArrowRight, BookOpen } from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
 
 const levelInfo: Record<string, { title: string; titleBn: string; colorFrom: string; colorTo: string; textColor: string }> = {
     a1: { title: 'A1 - Beginner', titleBn: 'প্রাথমিক', colorFrom: 'from-emerald-400', colorTo: 'to-teal-500', textColor: 'text-emerald-500' },
@@ -19,6 +20,7 @@ const levelInfo: Record<string, { title: string; titleBn: string; colorFrom: str
 const levelOrder = ['a1', 'a2', 'b1', 'b2'];
 
 export default function VocabularyLevelPage() {
+    const { toggleFavorite, markWordLearned, user } = useAuth();
     const params = useParams();
     const [mounted, setMounted] = useState(false);
     const rawLevel = (params.level as string || '').toLowerCase();
@@ -36,6 +38,8 @@ export default function VocabularyLevelPage() {
     useEffect(() => {
         setMounted(true);
         setIsLoading(true);
+        setSelectedCategory('all');
+        setSearchQuery('');
         const levelWords = getWordsByLevel(level);
 
         // Simulate a brief loading state for the skeleton effect
@@ -188,7 +192,15 @@ export default function VocabularyLevelPage() {
                             ) : (
                                 filteredWords.map((word, i) => (
                                     <ScrollReveal key={word.id} direction="up" delay={Math.min(i * 0.05, 0.5)}>
-                                        <WordCard word={word} />
+                                        <WordCard 
+                                            word={{
+                                                ...word,
+                                                isFavorite: user?.favorites?.includes(word.id),
+                                                isLearned: user?.learnedWords?.includes(word.id)
+                                            }} 
+                                            onFavorite={toggleFavorite}
+                                            onLearn={markWordLearned}
+                                        />
                                     </ScrollReveal>
                                 ))
                             )}

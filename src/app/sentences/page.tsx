@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import { sentences } from '@/data/sentences';
 
@@ -8,6 +8,7 @@ export default function SentencesPage() {
     const [mounted, setMounted] = useState(false);
     const [expandedId, setExpandedId] = useState<string | null>(null);
     const [selectedLevel, setSelectedLevel] = useState<string>('all');
+    const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
     useEffect(() => {
         setMounted(true);
@@ -18,12 +19,15 @@ export default function SentencesPage() {
         : sentences.filter(s => s.level === selectedLevel);
 
     const handleSpeak = (text: string) => {
-        if ('speechSynthesis' in window) {
-            speechSynthesis.cancel();
+        if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+            window.speechSynthesis.cancel();
             const utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'de-DE';
-            utterance.rate = 0.8;
-            speechSynthesis.speak(utterance);
+            utterance.rate = 0.85;
+            utteranceRef.current = utterance;
+            utterance.onend = () => { utteranceRef.current = null; };
+            utterance.onerror = () => { utteranceRef.current = null; };
+            window.speechSynthesis.speak(utterance);
         }
     };
 
@@ -60,11 +64,13 @@ export default function SentencesPage() {
                         {['all', 'a1', 'a2', 'b1', 'b2'].map((level) => (
                             <button
                                 key={level}
-                                onClick={() => setSelectedLevel(level)}
-                                className={`px-5 py-2.5 rounded-[1.25rem] text-sm font-bold uppercase tracking-wider transition-all duration-300 shadow-sm flex items-center gap-2 flex-shrink-0 snap-start
-                                    ${selectedLevel === level
-                                        ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20 hover:bg-blue-700'
-                                        : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                                onClick={() => {
+                                    setSelectedLevel(level);
+                                    setExpandedId(null);
+                                }}
+                                className={`px-5 py-2.5 rounded-full text-sm font-bold uppercase tracking-wider transition-all duration-300 ${selectedLevel === level
+                                    ? 'bg-blue-600 text-white shadow-md shadow-blue-500/25 scale-105'
+                                    : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
                                     }`}
                             >
                                 {level === 'all' ? 'All Levels' : level}
@@ -74,49 +80,47 @@ export default function SentencesPage() {
                 </div>
             </section>
 
-            {/* Sentences */}
-            <section className="py-12">
-                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+            {/* Sentences List */}
+            <section className="py-12 relative z-10">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-4">
                     {filteredSentences.map((sentence) => (
                         <div
                             key={sentence.id}
-                            className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border border-slate-200/50 dark:border-slate-800/50 shadow-xl rounded-[2rem] overflow-hidden"
+                            className="bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl border border-slate-200/50 dark:border-slate-800/50 rounded-[2rem] shadow-xl overflow-hidden hover:border-blue-500/30 transition-all group"
                         >
-                            {/* Main Sentence */}
-                            <div className="p-6">
+                            <div className="p-6 md:p-8">
                                 <div className="flex items-start justify-between gap-4">
                                     <div className="flex-1">
-                                        {/* Level Badge */}
-                                        <span className={`px-3 py-1 rounded-lg text-xs font-bold uppercase tracking-widest mb-3 inline-block
-                                            ${sentence.level === 'a1' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800/50' : 
-                                              sentence.level === 'a2' ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 border border-blue-200 dark:border-blue-800/50' :
-                                              sentence.level === 'b1' ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400 border border-orange-200 dark:border-orange-800/50' :
-                                              'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400 border border-purple-200 dark:border-purple-800/50'}
-                                        `}>
-                                            {sentence.level.toUpperCase()}
-                                        </span>
-
-                                        {/* German */}
-                                        <h3 className="text-xl font-semibold mb-3 text-slate-900 dark:text-white">{sentence.german}</h3>
-
-                                        {/* Translations */}
-                                        <div className="space-y-2">
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-xs px-2 py-0.5 rounded bg-cyan-500 text-white">EN</span>
-                                                <span className="text-slate-600 dark:text-slate-400">{sentence.english}</span>
-                                            </div>
-                                            <div className="flex items-center gap-2">
-                                                <span className="text-xs px-2 py-0.5 rounded bg-amber-500 text-black font-bengali">বাং</span>
-                                                <span className="text-slate-600 dark:text-slate-400 font-bengali">{sentence.bangla}</span>
-                                            </div>
+                                        <div className="flex items-center gap-2 mb-3">
+                                            <span className={`px-3 py-1 rounded-full text-xs font-bold text-white uppercase tracking-wider ${sentence.level === 'a1' ? 'bg-emerald-500' :
+                                                sentence.level === 'a2' ? 'bg-blue-500' :
+                                                    sentence.level === 'b1' ? 'bg-orange-500' :
+                                                        'bg-purple-500'
+                                                }`}>
+                                                {sentence.level}
+                                            </span>
+                                            {sentence.category && (
+                                                <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 capitalize">
+                                                    {sentence.category}
+                                                </span>
+                                            )}
                                         </div>
+
+                                        <h3 className="text-xl md:text-2xl font-bold mb-2 text-slate-900 dark:text-white font-poppins group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                            {sentence.german}
+                                        </h3>
+                                        <p className="text-base text-slate-600 dark:text-slate-300 mb-1">
+                                            {sentence.english}
+                                        </p>
+                                        <p className="text-base font-bengali text-slate-500 dark:text-slate-400">
+                                            {sentence.bangla}
+                                        </p>
                                     </div>
 
-                                    {/* Actions */}
-                                    <div className="flex flex-col gap-2">
+                                    <div className="flex items-center gap-2">
                                         <button
                                             onClick={() => handleSpeak(sentence.german)}
-                                            className="p-3 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-blue-600 hover:text-white transition-all text-slate-600 dark:text-slate-300"
+                                            className="p-3 rounded-lg bg-blue-50 dark:bg-blue-950/50 hover:bg-blue-100 dark:hover:bg-blue-900/50 text-blue-600 dark:text-blue-400 transition-colors"
                                             title="শুনুন"
                                             aria-label={`Listen to sentence: ${sentence.german}`}
                                         >
@@ -124,19 +128,21 @@ export default function SentencesPage() {
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
                                             </svg>
                                         </button>
-                                        <button
-                                            onClick={() => setExpandedId(expandedId === sentence.id ? null : sentence.id)}
-                                            className={`p-3 rounded-lg transition-all ${expandedId === sentence.id
-                                                ? 'bg-blue-600 text-white'
-                                                : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300'
-                                                }`}
-                                            title="শব্দ বিশ্লেষণ"
-                                            aria-label="Expand word breakdown"
-                                        >
-                                            <svg className={`w-5 h-5 transition-transform ${expandedId === sentence.id ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                            </svg>
-                                        </button>
+                                        {sentence.wordBreakdown && sentence.wordBreakdown.length > 0 && (
+                                            <button
+                                                onClick={() => setExpandedId(expandedId === sentence.id ? null : sentence.id)}
+                                                className={`p-3 rounded-lg transition-all ${expandedId === sentence.id
+                                                    ? 'bg-blue-600 text-white'
+                                                    : 'bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300'
+                                                    }`}
+                                                title="শব্দ বিশ্লেষণ"
+                                                aria-label="Expand word breakdown"
+                                            >
+                                                <svg className={`w-5 h-5 transition-transform ${expandedId === sentence.id ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                                </svg>
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             </div>

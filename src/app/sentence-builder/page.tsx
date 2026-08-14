@@ -1,21 +1,29 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { challenges } from '@/data/sentence-challenges';
-import { CheckCircle2, XCircle, ArrowRight, RefreshCcw, Sparkles, Trophy, HelpCircle } from 'lucide-react';
+import { CheckCircle2, XCircle, ArrowRight, RefreshCcw, Sparkles, Trophy, HelpCircle, Volume2 } from 'lucide-react';
 import ScrollReveal from '@/components/animations/ScrollReveal';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '@/contexts/AuthContext';
+
+interface WordToken {
+    id: string;
+    text: string;
+}
 
 export default function SentenceBuilderPage() {
+    const { addXP, incrementStreak } = useAuth();
     const [mounted, setMounted] = useState(false);
     const [level, setLevel] = useState<'a1' | 'a2' | 'b1' | 'b2' | 'all'>('all');
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [selectedWords, setSelectedWords] = useState<string[]>([]);
-    const [availableWords, setAvailableWords] = useState<string[]>([]);
+    const [selectedTokens, setSelectedTokens] = useState<WordToken[]>([]);
+    const [availableTokens, setAvailableTokens] = useState<WordToken[]>([]);
     const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
     const [score, setScore] = useState(0);
     const [combo, setCombo] = useState(0);
     const [showHint, setShowHint] = useState(false);
+    const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
 
     const filteredChallenges = level === 'all' ? challenges : challenges.filter(c => c.level === level);
     const current = filteredChallenges.length > 0 ? filteredChallenges[currentIndex % filteredChallenges.length] : null;
@@ -24,19 +32,35 @@ export default function SentenceBuilderPage() {
 
     useEffect(() => {
         if (current) {
-            setAvailableWords([...current.shuffledWords]);
-            setSelectedWords([]);
+            const tokens: WordToken[] = current.shuffledWords.map((word, idx) => ({
+                id: `${current.id}-${idx}-${word}`,
+                text: word
+            }));
+            setAvailableTokens(tokens);
+            setSelectedTokens([]);
             setIsCorrect(null);
             setShowHint(false);
         } else {
-            setAvailableWords([]);
-            setSelectedWords([]);
+            setAvailableTokens([]);
+            setSelectedTokens([]);
             setIsCorrect(null);
             setShowHint(false);
         }
     }, [current, level]);
 
-    const handleWordClick = (index: number, fromSelected: boolean) => {
+    const speakGerman = (text: string) => {
+        if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'de-DE';
+        utterance.rate = 0.85;
+        utteranceRef.current = utterance;
+        utterance.onend = () => { utteranceRef.current = null; };
+        utterance.onerror = () => { utteranceRef.current = null; };
+        window.speechSynthesis.speak(utterance);
+    };
+
+    const handleWordClick = (token: WordToken, fromSelected: boolean) => {
         if (isCorrect !== null) return;
 
         // Add subtle haptic/visual pop
@@ -45,23 +69,29 @@ export default function SentenceBuilderPage() {
         }
 
         if (fromSelected) {
-            const word = selectedWords[index];
-            setSelectedWords(prev => prev.filter((_, i) => i !== index));
-            setAvailableWords(prev => [...prev, word]);
+            setSelectedTokens(prev => prev.filter(t => t.id !== token.id));
+            setAvailableTokens(prev => [...prev, token]);
         } else {
-            const word = availableWords[index];
-            setAvailableWords(prev => prev.filter((_, i) => i !== index));
-            setSelectedWords(prev => [...prev, word]);
+            setAvailableTokens(prev => prev.filter(t => t.id !== token.id));
+            setSelectedTokens(prev => [...prev, token]);
         }
     };
 
     const checkAnswer = () => {
-        if (!current || selectedWords.length === 0) return;
-        const correct = JSON.stringify(selectedWords) === JSON.stringify(current.correctOrder);
+        if (!current || selectedTokens.length === 0) return;
+        const correct = selectedTokens.map(t => t.text).join(' ') === current.correctOrder.join(' ');
         setIsCorrect(correct);
         if (correct) {
-            setCombo(c => c + 1);
-            setScore(s => s + 10 + (combo >= 2 ? 5 : 0));
+            const earnedXP = showHint ? 2 : (10 + (combo >= 2 ? 5 : 0));
+            if (!showHint) setCombo(c => c + 1);
+            else setCombo(0);
+            
+            setScore(s => s + earnedXP);
+            addXP(earnedXP);
+            incrementStreak();
+
+            speakGerman(current.correctOrder.join(' '));
+
             if (typeof window !== 'undefined' && window.navigator && window.navigator.vibrate) {
                 window.navigator.vibrate([30, 50, 30]);
             }
@@ -79,8 +109,12 @@ export default function SentenceBuilderPage() {
 
     const resetCurrent = () => {
         if (current) {
-            setAvailableWords([...current.shuffledWords]);
-            setSelectedWords([]);
+            const tokens: WordToken[] = current.shuffledWords.map((word, idx) => ({
+                id: `${current.id}-${idx}-${word}`,
+                text: word
+            }));
+            setAvailableTokens(tokens);
+            setSelectedTokens([]);
             setIsCorrect(null);
             setShowHint(false);
         }
@@ -117,7 +151,13 @@ export default function SentenceBuilderPage() {
                         {['all', 'a1', 'a2', 'b1', 'b2'].map(l => {
                             const count = l === 'all' ? challenges.length : challenges.filter(c => c.level === l).length;
                             return (
-                                <button key={l} onClick={() => { setLevel(l as typeof level); setCurrentIndex(0); }}
+                                <button key={l} onClick={() => { 
+                                    setLevel(l as typeof level); 
+                                    setCurrentIndex(0);
+                                    setCombo(0);
+                                    setIsCorrect(null);
+                                    setShowHint(false);
+                                }}
                                     className={`px-4 py-2 rounded-xl text-sm font-bold transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${level === l
                                         ? 'bg-blue-600 text-white shadow-md shadow-blue-600/20 scale-100'
                                         : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 scale-95'
@@ -174,13 +214,25 @@ export default function SentenceBuilderPage() {
                         </div>
                     </div>
 
-                    {/* Translation Prompt */}
+                    {/* Translation Prompt & Audio */}
                     <div className="mb-10 pr-0 md:pr-16 text-center md:text-left">
                         <div className="inline-flex items-center gap-2 text-sm font-bold text-slate-400 uppercase tracking-widest mb-3 font-bengali">
                             <span className="w-8 h-[2px] bg-slate-200 dark:bg-slate-700 rounded-full inline-block"></span>
                             অনুবাদ করুন
                         </div>
-                        <p className="text-2xl md:text-4xl font-extrabold text-slate-900 dark:text-white mb-2 leading-tight font-poppins">{current.english}</p>
+                        <div className="flex items-center justify-center md:justify-start gap-3">
+                            <p className="text-2xl md:text-4xl font-extrabold text-slate-900 dark:text-white mb-2 leading-tight font-poppins">{current.english}</p>
+                            {isCorrect === true && (
+                                <button
+                                    onClick={() => speakGerman(current.correctOrder.join(' '))}
+                                    className="p-2.5 rounded-xl bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 hover:bg-blue-200 transition-colors"
+                                    title="Listen sentence"
+                                    aria-label="Listen German sentence"
+                                >
+                                    <Volume2 className="w-5 h-5" />
+                                </button>
+                            )}
+                        </div>
                         <p className="font-bengali text-lg md:text-xl font-medium text-slate-500 dark:text-slate-400">{current.bangla}</p>
                     </div>
 
@@ -198,10 +250,10 @@ export default function SentenceBuilderPage() {
                             )}
                         </div>
                         <div className="flex gap-2 ml-4">
-                            <button onClick={resetCurrent} disabled={selectedWords.length === 0 || isCorrect !== null} className="p-2.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all disabled:opacity-30 disabled:cursor-not-allowed" title="Reset Blocks">
+                            <button onClick={resetCurrent} disabled={selectedTokens.length === 0 || isCorrect !== null} className="p-2.5 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-all disabled:opacity-30 disabled:cursor-not-allowed" title="Reset Blocks" aria-label="Reset blocks">
                                 <RefreshCcw className="w-5 h-5" />
                             </button>
-                            <button onClick={() => setShowHint(true)} disabled={showHint || isCorrect !== null} className="p-2.5 text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-xl transition-all disabled:opacity-30 disabled:cursor-not-allowed" title="Show Hint">
+                            <button onClick={() => setShowHint(true)} disabled={showHint || isCorrect !== null} className="p-2.5 text-slate-400 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded-xl transition-all disabled:opacity-30 disabled:cursor-not-allowed" title="Show Hint" aria-label="Show hint">
                                 <HelpCircle className="w-5 h-5" />
                             </button>
                         </div>
@@ -212,7 +264,7 @@ export default function SentenceBuilderPage() {
                         isCorrect === false ? 'bg-rose-50/50 dark:bg-rose-900/10 border-rose-400/50' :
                             'bg-slate-50/50 dark:bg-slate-900/30 border-slate-200 dark:border-slate-700'
                         }`}>
-                        {selectedWords.length === 0 && (
+                        {selectedTokens.length === 0 && (
                             <div className="absolute inset-0 flex items-center justify-center pointer-events-none p-4 text-center">
                                 <span className="font-bengali text-slate-400 font-medium">নিচের শব্দগুলোতে ট্যাপ করে এখানে সাজান...</span>
                             </div>
@@ -223,19 +275,26 @@ export default function SentenceBuilderPage() {
                                 <motion.div
                                     initial={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
                                     animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-                                    className="w-full py-4 px-6 bg-gradient-to-r from-emerald-400 to-teal-500 text-white rounded-[1.5rem] font-bold text-xl md:text-2xl shadow-xl shadow-emerald-500/40 text-center tracking-wide"
+                                    className="w-full py-4 px-6 bg-gradient-to-r from-emerald-400 to-teal-500 text-white rounded-[1.5rem] font-bold text-xl md:text-2xl shadow-xl shadow-emerald-500/40 text-center tracking-wide flex items-center justify-center gap-3"
                                 >
-                                    {current.correctOrder.join(' ')}
+                                    <span>{current.correctOrder.join(' ')}</span>
+                                    <button
+                                        onClick={() => speakGerman(current.correctOrder.join(' '))}
+                                        className="p-2 rounded-xl bg-white/20 hover:bg-white/30 text-white transition-colors"
+                                        aria-label="Listen completed sentence"
+                                    >
+                                        <Volume2 className="w-5 h-5" />
+                                    </button>
                                 </motion.div>
                             ) : (
-                                selectedWords.map((word, i) => (
-                                    <motion.button layout layoutId={`word-${word}-${i}`} key={`sel-${word}-${i}`} onClick={() => handleWordClick(i, true)}
+                                selectedTokens.map((token) => (
+                                    <motion.button layout layoutId={`token-${token.id}`} key={token.id} onClick={() => handleWordClick(token, true)}
                                         whileHover={{ scale: 1.05 }}
                                         whileTap={{ scale: 0.95 }}
                                         className={`px-4 py-2.5 md:px-5 md:py-3 rounded-[1.25rem] md:rounded-2xl font-bold text-base md:text-lg shadow-[0_4px_0_0] active:shadow-[0_0px_0_0] active:translate-y-1 transition-colors origin-center ${isCorrect === false ? 'bg-rose-500 text-white shadow-rose-700 hover:bg-rose-400' :
                                             'bg-white dark:bg-slate-800 text-slate-800 dark:text-white border border-slate-200/50 dark:border-slate-700 shadow-slate-200 dark:shadow-slate-950 hover:border-blue-400 dark:hover:border-blue-500 cursor-pointer'
                                             }`}>
-                                        {word}
+                                        {token.text}
                                     </motion.button>
                                 ))
                             )}
@@ -245,12 +304,12 @@ export default function SentenceBuilderPage() {
                     {/* Available Words Bank */}
                     <div className="flex flex-wrap gap-2.5 md:gap-4 mb-10 justify-center min-h-[100px]">
                         <AnimatePresence>
-                            {isCorrect !== true && availableWords.map((word, i) => (
-                                <motion.button layout layoutId={`word-${word}-${i}`} key={`avail-${word}-${i}`} onClick={() => handleWordClick(i, false)}
+                            {isCorrect !== true && availableTokens.map((token) => (
+                                <motion.button layout layoutId={`token-${token.id}`} key={token.id} onClick={() => handleWordClick(token, false)}
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
                                     className="px-4 py-2.5 md:px-5 md:py-3 rounded-[1.25rem] md:rounded-2xl bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold text-base md:text-lg border border-slate-200/80 dark:border-slate-700 shadow-[0_4px_0_0] shadow-slate-200 dark:shadow-slate-950 active:shadow-[0_0px_0_0] active:translate-y-1 transition-colors hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer">
-                                    {word}
+                                    {token.text}
                                 </motion.button>
                             ))}
                         </AnimatePresence>
@@ -259,7 +318,7 @@ export default function SentenceBuilderPage() {
                     {/* Primary Action Button (Check / Next) */}
                     <div className="pt-6 border-t border-slate-100 dark:border-slate-800/80">
                         {isCorrect === null ? (
-                            <button onClick={checkAnswer} disabled={selectedWords.length === 0}
+                            <button onClick={checkAnswer} disabled={selectedTokens.length === 0}
                                 className="w-full relative group overflow-hidden rounded-2xl bg-blue-600 text-white font-bold text-xl py-5 shadow-[0_6px_0_0] shadow-blue-800 active:shadow-[0_0px_0_0] active:translate-y-1.5 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:translate-y-1.5">
                                 <span className="relative z-10 font-poppins tracking-wide">Check Answer</span>
                                 <div className="absolute inset-0 h-full w-full bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-0"></div>
@@ -271,7 +330,7 @@ export default function SentenceBuilderPage() {
                                         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800/50 mb-4">
                                             <div className="flex items-center gap-3 text-emerald-700 dark:text-emerald-400 font-bold text-lg">
                                                 <CheckCircle2 className="w-8 h-8" />
-                                                Excellent! +10 XP
+                                                Excellent! +{showHint ? 2 : (10 + (combo >= 2 ? 5 : 0))} XP
                                             </div>
                                         </div>
                                     ) : (
@@ -303,3 +362,4 @@ export default function SentenceBuilderPage() {
         </div>
     );
 }
+

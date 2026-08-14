@@ -29,6 +29,8 @@ export default function BottomNav() {
                             <Link
                                 key={item.href}
                                 href={item.href}
+                                aria-label={item.label}
+                                aria-current={active ? 'page' : undefined}
                                 onClick={() => {
                                     if (typeof window !== 'undefined' && window.navigator && window.navigator.vibrate) {
                                         window.navigator.vibrate(30);
@@ -36,7 +38,7 @@ export default function BottomNav() {
                                 }}
                                 className={`relative flex flex-col items-center justify-center w-14 h-full rounded-full transition-colors duration-300 ${active
                                     ? 'text-blue-600 dark:text-blue-400'
-                                    : 'text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300'
+                                    : 'text-slate-400 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-200'
                                     }`}
                             >
                                 <Icon className={`w-[22px] h-[22px] mb-1 transition-transform duration-300 ${active ? 'scale-110 -translate-y-0.5' : ''}`} strokeWidth={active ? 2.5 : 2} />

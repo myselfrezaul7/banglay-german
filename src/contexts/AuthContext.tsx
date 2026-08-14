@@ -189,28 +189,47 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const incrementStreak = () => {
         if (!user) return;
-        const updated = { ...user, streak: user.streak + 1 };
+        const newStreak = user.streak + 1;
+        const achievements = new Set(user.achievements || []);
+        
+        if (newStreak >= 3) achievements.add('streak-3');
+        if (newStreak >= 7) achievements.add('streak-7');
+        if (newStreak >= 30) achievements.add('streak-30');
+
+        const updated = { ...user, streak: newStreak, achievements: Array.from(achievements) };
         saveUser(updated);
     };
 
     const addAchievement = (id: string) => {
-        if (!user || user.achievements.includes(id)) return;
-        const updated = { ...user, achievements: [...user.achievements, id] };
+        if (!user || user.achievements?.includes(id)) return;
+        const updated = { ...user, achievements: [...(user.achievements || []), id] };
         saveUser(updated);
     };
 
     const toggleFavorite = (wordId: string) => {
         if (!user) return;
-        const favorites = user.favorites.includes(wordId)
-            ? user.favorites.filter(f => f !== wordId)
-            : [...user.favorites, wordId];
+        const currentFavorites = user.favorites || [];
+        const favorites = currentFavorites.includes(wordId)
+            ? currentFavorites.filter(f => f !== wordId)
+            : [...currentFavorites, wordId];
         const updated = { ...user, favorites };
         saveUser(updated);
     };
 
     const markWordLearned = (wordId: string) => {
-        if (!user || user.learnedWords.includes(wordId)) return;
-        const updated = { ...user, learnedWords: [...user.learnedWords, wordId] };
+        if (!user) return;
+        const currentLearned = user.learnedWords || [];
+        if (currentLearned.includes(wordId)) return;
+
+        const newLearned = [...currentLearned, wordId];
+        const achievements = new Set(user.achievements || []);
+
+        if (newLearned.length >= 1) achievements.add('first-word');
+        if (newLearned.length >= 10) achievements.add('ten-words');
+        if (newLearned.length >= 50) achievements.add('fifty-words');
+        if (newLearned.length >= 100) achievements.add('hundred-words');
+
+        const updated = { ...user, learnedWords: newLearned, achievements: Array.from(achievements) };
         saveUser(updated);
     };
 

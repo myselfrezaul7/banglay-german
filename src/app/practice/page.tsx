@@ -38,6 +38,8 @@ export default function PracticePage() {
 
     const [questions, setQuestions] = useState<{word: Word, question: string, correct: string, options: string[]}[]>([]);
 
+    const [sessionXpEarned, setSessionXpEarned] = useState(0);
+
     const handleAnswer = (answer: string) => {
         if (showResult) return;
         setSelectedAnswer(answer);
@@ -46,9 +48,11 @@ export default function PracticePage() {
         const isCorrect = answer === questions[currentQuestion].correct;
 
         if (isCorrect) {
+            const earnedXP = 10 + (streakCount > 2 ? 5 : 0);
             setScore(s => s + 1);
             setStreakCount(s => s + 1);
-            addXP(10 + (streakCount > 2 ? 5 : 0)); // Bonus XP for streaks
+            setSessionXpEarned(xp => xp + earnedXP);
+            addXP(earnedXP); // Bonus XP for streaks
 
             // Success Haptic
             if (typeof window !== 'undefined' && window.navigator && window.navigator.vibrate) {
@@ -82,9 +86,11 @@ export default function PracticePage() {
 
     const handleSpeakingSuccess = () => {
         if (showResult) return;
+        setSelectedAnswer(questions[currentQuestion]?.correct || 'correct');
         setShowResult(true);
         setScore(s => s + 1);
         setStreakCount(s => s + 1);
+        setSessionXpEarned(xp => xp + 20);
         addXP(20); // 20 XP for speaking!
     };
 
@@ -99,7 +105,8 @@ export default function PracticePage() {
             addXP(50); // Bonus for completion
             
             // Confetti explosion!
-            if (score >= quizLength * 0.8) {
+            const totalCount = questions.length || quizLength;
+            if (score >= totalCount * 0.8) {
                 const triggerConfetti = async () => {
                     try {
                         const confetti = (await import('canvas-confetti')).default;
@@ -137,43 +144,60 @@ export default function PracticePage() {
     };
 
     const startQuiz = () => {
-        const shuffled = [...filteredWords].sort(() => Math.random() - 0.5).slice(0, quizLength);
+        const targetCount = Math.min(quizLength, filteredWords.length);
+        const shuffled = [...filteredWords].sort(() => Math.random() - 0.5).slice(0, targetCount);
         const distractorPool = filteredWords.length >= 4 ? filteredWords : allWords;
+        
         const generated = shuffled.map(word => {
-            const otherWords = distractorPool.filter(w => w.id !== word.id).sort(() => Math.random() - 0.5).slice(0, 3);
-            let question: string, correct: string, options: string[];
-
+            let question: string, correct: string;
+            
             switch (quizMode) {
                 case 'de-to-en':
                     question = word.german;
                     correct = word.english;
-                    options = [word.english, ...otherWords.map(w => w.english)].sort(() => Math.random() - 0.5);
                     break;
                 case 'en-to-de':
                     question = word.english;
                     correct = word.german;
-                    options = [word.german, ...otherWords.map(w => w.german)].sort(() => Math.random() - 0.5);
                     break;
                 case 'de-to-bn':
                     question = word.german;
                     correct = word.bangla;
-                    options = [word.bangla, ...otherWords.map(w => w.bangla)].sort(() => Math.random() - 0.5);
                     break;
                 case 'bn-to-de':
                     question = word.bangla;
                     correct = word.german;
-                    options = [word.german, ...otherWords.map(w => w.german)].sort(() => Math.random() - 0.5);
                     break;
                 case 'speaking':
                     question = word.german;
                     correct = word.german;
-                    options = [];
                     break;
                 default:
                     question = word.german;
                     correct = word.english;
-                    options = [];
             }
+
+            let options: string[] = [];
+            if (quizMode !== 'speaking') {
+                const uniqueDistractors = new Set<string>();
+                const shuffledPool = [...distractorPool].sort(() => Math.random() - 0.5);
+
+                for (const w of shuffledPool) {
+                    if (w.id === word.id) continue;
+                    let opt = '';
+                    if (quizMode === 'de-to-en') opt = w.english;
+                    else if (quizMode === 'en-to-de' || quizMode === 'bn-to-de') opt = w.german;
+                    else if (quizMode === 'de-to-bn') opt = w.bangla;
+                    else opt = w.english;
+
+                    if (opt && opt !== correct) {
+                        uniqueDistractors.add(opt);
+                        if (uniqueDistractors.size >= 3) break;
+                    }
+                }
+                options = [correct, ...Array.from(uniqueDistractors)].sort(() => Math.random() - 0.5);
+            }
+
             return { word, question, correct, options };
         });
 
@@ -182,6 +206,7 @@ export default function PracticePage() {
         setCurrentQuestion(0);
         setScore(0);
         setStreakCount(0);
+        setSessionXpEarned(0);
         setSelectedAnswer(null);
         setShowResult(false);
         setQuizComplete(false);
@@ -194,6 +219,10 @@ export default function PracticePage() {
         setCurrentQuestion(0);
         setScore(0);
         setStreakCount(0);
+        setSessionXpEarned(0);
+        setSelectedAnswer(null);
+        setShowResult(false);
+        setQuestions([]);
         setWrongAnswers([]);
     };
 
@@ -335,14 +364,14 @@ export default function PracticePage() {
                             <div className="grid grid-cols-2 gap-4 max-w-md mx-auto mb-10">
                                 <div className="bg-slate-50 dark:bg-slate-800/50 rounded-[1.5rem] p-6 border border-slate-100 dark:border-slate-700">
                                     <div className="text-sm text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest mb-1">Score</div>
-                                    <div className={`text-4xl font-black ${score >= quizLength * 0.8 ? 'text-emerald-500' : score >= quizLength * 0.5 ? 'text-orange-500' : 'text-rose-500'}`}>
-                                        {score}/{quizLength}
+                                    <div className={`text-4xl font-black ${score >= (questions.length || quizLength) * 0.8 ? 'text-emerald-500' : score >= (questions.length || quizLength) * 0.5 ? 'text-orange-500' : 'text-rose-500'}`}>
+                                        {score}/{questions.length || quizLength}
                                     </div>
                                 </div>
                                 <div className="bg-amber-50 dark:bg-amber-900/20 rounded-[1.5rem] p-6 border border-amber-100 dark:border-amber-900/50">
                                     <div className="text-sm text-amber-600 dark:text-amber-500 font-bold uppercase tracking-widest mb-1">XP Earned</div>
                                     <div className="text-4xl font-black text-amber-500">
-                                        +{score * (quizMode === 'speaking' ? 20 : 10) + 50}
+                                        +{sessionXpEarned + 50}
                                     </div>
                                 </div>
                             </div>
@@ -382,7 +411,7 @@ export default function PracticePage() {
                                 <div className="hidden sm:flex w-10 h-10 rounded-xl bg-slate-100 dark:bg-slate-800 items-center justify-center text-slate-500"><Timer className="w-5 h-5" /></div>
                                 <div>
                                     <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">Question</div>
-                                    <div className="font-bold text-slate-900 dark:text-white">{currentQuestion + 1} of {quizLength}</div>
+                                    <div className="font-bold text-slate-900 dark:text-white">{currentQuestion + 1} of {questions.length || quizLength}</div>
                                 </div>
                             </div>
 
@@ -390,7 +419,7 @@ export default function PracticePage() {
                             <div className="w-px h-8 bg-slate-200 dark:bg-slate-700 mx-2 sm:hidden"></div>
                             <div className="flex-1 max-w-[200px] mx-2 md:mx-4">
                                 <div className="h-2.5 bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
-                                    <div className="h-full bg-gradient-to-r from-blue-500 to-teal-400 rounded-full transition-all duration-500 ease-out" style={{ width: `${((currentQuestion) / quizLength) * 100}%` }}></div>
+                                    <div className="h-full bg-gradient-to-r from-blue-500 to-teal-400 rounded-full transition-all duration-500 ease-out" style={{ width: `${((currentQuestion + 1) / (questions.length || quizLength)) * 100}%` }}></div>
                                 </div>
                             </div>
 
@@ -414,7 +443,7 @@ export default function PracticePage() {
                                 exit={{ opacity: 0, x: -50, rotate: -2 }}
                                 transition={{ duration: 0.3, type: "spring", stiffness: 200, damping: 20 }}
                                 className={`bg-white/90 dark:bg-slate-900/90 backdrop-blur-2xl rounded-[2.5rem] p-6 md:p-10 border shadow-2xl transition-colors duration-500 ${showResult
-                                    ? selectedAnswer === questions[currentQuestion]?.correct || selectedAnswer === null
+                                    ? selectedAnswer === questions[currentQuestion]?.correct
                                         ? 'border-emerald-400 shadow-emerald-500/20'
                                         : 'border-rose-400 shadow-rose-500/20'
                                     : 'border-slate-200/50 dark:border-slate-700/50 shadow-slate-200/50 dark:shadow-none'
@@ -446,6 +475,8 @@ export default function PracticePage() {
                                         {!showResult && (
                                             <button 
                                                 onClick={() => {
+                                                    setSelectedAnswer('__SKIPPED__');
+                                                    setStreakCount(0);
                                                     setWrongAnswers(prev => [...prev, {
                                                         question: questions[currentQuestion].question,
                                                         correct: questions[currentQuestion].correct,
@@ -502,7 +533,7 @@ export default function PracticePage() {
                                             <button
                                                 onClick={handleNext}
                                                 className={`w-full flex items-center justify-center gap-2 rounded-2xl font-bold text-xl py-5 shadow-[0_6px_0_0] active:shadow-[0_0px_0_0] active:translate-y-1.5 transition-all text-white
-                                            ${selectedAnswer === questions[currentQuestion]?.correct || selectedAnswer === null
+                                            ${selectedAnswer === questions[currentQuestion]?.correct
                                                         ? 'bg-emerald-600 shadow-emerald-800 hover:bg-emerald-500'
                                                         : 'bg-rose-600 shadow-rose-800 hover:bg-rose-500'
                                                     }

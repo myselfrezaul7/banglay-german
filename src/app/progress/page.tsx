@@ -14,15 +14,15 @@ export default function ProgressPage() {
     }, []);
 
     const totalWords = a1Words.length + a2Words.length + b1Words.length + b2Words.length;
-    const learnedCount = user?.learnedWords?.length || 0;
-    const favoritesCount = user?.favorites?.length || 0;
+    const learnedSet = new Set(user?.learnedWords || []);
+    const learnedCount = learnedSet.size;
+    const favoritesCount = (user?.favorites || []).length;
     const streakCount = user?.streak || 0;
     const levelCount = user?.level || 1;
 
     const calculateLevelProgress = (lvlWords: { id: string }[]) => {
         if (!user || !user.learnedWords || lvlWords.length === 0) return 0;
-        const lvlWordIds = new Set(lvlWords.map(w => w.id));
-        const learnedInLvl = user.learnedWords.filter(id => lvlWordIds.has(id)).length;
+        const learnedInLvl = lvlWords.filter(w => learnedSet.has(w.id)).length;
         return Math.min(100, Math.round((learnedInLvl / lvlWords.length) * 100));
     };
 

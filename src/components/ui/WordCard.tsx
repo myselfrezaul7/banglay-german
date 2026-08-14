@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Word } from '@/types';
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
@@ -15,6 +15,12 @@ export default function WordCard({ word, onFavorite, onLearn }: WordCardProps) {
     const [isFavorite, setIsFavorite] = useState(word.isFavorite || false);
     const [isPlaying, setIsPlaying] = useState(false);
     const [isExpanded, setIsExpanded] = useState(false);
+    const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+
+    // Sync external favorite changes
+    useEffect(() => {
+        setIsFavorite(!!word.isFavorite);
+    }, [word.isFavorite]);
 
     // 3D Parallax setup
     const ref = useRef<HTMLDivElement>(null);
@@ -54,14 +60,22 @@ export default function WordCard({ word, onFavorite, onLearn }: WordCardProps) {
 
     const handleSpeak = (e: React.MouseEvent) => {
         e.stopPropagation();
-        if ('speechSynthesis' in window) {
+        if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
             speechSynthesis.cancel();
             setIsPlaying(true);
-            const utterance = new SpeechSynthesisUtterance(word.german);
+            const textToSpeak = word.article ? `${word.article} ${word.german}` : word.german;
+            const utterance = new SpeechSynthesisUtterance(textToSpeak);
             utterance.lang = 'de-DE';
-            utterance.rate = 0.8;
-            utterance.onend = () => setIsPlaying(false);
-            utterance.onerror = () => setIsPlaying(false);
+            utterance.rate = 0.85;
+            utteranceRef.current = utterance;
+            utterance.onend = () => {
+                setIsPlaying(false);
+                utteranceRef.current = null;
+            };
+            utterance.onerror = () => {
+                setIsPlaying(false);
+                utteranceRef.current = null;
+            };
             speechSynthesis.speak(utterance);
         }
     };

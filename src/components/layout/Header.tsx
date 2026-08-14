@@ -94,6 +94,8 @@ export default function Header() {
                                 src="/logo.png"
                                 alt="Banglay German Logo"
                                 fill
+                                sizes="(max-width: 768px) 40px, 48px"
+                                priority
                                 className="object-cover relative z-10"
                             />
                         </div>

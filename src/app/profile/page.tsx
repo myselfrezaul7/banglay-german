@@ -61,10 +61,11 @@ export default function ProfilePage() {
         );
     }
 
-    const currentLevelXP = user.level * 100;
-    const nextLevelXP = (user.level + 1) * 100;
-    const xpProgress = ((user.xp - currentLevelXP) / (nextLevelXP - currentLevelXP)) * 100;
-    const xpToNext = nextLevelXP - user.xp;
+    const currentLevelFloor = (user.level - 1) * 100;
+    const nextLevelTarget = user.level * 100;
+    const xpInLevel = Math.max(0, user.xp - currentLevelFloor);
+    const xpProgress = Math.min(100, Math.max(0, (xpInLevel / 100) * 100));
+    const xpToNext = Math.max(0, nextLevelTarget - user.xp);
 
     return (
         <div className="min-h-screen bg-slate-50 dark:bg-slate-950 pb-24 transition-opacity duration-500 relative overflow-x-hidden">

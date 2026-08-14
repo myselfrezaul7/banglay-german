@@ -33,6 +33,7 @@ export interface Sentence {
     english: string;
     bangla: string;
     level: Level;
+    category?: string;
     wordBreakdown?: WordBreakdown[];
     audioUrl?: string;
 }
